@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Http\Controllers\User;
+
+use App\Http\Controllers\Controller;
+use App\Models\Pesanan;
+use App\Models\Tiket;
+use App\Models\TiketPaket;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
+
+class DashboardController extends Controller
+{
+    public function __invoke(Request $request): View
+    {
+        $user = $request->user();
+        $pesanan = $user->pesanan();
+        $rombonganDraft = $request->session()->get('pengajuan_rombongan_draft');
+
+        return view('user.dashboard', [
+            'totalPesanan' => (clone $pesanan)->count(),
+            'pesananUmum' => (clone $pesanan)->where('kategori', TiketPaket::KATEGORI_UMUM)->count(),
+            'pesananMenunggu' => (clone $pesanan)
+                ->whereIn('status', [
+                    Pesanan::STATUS_MENUNGGU_PERSETUJUAN,
+                    Pesanan::STATUS_MENUNGGU_PEMBAYARAN,
+                ])
+                ->count(),
+            'tiketTerbit' => Tiket::whereHas('pesanan', fn ($query) => $query
+                ->where('user_id', $user->id)
+                ->where('status', Pesanan::STATUS_LUNAS))
+                ->count(),
+            'paketUmum' => TiketPaket::aktif()
+                ->kategori(TiketPaket::KATEGORI_UMUM)
+                ->orderBy('nama')
+                ->get(),
+            'paketRombongan' => TiketPaket::aktif()
+                ->kategori(TiketPaket::KATEGORI_ROMBONGAN)
+                ->orderBy('nama')
+                ->get(),
+            'rombonganDraft' => $rombonganDraft,
+            'rombonganDraftPaket' => $rombonganDraft
+                ? TiketPaket::findOrFail($rombonganDraft['tiket_paket_id'])
+                : null,
+            'pesanan' => (clone $pesanan)
+                ->with([
+                    'tiketPaket',
+                    'pembayaran',
+                    'tiket.peserta',
+                    'pengajuanRombongan.admin',
+                    'pesertaRombongan',
+                ])
+                ->latest()
+                ->paginate(10),
+        ]);
+    }
+}

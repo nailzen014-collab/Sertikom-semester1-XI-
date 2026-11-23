@@ -1,17 +1,13 @@
 @extends('layouts.admin-dashboard')
 
 @section('title', 'Dashboard Admin - The Nice Park')
+@section('page-title', 'Dashboard Admin')
+@section('page-description', 'Ringkasan pesanan, pendapatan, dan aktivitas kunjungan.')
+@section('page-action')
+    <a href="{{ route('admin.pengajuan.index') }}" class="admin-heading-action">Tinjau pengajuan</a>
+@endsection
 
 @section('content')
-    @if (session('message'))
-        <div role="status" class="rounded-md border border-juniper-200 bg-juniper-50 px-4 py-3 text-sm text-juniper-800">{{ session('message') }}</div>
-    @endif
-    @if ($errors->any())
-        <div role="alert" class="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            @foreach ($errors->all() as $error)<p>{{ $error }}</p>@endforeach
-        </div>
-    @endif
-
     <section id="ringkasan" aria-label="Ringkasan">
         <div class="admin-metrics">
         <article class="admin-metric">
@@ -36,7 +32,7 @@
             <div class="admin-metric-icon admin-metric-icon-toffee" aria-hidden="true">!</div>
             <p>Perlu ditinjau</p>
             <strong>{{ number_format($pengajuanMenunggu, 0, ',', '.') }}</strong>
-            <span><a href="#pengajuan">Pengajuan rombongan</a></span>
+            <span><a href="{{ route('admin.pengajuan.index') }}">Pengajuan rombongan</a></span>
         </article>
         </div>
 
@@ -47,7 +43,7 @@
                     <h2>Pesanan terbaru</h2>
                     <p>Aktivitas pesanan pengunjung</p>
                 </div>
-                <a href="#pesanan">Semua pesanan</a>
+                <a href="{{ route('admin.pesanan.index') }}">Semua pesanan</a>
             </div>
             <div class="admin-table-scroll" role="region" aria-label="Pesanan terbaru" tabindex="0">
                 <table class="admin-orders-table">
@@ -109,15 +105,9 @@
     </div>
 
     <section class="admin-quick-links" aria-label="Aksi pengelolaan">
-        <a href="#tiket-paket"><span aria-hidden="true">◇</span><span><strong>Kelola tiket &amp; paket</strong><small>{{ $totalTiket }} produk, {{ $tiketAktif }} aktif</small></span><b aria-hidden="true">→</b></a>
-        <a href="#diskon"><span aria-hidden="true">%</span><span><strong>Kelola diskon</strong><small>{{ $diskonAktif }} diskon aktif</small></span><b aria-hidden="true">→</b></a>
-        <a href="#validasi-tiket"><span aria-hidden="true">✓</span><span><strong>Validasi tiket masuk</strong><small>Periksa kode dan tanggal kunjungan</small></span><b aria-hidden="true">→</b></a>
+        <a href="{{ route('admin.tiket-paket.index') }}"><span aria-hidden="true">◇</span><span><strong>Kelola tiket &amp; paket</strong><small>{{ $totalTiket }} produk, {{ $tiketAktif }} aktif</small></span><b aria-hidden="true">→</b></a>
+        <a href="{{ route('admin.diskon.index') }}"><span aria-hidden="true">%</span><span><strong>Kelola diskon</strong><small>{{ $diskonAktif }} diskon aktif</small></span><b aria-hidden="true">→</b></a>
+        <a href="{{ route('admin.tiket.validasi') }}"><span aria-hidden="true">✓</span><span><strong>Validasi tiket masuk</strong><small>Periksa kode dan tanggal kunjungan</small></span><b aria-hidden="true">→</b></a>
     </section>
     </section>
-
-    @include('admin.dashboard-sections.pengajuan')
-    @include('admin.dashboard-sections.pesanan')
-    @include('admin.dashboard-sections.tiket-paket')
-    @include('admin.dashboard-sections.diskon')
-    @include('admin.dashboard-sections.validasi-tiket')
 @endsection

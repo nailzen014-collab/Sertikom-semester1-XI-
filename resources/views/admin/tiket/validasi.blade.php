@@ -1,25 +1,14 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between gap-4">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Validasi E-Ticket</h2>
-            <a href="{{ route('admin.dashboard') }}" class="text-sm text-juniper-700 hover:underline">&larr; Dashboard</a>
-        </div>
-    </x-slot>
+@extends('layouts.admin-dashboard')
 
+@section('title', 'Validasi E-Ticket - Admin')
+@section('page-title', 'Validasi E-Ticket')
+@section('page-description', 'Pindai QR atau masukkan kode tiket untuk memvalidasi kunjungan.')
+
+@section('content')
     <div class="py-10">
         <section class="mx-auto max-w-xl space-y-5 px-4 sm:px-6 lg:px-8">
             <div class="rounded-lg bg-white p-6 shadow-sm sm:p-8">
                 <p class="text-sm leading-6 text-gray-600">Pindai QR dengan perangkat pemindai atau ketik kode tiket. Sistem hanya menerima tiket lunas yang berlaku hari ini dan belum dipakai.</p>
-                @if (session('message'))
-                    <p role="status" class="mt-5 rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">{{ session('message') }}</p>
-                @endif
-                @if ($errors->any())
-                    <div role="alert" class="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                        @foreach ($errors->all() as $error)
-                            <p>{{ $error }}</p>
-                        @endforeach
-                    </div>
-                @endif
                 <form method="POST" action="{{ route('admin.tiket.validasi.store') }}" class="mt-6 space-y-4">
                     @csrf
                     <div>
@@ -47,4 +36,4 @@
             @endif
         </section>
     </div>
-</x-app-layout>
+@endsection

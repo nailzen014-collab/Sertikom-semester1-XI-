@@ -267,7 +267,7 @@ it('mengarahkan halaman pembayaran ke pesanan pada dashboard tanpa membuat trans
 
     $this->actingAs($user)
         ->get(route('pembayaran.show', $pesanan))
-        ->assertRedirect(route('user.dashboard', ['pesanan' => $pesanan->id]));
+        ->assertRedirect(route('user.orders', ['pesanan' => $pesanan->id]));
 
     expect(Pembayaran::count())->toBe(0);
 });
@@ -314,7 +314,7 @@ it('pengunjung tidak dapat mengakses pemantauan pesanan admin', function () {
     $this->actingAs($pengunjung)->get(route('admin.pesanan.index'))->assertForbidden();
 });
 
-it('riwayat mengarah ke dashboard yang hanya memuat pesanan milik sendiri', function () {
+it('riwayat mengarah ke halaman yang hanya memuat pesanan milik sendiri', function () {
     $a = User::factory()->create();
     $b = User::factory()->create();
 
@@ -323,10 +323,10 @@ it('riwayat mengarah ke dashboard yang hanya memuat pesanan milik sendiri', func
 
     $this->actingAs($a)
         ->get(route('riwayat.index'))
-        ->assertRedirect(route('user.dashboard').'#pesanan');
+        ->assertRedirect(route('user.orders'));
 
     $this->actingAs($a)
-        ->get(route('user.dashboard'))
+        ->get(route('user.orders'))
         ->assertOk()
         ->assertSee($pesananA->kode_pesanan)
         ->assertDontSee($pesananB->kode_pesanan);

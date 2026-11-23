@@ -1,13 +1,10 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Pesanan & Pembayaran') }}
-            </h2>
-            <a href="{{ route('admin.dashboard') }}" class="text-sm text-juniper-700 hover:text-gold-600">&larr; Dashboard</a>
-        </div>
-    </x-slot>
+@extends('layouts.admin-dashboard')
 
+@section('title', 'Pesanan & Pembayaran - Admin')
+@section('page-title', 'Pesanan & Pembayaran')
+@section('page-description', 'Telusuri pesanan pengunjung dan status transaksinya.')
+
+@section('content')
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
             <form method="GET" action="{{ route('admin.pesanan.index') }}" class="bg-white shadow-sm sm:rounded-lg p-4 flex flex-wrap items-end gap-3">
@@ -89,4 +86,4 @@
             {{ $pesanan->links() }}
         </div>
     </div>
-</x-app-layout>
+@endsection

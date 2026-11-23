@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>@yield('title', 'Akun Pengunjung - The Nice Park')</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet">
+        <link href="https://fonts.bunny.net/css?family=nunito:400,500,600,700&display=swap" rel="stylesheet">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="user-portal font-sans antialiased">
@@ -18,12 +18,13 @@
                 </a>
 
                 <nav aria-label="Navigasi akun" class="user-nav">
-                    <a href="{{ route('user.dashboard') }}#pilih-tiket">Pilih tiket</a>
-                    <a href="{{ route('user.dashboard') }}#pesanan">Pesanan saya</a>
-                    <a href="{{ route('landing') }}#ketentuan-kunjungan">Info &amp; ketentuan</a>
+                    <a href="{{ route('user.dashboard') }}" @class(['is-active' => request()->routeIs('user.dashboard')])>Ringkasan</a>
+                    <a href="{{ route('user.booking') }}" @class(['is-active' => request()->routeIs('user.booking')])>Pilih tiket</a>
+                    <a href="{{ route('user.orders') }}" @class(['is-active' => request()->routeIs('user.orders') || request()->routeIs('riwayat.*')])>Pesanan saya</a>
                 </nav>
 
                 <div class="user-account">
+                    <a href="{{ route('landing') }}" class="user-park-link">Lihat halaman taman</a>
                     <details class="user-account-menu">
                         <summary aria-label="Menu akun {{ auth()->user()->nama }}">
                             <span>{{ auth()->user()->nama }}</span>

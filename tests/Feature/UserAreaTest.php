@@ -12,7 +12,7 @@ it('directs visitors to login before opening the customer area', function () {
     $this->get(route('user.dashboard'))->assertRedirect(route('login'));
 });
 
-it('shows only the signed-in visitor orders on their dashboard', function () {
+it('shows only the signed-in visitor orders on their orders page', function () {
     $user = User::factory()->create();
     $otherUser = User::factory()->create();
     $ownOrder = Pesanan::factory()->create([
@@ -25,16 +25,47 @@ it('shows only the signed-in visitor orders on their dashboard', function () {
     ]);
 
     $this->actingAs($user)
-        ->get(route('user.dashboard'))
+        ->get(route('user.orders'))
         ->assertOk()
         ->assertSee($ownOrder->kode_pesanan)
         ->assertDontSee($otherOrder->kode_pesanan);
+});
+
+it('renders the account summary, ticket booking, and orders on separate pages with the same navigation', function () {
+    $user = User::factory()->create();
+    $package = TiketPaket::factory()->create();
+    $order = Pesanan::factory()->create([
+        'user_id' => $user->id,
+        'kode_pesanan' => 'TNP-ORDERS-PAGE',
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('user.dashboard'))
+        ->assertOk()
+        ->assertSee(route('user.booking'))
+        ->assertSee(route('user.orders'))
+        ->assertDontSee($order->kode_pesanan)
+        ->assertDontSee($package->nama);
+
+    $this->get(route('user.booking'))
+        ->assertOk()
+        ->assertSee($package->nama)
+        ->assertSee(route('user.orders'))
+        ->assertDontSee($order->kode_pesanan);
+
+    $this->get(route('user.orders'))
+        ->assertOk()
+        ->assertSee($order->kode_pesanan)
+        ->assertSee(route('user.booking'))
+        ->assertDontSee('Buat pesanan');
 });
 
 it('keeps admins out of the visitor dashboard', function () {
     $admin = User::factory()->admin()->create();
 
     $this->actingAs($admin)->get(route('user.dashboard'))->assertForbidden();
+    $this->get(route('user.booking'))->assertForbidden();
+    $this->get(route('user.orders'))->assertForbidden();
 });
 
 it('shows the signed-in customers name menu on the public landing page', function () {
@@ -79,16 +110,17 @@ it('does not reveal another visitors order or ticket', function () {
 it('opens an owners order inside the customer dashboard', function () {
     $user = User::factory()->create();
     $order = Pesanan::factory()->lunas()->create(['user_id' => $user->id]);
+    $ticket = Tiket::factory()->create(['pesanan_id' => $order->id]);
 
     $this->actingAs($user)
         ->get(route('riwayat.show', $order))
-        ->assertRedirect(route('user.dashboard', ['pesanan' => $order->id]));
+        ->assertRedirect(route('user.orders', ['pesanan' => $order->id]));
 
     $this->actingAs($user)
-        ->get(route('user.dashboard', ['pesanan' => $order->id]))
+        ->get(route('user.orders', ['pesanan' => $order->id]))
         ->assertOk()
         ->assertSee($order->kode_pesanan)
-        ->assertSee('E-tiket');
+        ->assertSee($ticket->kode_tiket);
 });
 
 it('keeps ticket selection and order history on the account page', function () {
@@ -97,19 +129,19 @@ it('keeps ticket selection and order history on the account page', function () {
 
     $this->actingAs($user)
         ->get(route('pesan.kategori'))
-        ->assertRedirect(route('user.dashboard').'#pilih-tiket');
+        ->assertRedirect(route('user.booking'));
 
     $this->actingAs($user)
         ->get(route('pesan.kategori', ['kategori' => 'rombongan']))
-        ->assertRedirect(route('user.dashboard').'#paket-rombongan');
+        ->assertRedirect(route('user.booking').'#paket-rombongan');
 
     $this->actingAs($user)
         ->get(route('pesan.create', $package))
-        ->assertRedirect(route('user.dashboard').'#paket-'.$package->id);
+        ->assertRedirect(route('user.booking').'#paket-'.$package->id);
 
     $this->actingAs($user)
         ->get(route('riwayat.index'))
-        ->assertRedirect(route('user.dashboard').'#pesanan');
+        ->assertRedirect(route('user.orders'));
 });
 
 it('keeps the group application stages on the account page', function () {
@@ -121,16 +153,17 @@ it('keeps the group application stages on the account page', function () {
 
     $this->actingAs($user)
         ->get(route('pesan.rombongan.create', ['tiket_paket_id' => $package->id]))
-        ->assertRedirect(route('user.dashboard', [
+        ->assertRedirect(route('user.booking', [
             'rombongan' => 1,
             'tiket_paket_id' => $package->id,
         ]).'#paket-rombongan');
 
-    $this->get(route('user.dashboard', ['rombongan' => 1]))
+    $this->get(route('user.booking', ['rombongan' => 1]))
         ->assertOk()
         ->assertSee('Ajukan rombongan')
         ->assertSee('Nama sekolah')
-        ->assertSee('Info &amp; ketentuan', false)
+        ->assertSee('Lihat halaman taman')
+        ->assertSee(route('landing'))
         ->assertSee('Profil saya');
 
     $this->post(route('pesan.rombongan.periksa'), [
@@ -141,9 +174,9 @@ it('keeps the group application stages on the account page', function () {
         'penanggung_jawab' => 'Nail Zen',
         'no_hp' => '08123456789',
         'mode_tiket' => 'per_peserta',
-    ])->assertRedirect(route('user.dashboard').'#paket-rombongan');
+    ])->assertRedirect(route('user.booking').'#paket-rombongan');
 
-    $this->get(route('user.dashboard'))
+    $this->get(route('user.booking'))
         ->assertOk()
         ->assertSee('Lengkapi daftar peserta')
         ->assertSee('Kirim pengajuan ke admin');

@@ -36,7 +36,7 @@ class RombonganController extends Controller
             $query['tiket_paket_id'] = $request->integer('tiket_paket_id');
         }
 
-        $redirect = redirect()->to(route('user.dashboard', $query).'#paket-rombongan');
+        $redirect = redirect()->to(route('user.booking', $query).'#paket-rombongan');
 
         if ($oldInput !== []) {
             $redirect->withInput($oldInput);
@@ -91,7 +91,7 @@ class RombonganController extends Controller
             ...$harga->hitung($paket, (int) $data['jumlah_tiket'], $diskon),
         ]);
 
-        return redirect()->to(route('user.dashboard').'#paket-rombongan')
+        return redirect()->to(route('user.booking').'#paket-rombongan')
             ->with('message', 'Data kunjungan tersimpan. Lengkapi biodata peserta untuk melanjutkan.');
     }
 
@@ -100,11 +100,11 @@ class RombonganController extends Controller
         $draft = $request->session()->get(self::DRAFT_KEY);
 
         if (! $draft) {
-            return redirect()->to(route('user.dashboard').'#paket-rombongan')
+            return redirect()->to(route('user.booking').'#paket-rombongan')
                 ->with('error', 'Lengkapi data rombongan terlebih dahulu.');
         }
 
-        return redirect()->to(route('user.dashboard').'#paket-rombongan');
+        return redirect()->to(route('user.booking').'#paket-rombongan');
     }
 
     public function simpanPeserta(
@@ -188,7 +188,7 @@ class RombonganController extends Controller
 
         $request->session()->forget(self::DRAFT_KEY);
 
-        return to_route('user.dashboard', ['pesanan' => $pesanan->id])
+        return to_route('user.orders', ['pesanan' => $pesanan->id])
             ->with('message', 'Pengajuan rombongan berhasil dikirim dan sedang menunggu tinjauan admin.');
     }
 

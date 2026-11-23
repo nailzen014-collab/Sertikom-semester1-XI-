@@ -9,7 +9,20 @@ test('profile page is displayed', function () {
         ->actingAs($user)
         ->get('/profile');
 
-    $response->assertOk();
+    $response->assertOk()
+        ->assertSee(route('user.dashboard'))
+        ->assertSee('class="user-nav"', false);
+});
+
+test('admin profile uses the admin navigation', function () {
+    $admin = User::factory()->admin()->create();
+
+    $this->actingAs($admin)
+        ->get('/profile')
+        ->assertOk()
+        ->assertSee(route('admin.dashboard'))
+        ->assertSee('class="admin-sidebar-nav"', false)
+        ->assertSee(route('profile.edit'));
 });
 
 test('profile information can be updated', function () {

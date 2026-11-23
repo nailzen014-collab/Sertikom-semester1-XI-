@@ -1,6 +1,13 @@
 {
   "version": 2,
   "skills": {
+    "design-taste-frontend": {
+      "source": "Leonxlnx/taste-skill",
+      "commit": "6c0b5c78f5d31776e2210305abaa210cdc0030bf",
+      "sourceType": "github",
+      "skillPath": "skills/taste-skill/SKILL.md",
+      "computedHash": "b10eab0a9684cd09cf34c31ef04a3bf530a5f4404422f9c520d42372d670c7fc"
+    },
     "frontend-design": {
       "source": "anthropics/skills",
       "commit": "e4bb5d960d87126ff3b3a8af1a104b7db67560ba",
@@ -28,6 +35,13 @@
       "sourceType": "github",
       "skillPath": "skill-data/modern-web-guidance/SKILL.md",
       "computedHash": "bd779e7437fb83edc6956b183635b36574f8aa22e48777f93078354b0ce01862"
+    },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "commit": "7e935ad920b390035e0e139bce555d091d14c70b",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/ui-ux-pro-max/SKILL.md",
+      "computedHash": "d140f58b44b7dced02b0772db01f801990b4416a29410ef4ce1f48e266f62f99"
     }
   }
 }

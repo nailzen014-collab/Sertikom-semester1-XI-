@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'pengunjung'])->group(function () {
     Route::get('/akun', DashboardController::class)->name('user.dashboard');
+    Route::get('/akun/pesan', [DashboardController::class, 'booking'])->name('user.booking');
+    Route::get('/akun/pesanan', [RiwayatController::class, 'orders'])->name('user.orders');
 
     Route::get('/pesan', [PesananController::class, 'kategori'])->name('pesan.kategori');
     Route::get('/pesan/rombongan', [RombonganController::class, 'create'])->name('pesan.rombongan.create');

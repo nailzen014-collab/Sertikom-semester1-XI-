@@ -15,11 +15,11 @@ class DashboardController extends Controller
     {
         $user = $request->user();
         $pesanan = $user->pesanan();
-        $rombonganDraft = $request->session()->get('pengajuan_rombongan_draft');
 
         return view('user.dashboard', [
+            'page' => 'dashboard',
+            'pageTitle' => 'Akun Pengunjung - The Nice Park',
             'totalPesanan' => (clone $pesanan)->count(),
-            'pesananUmum' => (clone $pesanan)->where('kategori', TiketPaket::KATEGORI_UMUM)->count(),
             'pesananMenunggu' => (clone $pesanan)
                 ->whereIn('status', [
                     Pesanan::STATUS_MENUNGGU_PERSETUJUAN,
@@ -30,6 +30,18 @@ class DashboardController extends Controller
                 ->where('user_id', $user->id)
                 ->where('status', Pesanan::STATUS_LUNAS))
                 ->count(),
+        ]);
+    }
+
+    public function booking(Request $request): View
+    {
+        $user = $request->user();
+        $rombonganDraft = $request->session()->get('pengajuan_rombongan_draft');
+
+        return view('user.dashboard', [
+            'page' => 'booking',
+            'pageTitle' => 'Pilih Tiket - The Nice Park',
+            'pesananUmum' => $user->pesanan()->where('kategori', TiketPaket::KATEGORI_UMUM)->count(),
             'paketUmum' => TiketPaket::aktif()
                 ->kategori(TiketPaket::KATEGORI_UMUM)
                 ->orderBy('nama')
@@ -42,16 +54,6 @@ class DashboardController extends Controller
             'rombonganDraftPaket' => $rombonganDraft
                 ? TiketPaket::findOrFail($rombonganDraft['tiket_paket_id'])
                 : null,
-            'pesanan' => (clone $pesanan)
-                ->with([
-                    'tiketPaket',
-                    'pembayaran',
-                    'tiket.peserta',
-                    'pengajuanRombongan.admin',
-                    'pesertaRombongan',
-                ])
-                ->latest()
-                ->paginate(10),
         ]);
     }
 }

@@ -62,7 +62,7 @@ it('mengizinkan admin menambah tiket paket', function () {
             'kuota_harian' => 20,
             'status_aktif' => 1,
         ])
-        ->assertRedirect(route('admin.dashboard').'#tiket-paket');
+        ->assertRedirect(route('admin.tiket-paket.index'));
 
     $this->assertDatabaseHas('tiket_paket', [
         'nama' => 'Tiket Uji',
@@ -102,7 +102,7 @@ it('mengizinkan admin menambah diskon per kategori', function () {
             'tanggal_selesai' => now()->addMonth()->toDateString(),
             'status_aktif' => 1,
         ])
-        ->assertRedirect(route('admin.dashboard').'#diskon');
+        ->assertRedirect(route('admin.diskon.index'));
 
     $this->assertDatabaseHas('diskon', [
         'nama' => 'Promo Umum Uji',

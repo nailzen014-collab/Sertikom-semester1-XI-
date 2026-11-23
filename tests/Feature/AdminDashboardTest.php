@@ -26,21 +26,24 @@ it('shows aggregated successful payments in the monthly revenue chart', function
         ->assertSee('Rp 45.000');
 });
 
-it('keeps every admin sidebar destination inside the dashboard page', function () {
+it('shows admin navigation as separate routes while keeping the dashboard focused', function () {
     $admin = User::factory()->admin()->create();
 
     $this->actingAs($admin)
         ->get(route('admin.dashboard'))
         ->assertOk()
-        ->assertSee('href="#ringkasan"', false)
-        ->assertSee('href="#pengajuan"', false)
-        ->assertSee('href="#pesanan"', false)
-        ->assertSee('href="#tiket-paket"', false)
-        ->assertSee('href="#diskon"', false)
-        ->assertSee('href="#validasi-tiket"', false)
-        ->assertSee('id="pengajuan"', false)
-        ->assertSee('id="pesanan"', false)
-        ->assertSee('id="tiket-paket"', false)
-        ->assertSee('id="diskon"', false)
-        ->assertSee('id="validasi-tiket"', false);
+        ->assertSee('href="'.route('admin.dashboard').'"', false)
+        ->assertSee('href="'.route('admin.pengajuan.index').'"', false)
+        ->assertSee('href="'.route('admin.pesanan.index').'"', false)
+        ->assertSee('href="'.route('admin.tiket-paket.index').'"', false)
+        ->assertSee('href="'.route('admin.diskon.index').'"', false)
+        ->assertSee('href="'.route('admin.tiket.validasi').'"', false)
+        ->assertDontSee('Pengajuan rombongan</h2>')
+        ->assertDontSee('Daftar pesanan</th>');
+
+    $this->actingAs($admin)
+        ->get(route('admin.pengajuan.index'))
+        ->assertOk()
+        ->assertSee('Pengajuan Rombongan')
+        ->assertSee('class="admin-sidebar-nav"', false);
 });

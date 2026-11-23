@@ -16,7 +16,7 @@ class PembayaranController extends Controller
             return $redirect;
         }
 
-        return to_route('user.dashboard', ['pesanan' => $pesanan->id]);
+        return to_route('user.orders', ['pesanan' => $pesanan->id]);
     }
 
     public function process(Pesanan $pesanan, PembayaranService $pembayaran): RedirectResponse
@@ -32,7 +32,7 @@ class PembayaranController extends Controller
         } catch (\Throwable $e) {
             report($e);
 
-            return to_route('user.dashboard', ['pesanan' => $pesanan->id])
+            return to_route('user.orders', ['pesanan' => $pesanan->id])
                 ->with('error', 'Gagal menghubungi payment gateway. Silakan coba lagi.');
         }
 
@@ -45,18 +45,18 @@ class PembayaranController extends Controller
 
         $pembayaran->sinkronkanDariGateway($pesanan);
 
-        return to_route('user.dashboard', ['pesanan' => $pesanan->id])
+        return to_route('user.orders', ['pesanan' => $pesanan->id])
             ->with('message', 'Status pembayaran telah diperbarui.');
     }
 
     private function periksaStatus(Pesanan $pesanan): ?RedirectResponse
     {
         if ($pesanan->status === Pesanan::STATUS_LUNAS) {
-            return to_route('user.dashboard', ['pesanan' => $pesanan->id]);
+            return to_route('user.orders', ['pesanan' => $pesanan->id]);
         }
 
         if ($pesanan->status !== Pesanan::STATUS_MENUNGGU_PEMBAYARAN) {
-            return to_route('user.dashboard', ['pesanan' => $pesanan->id])
+            return to_route('user.orders', ['pesanan' => $pesanan->id])
                 ->with('error', 'Pesanan ini tidak dapat dibayar.');
         }
 

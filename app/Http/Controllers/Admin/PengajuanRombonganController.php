@@ -58,7 +58,7 @@ class PengajuanRombonganController extends Controller
             ]);
         });
 
-        return redirect()->to(route('admin.dashboard').'#pengajuan')
+        return redirect()->route('admin.pengajuan.index')
             ->with('message', 'Pengajuan disetujui. Pengunjung sekarang dapat melakukan pembayaran.');
     }
 
@@ -87,7 +87,7 @@ class PengajuanRombonganController extends Controller
             ]);
         });
 
-        return redirect()->to(route('admin.dashboard').'#pengajuan')
+        return redirect()->route('admin.pengajuan.index')
             ->with('message', 'Pengajuan ditolak dan alasan sudah disimpan.');
     }
 }

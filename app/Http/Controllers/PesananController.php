@@ -19,11 +19,11 @@ class PesananController extends Controller
 {
     public function kategori(Request $request): RedirectResponse
     {
-        $section = $request->query('kategori') === TiketPaket::KATEGORI_ROMBONGAN
-            ? 'paket-rombongan'
-            : 'pilih-tiket';
+        $url = route('user.booking');
 
-        return redirect()->to(route('user.dashboard').'#'.$section);
+        return redirect()->to($request->query('kategori') === TiketPaket::KATEGORI_ROMBONGAN
+            ? $url.'#paket-rombongan'
+            : $url);
     }
 
     public function create(TiketPaket $tiketPaket): RedirectResponse
@@ -32,7 +32,7 @@ class PesananController extends Controller
             return $redirect;
         }
 
-        return redirect()->to(route('user.dashboard').'#paket-'.$tiketPaket->id);
+        return redirect()->to(route('user.booking').'#paket-'.$tiketPaket->id);
     }
 
     public function store(
@@ -102,7 +102,7 @@ class PesananController extends Controller
             ]);
         });
 
-        return to_route('user.dashboard', ['pesanan' => $pesanan->id]);
+        return to_route('user.orders', ['pesanan' => $pesanan->id]);
     }
 
     private function pastikanUmum(TiketPaket $tiketPaket): ?RedirectResponse

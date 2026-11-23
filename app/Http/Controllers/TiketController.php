@@ -17,7 +17,7 @@ class TiketController extends Controller
 
         $this->pastikanSudahDibayar($tiket);
 
-        return to_route('user.dashboard', ['pesanan' => $tiket->pesanan_id]);
+        return to_route('user.orders', ['pesanan' => $tiket->pesanan_id]);
     }
 
     public function pdf(Tiket $tiket): Response

@@ -1,11 +1,10 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between gap-4">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Pengajuan Rombongan</h2>
-            <a href="{{ route('admin.dashboard') }}" class="text-sm text-juniper-700 hover:underline">&larr; Dashboard</a>
-        </div>
-    </x-slot>
+@extends('layouts.admin-dashboard')
 
+@section('title', 'Pengajuan Rombongan - Admin')
+@section('page-title', 'Pengajuan Rombongan')
+@section('page-description', 'Tinjau data sekolah dan daftar peserta sebelum memutuskan pengajuan.')
+
+@section('content')
     <div class="py-10">
         <div class="mx-auto max-w-7xl space-y-4 px-4 sm:px-6 lg:px-8">
             <p class="text-sm text-gray-600">Tinjau data sekolah dan daftar peserta sebelum memutuskan pengajuan.</p>
@@ -50,4 +49,4 @@
             {{ $pengajuan->links() }}
         </div>
     </div>
-</x-app-layout>
+@endsection

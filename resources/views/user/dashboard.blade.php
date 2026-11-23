@@ -1,6 +1,6 @@
 @extends('layouts.user-dashboard')
 
-@section('title', 'Akun Pengunjung - The Nice Park')
+@section('title', $pageTitle)
 
 @section('content')
     @if (session('message'))
@@ -11,7 +11,7 @@
     @endif
     @if ($errors->any())
         <div class="user-notice user-notice-error" role="alert">
-            <p class="font-semibold">Pesanan belum dapat dibuat.</p>
+            <p class="font-semibold">Data belum dapat diproses.</p>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -20,34 +20,37 @@
         </div>
     @endif
 
-    <div class="user-welcome" id="ringkasan">
-        <div>
-            <p class="user-eyebrow">Area pengunjung</p>
-            <h1>Halo, {{ auth()->user()->nama }}</h1>
-            <p>Pesan tiket dan pantau kunjungan Anda dari satu halaman.</p>
+    @if ($page === 'dashboard')
+        <div class="user-welcome" id="ringkasan">
+            <div>
+                <p class="user-eyebrow">Area pengunjung</p>
+                <h1>Halo, {{ auth()->user()->nama }}</h1>
+                <p>Kelola pesanan dan kunjungan Anda dari akun ini.</p>
+            </div>
+            <a href="{{ route('user.booking') }}" class="user-primary-action">Pesan tiket</a>
         </div>
-        <a href="#pilih-tiket" class="user-primary-action">Pesan tiket</a>
-    </div>
 
-    <section class="user-summary" aria-label="Ringkasan akun">
-        <article class="user-summary-card">
-            <span class="user-summary-label">Total pesanan</span>
-            <strong>{{ number_format($totalPesanan, 0, ',', '.') }}</strong>
-            <span class="user-summary-note">Riwayat di akun ini</span>
-        </article>
-        <article class="user-summary-card user-summary-card-toffee">
-            <span class="user-summary-label">Perlu ditindaklanjuti</span>
-            <strong>{{ number_format($pesananMenunggu, 0, ',', '.') }}</strong>
-            <span class="user-summary-note">Menunggu persetujuan atau pembayaran</span>
-        </article>
-        <article class="user-summary-card">
-            <span class="user-summary-label">E-tiket terbit</span>
-            <strong>{{ number_format($tiketTerbit, 0, ',', '.') }}</strong>
-            <span class="user-summary-note">Tiket dari pembayaran berhasil</span>
-        </article>
-    </section>
+        <section class="user-summary" aria-label="Ringkasan akun">
+            <article class="user-summary-card">
+                <span class="user-summary-label">Total pesanan</span>
+                <strong>{{ number_format($totalPesanan, 0, ',', '.') }}</strong>
+                <span class="user-summary-note">Riwayat di akun ini</span>
+            </article>
+            <article class="user-summary-card user-summary-card-toffee">
+                <span class="user-summary-label">Perlu ditindaklanjuti</span>
+                <strong>{{ number_format($pesananMenunggu, 0, ',', '.') }}</strong>
+                <span class="user-summary-note">Menunggu persetujuan atau pembayaran</span>
+            </article>
+            <article class="user-summary-card">
+                <span class="user-summary-label">E-tiket terbit</span>
+                <strong>{{ number_format($tiketTerbit, 0, ',', '.') }}</strong>
+                <span class="user-summary-note">Tiket dari pembayaran berhasil</span>
+            </article>
+        </section>
+    @endif
 
-    <section class="user-orders" id="pesanan">
+    @if ($page === 'orders')
+        <section class="user-orders" id="pesanan">
         <div class="user-section-heading">
             <div>
                 <h2>Pesanan saya</h2>
@@ -160,17 +163,19 @@
         @empty
             <div class="user-empty-state">
                 <h3>Belum ada pesanan</h3>
-                <p>Pilih tiket dan rencanakan kunjungan pertama Anda.</p>
-                <a href="#pilih-tiket">Pilih tiket</a>
+                <p>Pilih tiket untuk merencanakan kunjungan pertama Anda.</p>
+                <a href="{{ route('user.booking') }}">Pilih tiket</a>
             </div>
         @endforelse
 
         @if ($pesanan->hasPages())
             <div class="user-pagination">{{ $pesanan->links() }}</div>
         @endif
-    </section>
+        </section>
+    @endif
 
-    <section class="user-booking" id="pilih-tiket">
+    @if ($page === 'booking')
+        <section class="user-booking" id="pilih-tiket">
         <div class="user-section-heading">
             <div>
                 <h2>Pilih tiket untuk kunjungan berikutnya</h2>
@@ -234,5 +239,6 @@
                 </div>
             </details>
         @endif
-    </section>
+        </section>
+    @endif
 @endsection

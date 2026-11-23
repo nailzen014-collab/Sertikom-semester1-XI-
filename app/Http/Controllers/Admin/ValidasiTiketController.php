@@ -66,7 +66,7 @@ class ValidasiTiketController extends Controller
             return $tiket;
         });
 
-        return redirect()->to(route('admin.dashboard').'#validasi-tiket')
+        return redirect()->route('admin.tiket.validasi')
             ->with('tiket_validasi_id', $tiket->id)
             ->with('message', 'Tiket valid. Statusnya sudah ditandai dipakai.');
     }

@@ -1,24 +1,15 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Detail Pesanan') }}
-            </h2>
-            <a href="{{ route('admin.pesanan.index') }}" class="text-sm text-juniper-700 hover:text-gold-600">&larr; Daftar Pesanan</a>
-        </div>
-    </x-slot>
+@extends('layouts.admin-dashboard')
 
+@section('title', 'Detail Pesanan - Admin')
+@section('page-title', 'Detail Pesanan')
+@section('page-description', 'Rincian pesanan, pengajuan, pembayaran, dan tiket.')
+@section('page-action')
+    <a href="{{ route('admin.pesanan.index') }}" class="admin-heading-action">&larr; Daftar pesanan</a>
+@endsection
+
+@section('content')
     <div class="py-12">
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            @if (session('message'))
-                <div role="status" class="rounded-md border border-juniper-200 bg-juniper-50 px-4 py-3 text-sm text-juniper-800">{{ session('message') }}</div>
-            @endif
-            @if ($errors->any())
-                <div role="alert" class="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                    @foreach ($errors->all() as $error)<p>{{ $error }}</p>@endforeach
-                </div>
-            @endif
-
             <div class="bg-white shadow-sm sm:rounded-lg p-6">
                 <div class="flex flex-wrap items-start justify-between gap-3">
                     <div>
@@ -158,4 +149,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

@@ -32,7 +32,7 @@ class DiskonController extends Controller
             'status_aktif' => $request->boolean('status_aktif'),
         ]);
 
-        return redirect()->to(route('admin.dashboard').'#diskon')
+        return redirect()->route('admin.diskon.index')
             ->with('message', 'Diskon berhasil ditambahkan.');
     }
 
@@ -50,7 +50,7 @@ class DiskonController extends Controller
             'status_aktif' => $request->boolean('status_aktif'),
         ]);
 
-        return redirect()->to(route('admin.dashboard').'#diskon')
+        return redirect()->route('admin.diskon.index')
             ->with('message', 'Diskon berhasil diperbarui.');
     }
 
@@ -58,7 +58,7 @@ class DiskonController extends Controller
     {
         $diskon->delete();
 
-        return redirect()->to(route('admin.dashboard').'#diskon')
+        return redirect()->route('admin.diskon.index')
             ->with('message', 'Diskon berhasil dihapus.');
     }
 }

@@ -28,7 +28,7 @@ class TiketPaketController extends Controller
     {
         TiketPaket::create($this->attributes($request));
 
-        return redirect()->to(route('admin.dashboard').'#tiket-paket')
+        return redirect()->route('admin.tiket-paket.index')
             ->with('message', 'Tiket/paket berhasil ditambahkan.');
     }
 
@@ -43,7 +43,7 @@ class TiketPaketController extends Controller
     {
         $tiketPaket->update($this->attributes($request));
 
-        return redirect()->to(route('admin.dashboard').'#tiket-paket')
+        return redirect()->route('admin.tiket-paket.index')
             ->with('message', 'Tiket/paket berhasil diperbarui.');
     }
 
@@ -51,7 +51,7 @@ class TiketPaketController extends Controller
     {
         $tiketPaket->delete();
 
-        return redirect()->to(route('admin.dashboard').'#tiket-paket')
+        return redirect()->route('admin.tiket-paket.index')
             ->with('message', 'Tiket/paket berhasil dihapus.');
     }
 

@@ -9,72 +9,36 @@ use App\Models\PengajuanRombongan;
 use App\Models\Pesanan;
 use App\Models\Tiket;
 use App\Models\TiketPaket;
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function __invoke(Request $request): View
+    public function __invoke(): View
     {
         $now = now();
         $awalPeriode = $now->copy()->startOfMonth()->subMonths(5);
-        $bulan = collect(range(0, 5))->map(function (int $offset) use ($awalPeriode): array {
+        $monthExpression = match (DB::connection()->getDriverName()) {
+            'sqlite' => "strftime('%Y-%m', dibayar_pada)",
+            'pgsql' => "TO_CHAR(dibayar_pada, 'YYYY-MM')",
+            'sqlsrv' => "FORMAT(dibayar_pada, 'yyyy-MM')",
+            default => "DATE_FORMAT(dibayar_pada, '%Y-%m')",
+        };
+        $pendapatanPerBulan = Pembayaran::query()
+            ->where('status', Pembayaran::STATUS_BERHASIL)
+            ->whereBetween('dibayar_pada', [$awalPeriode, $now])
+            ->selectRaw("$monthExpression as bulan, SUM(jumlah) as pendapatan")
+            ->groupByRaw($monthExpression)
+            ->pluck('pendapatan', 'bulan');
+        $bulan = collect(range(0, 5))->map(function (int $offset) use ($awalPeriode, $pendapatanPerBulan): array {
             $tanggal = $awalPeriode->copy()->addMonths($offset);
+            $key = $tanggal->format('Y-m');
 
             return [
-                'key' => $tanggal->format('Y-m'),
                 'label' => $tanggal->translatedFormat('M'),
-                'pendapatan' => 0,
+                'pendapatan' => (int) $pendapatanPerBulan->get($key, 0),
             ];
-        })->keyBy('key');
-
-        Pembayaran::query()
-            ->where('status', Pembayaran::STATUS_BERHASIL)
-            ->whereNotNull('dibayar_pada')
-            ->whereBetween('dibayar_pada', [$awalPeriode, $now])
-            ->get(['jumlah', 'dibayar_pada'])
-            ->each(function (Pembayaran $pembayaran) use ($bulan): void {
-                $key = Carbon::parse($pembayaran->dibayar_pada)->format('Y-m');
-
-                if ($bulan->has($key)) {
-                    $data = $bulan->get($key);
-                    $data['pendapatan'] += $pembayaran->jumlah;
-                    $bulan->put($key, $data);
-                }
-            });
-
-        $pengajuan = PengajuanRombongan::with([
-            'pesanan.user',
-            'pesanan.tiketPaket',
-            'pesanan.pesertaRombongan',
-        ])
-            ->where('status', PengajuanRombongan::STATUS_DIAJUKAN)
-            ->latest()
-            ->paginate(10, ['*'], 'pengajuan_page')
-            ->fragment('pengajuan');
-
-        $pesananAdmin = Pesanan::with([
-            'user',
-            'tiketPaket',
-            'diskon',
-            'pembayaran',
-            'tiket',
-            'pengajuanRombongan',
-            'pesertaRombongan',
-        ])
-            ->when($request->filled('tanggal'), fn ($query) => $query->whereDate('tanggal_kunjungan', $request->input('tanggal')))
-            ->when($request->filled('status'), fn ($query) => $query->where('status', $request->input('status')))
-            ->when($request->filled('kategori'), fn ($query) => $query->where('kategori', $request->input('kategori')))
-            ->latest()
-            ->paginate(15, ['*'], 'pesanan_page')
-            ->withQueryString()
-            ->fragment('pesanan');
-
-        $tiketValidasi = session('tiket_validasi_id')
-            ? Tiket::with(['pesanan.user', 'pesanan.tiketPaket', 'peserta'])
-                ->find(session('tiket_validasi_id'))
-            : null;
+        });
 
         return view('admin.dashboard', [
             'totalTiket' => TiketPaket::count(),
@@ -90,15 +54,8 @@ class DashboardController extends Controller
                 ->latest('id')
                 ->limit(6)
                 ->get(),
-            'statistikBulanan' => $bulan->values(),
+            'statistikBulanan' => $bulan,
             'pendapatanMaksimum' => max(1, (int) $bulan->max('pendapatan')),
-            'pengajuan' => $pengajuan,
-            'pesananAdmin' => $pesananAdmin,
-            'statusPesanan' => Pesanan::STATUS,
-            'kategoriTiket' => TiketPaket::KATEGORI,
-            'paketAdmin' => TiketPaket::latest()->paginate(10, ['*'], 'paket_page')->fragment('tiket-paket'),
-            'diskonAdmin' => Diskon::with('admin')->latest()->paginate(10, ['*'], 'diskon_page')->fragment('diskon'),
-            'tiketValidasi' => $tiketValidasi,
         ]);
     }
 }

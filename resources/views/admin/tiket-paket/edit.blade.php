@@ -1,10 +1,10 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Ubah Tiket/Paket') }}
-        </h2>
-    </x-slot>
+@extends('layouts.admin-dashboard')
 
+@section('title', 'Ubah Tiket/Paket - Admin')
+@section('page-title', 'Ubah Tiket/Paket')
+@section('page-description', 'Perbarui informasi tiket atau paket kunjungan.')
+
+@section('content')
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
@@ -22,4 +22,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

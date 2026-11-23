@@ -5,6 +5,9 @@
 .env.production
 .phpactor.json
 .phpunit.result.cache
+.Pembelajaran-sertikom.md
+.PRD(1).md
+.SDLC(1).md
 /.codex
 /.cursor/
 /.idea

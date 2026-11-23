@@ -1,23 +1,15 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Tiket & Paket') }}
-            </h2>
-            <a href="{{ route('admin.tiket-paket.create') }}" class="px-4 py-2 rounded-md bg-juniper-600 text-white text-sm hover:bg-juniper-700">
-                Tambah
-            </a>
-        </div>
-    </x-slot>
+@extends('layouts.admin-dashboard')
 
+@section('title', 'Tiket & Paket - Admin')
+@section('page-title', 'Tiket & Paket')
+@section('page-description', 'Kelola tiket dan paket, harga, kuota, serta status produk.')
+@section('page-action')
+    <a href="{{ route('admin.tiket-paket.create') }}" class="admin-heading-action">Tambah tiket/paket</a>
+@endsection
+
+@section('content')
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
-            @if (session('message'))
-                <div class="rounded-md bg-juniper-50 border border-juniper-200 text-juniper-800 px-4 py-3 text-sm">
-                    {{ session('message') }}
-                </div>
-            @endif
-
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 text-sm">
@@ -67,4 +59,4 @@
             {{ $tiketPaket->links() }}
         </div>
     </div>
-</x-app-layout>
+@endsection

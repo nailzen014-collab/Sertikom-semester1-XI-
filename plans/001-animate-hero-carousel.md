@@ -6,6 +6,10 @@
 - **Category**: Missed opportunities; accessibility; performance
 - **Estimated scope**: 2 files, approximately 60–100 changed lines
 
+## Design decision
+
+The Taste motion guidance for a place normally rejects autoplaying carousels. The user explicitly chose the original request for an approximately 7-second automatic destination change after that conflict was presented. Implement autoplay only for this existing landing-page destination picker, with a persistent pause control and the pause/reduced-motion safeguards below; do not add autoplay or timed slideshows elsewhere.
+
 ## Problem
 
 The public landing page updates its hero content immediately. The Alpine component in `resources/views/landing.blade.php:8` exposes `pilih`, `next`, `prev`, and getters for the current item and image, but has no timer or transition state. The hero image at `resources/views/landing.blade.php:54` changes its `src` in place; the title and description at lines 23–24 change immediately as well.

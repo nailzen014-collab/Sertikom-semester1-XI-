@@ -34,14 +34,14 @@ The frequent navigation feedback currently has no pressed state or animated acti
 
 - Keep all existing links, route logic, account menu behavior, responsive breakpoints, and navigation labels.
 - Animate hover color/background with `transition: color 150ms ease, background-color 150ms ease`.
-- Add a current-page indicator using a pseudo-element. It must move/scale with `transform` and opacity, not animate width or other layout properties. Use `transform-origin: left center` and `transition: transform 200ms var(--ease-in-out), opacity 200ms var(--ease-in-out)`.
-- Add press feedback to links and the menu toggle: `transform: scale(0.97)` on `:active`, with `transition: transform 160ms var(--ease-out)`. Restore to `scale(1)` when released.
-- Animate the mobile menu enter/exit with opacity and `translateY(-4px)` over **200ms** using `var(--ease-out)`. Start at `opacity: 0` and `scale(0.97)` at most; never use `scale(0)`.
+- Keep the current-page indicator as a static **2px** bar under the `aria-current="page"` link. Animate the hover underline only: a **1px** line **4px** below the word, drawing left-to-right with `transform` over **150ms** in and **120ms** out.
+- Add press feedback to links and the menu toggle: deepen the surface color and apply `transform: scale(0.985)` with a **90ms** transition on `:active`; restore when released. Do not animate the focus ring.
+- Animate the mobile menu enter over **200ms** and close over **120ms**, using opacity and a **6px** drop with `var(--ease-out)`. Do not scale the menu.
 - Keep desktop navigation visible and unaffected by the mobile open/close state.
 - Under reduced motion, remove translate/scale movement while preserving color and opacity feedback. Override the global `.01ms !important` duration only for public navigation states, using a **160ms** color/background/opacity transition.
 - Use the `--ease-out` and `--ease-in-out` tokens added by plan 001. Execute plan 001 first.
 
-Use this indicator geometry so it does not change the link's layout:
+Use this hover underline geometry so it does not change the link's layout. Keep the current-page bar static:
 
 ```css
 .public-nav-link {
@@ -53,18 +53,24 @@ Use this indicator geometry so it does not change the link's layout:
     right: .7rem;
     bottom: .35rem;
     left: .7rem;
-    height: 2px;
+    height: 1px;
+    bottom: 4px;
     background: var(--park-copper);
     content: "";
     opacity: 0;
     transform: scaleX(0);
     transform-origin: left center;
-    transition: transform 200ms var(--ease-in-out), opacity 200ms var(--ease-in-out);
+    transition: transform 150ms var(--ease-out), opacity 150ms var(--ease-out);
 }
 
-.public-nav-link.is-current::after {
+.public-nav-link:hover::after,
+.public-nav-link:focus-visible::after {
     opacity: 1;
     transform: scaleX(1);
+}
+
+.public-nav-link[aria-current="page"] {
+    border-bottom: 2px solid var(--park-copper);
 }
 ```
 
@@ -78,9 +84,9 @@ Use this indicator geometry so it does not change the link's layout:
 ## Steps
 
 1. Confirm plan 001 has added `--ease-out` and `--ease-in-out` to `resources/css/app.css`. If either token is missing, stop and report the dependency.
-2. In `resources/css/app.css`, add the 150ms color/background transition to `.public-nav-link` and `.public-account-menu > summary`. Add a distinct `:active` transform rule for links and the menu toggle using the specified 160ms transition.
-3. Replace the static `.is-current` underline with a positioned pseudo-element. Keep the existing underline color and current-route class, animate only `transform` and `opacity` with the specified 200ms transition, and provide a visible current state without depending on animation.
-4. Change `#site-navigation` to use `x-show="menuOpen"` with `x-cloak` and Alpine `x-transition` enter/leave directives. Use `transition ease-out duration-200`, `opacity-0 translate-y-[-4px] scale-95` as enter-start, and `opacity-100 translate-y-0 scale-100` as enter-end; reverse those states on leave. Make the mobile base `.public-nav` display `flex` when shown. In the desktop media query, force `.public-nav` to `display: flex !important; opacity: 1 !important; transform: none !important; visibility: visible !important;` so Alpine's closed inline display and transition state cannot hide desktop navigation. Remove the `:class` display toggle after the `x-show` transition works. Keep closed mobile links out of the tab order through `x-show`.
+2. In `resources/css/app.css`, add the 150ms in / 120ms out color/background transition to `.public-nav-link` and `.public-account-menu > summary`. Add the specified 90ms pressed transform and deeper surface color to links and the menu toggle.
+3. Keep the current page marker static. Add the single 1px hover/focus underline under nav words using the target transform-only transition; do not add a gliding indicator or second underline style.
+4. Change `#site-navigation` to use `x-show="menuOpen"` with `x-cloak` and Alpine `x-transition` enter/leave directives. Use `transition ease-out duration-200` on enter and `transition ease-out duration-120` on leave, with `opacity-0 translate-y-[-6px]` as the hidden state and `opacity-100 translate-y-0` as the shown state. Make the mobile base `.public-nav` display `flex` when shown. In the desktop media query, force `.public-nav` to `display: flex !important; opacity: 1 !important; transform: none !important; visibility: visible !important;` so Alpine's closed inline display and transition state cannot hide desktop navigation. Remove the `:class` display toggle after the `x-show` transition works. Keep closed mobile links out of the tab order through `x-show`.
 5. Add a reduced-motion override that removes menu translation and press scaling but keeps color and opacity state feedback. The global rule at `resources/css/app.css:2023` forces every duration to `.01ms !important`; add a scoped override for `.public-header #site-navigation`, `.public-header .public-nav-link`, `.public-header #site-navigation .public-nav-link::after`, and `.public-header .public-menu-toggle` with `transition-duration: 160ms !important` and `transition-timing-function: var(--ease-out)`. Do not add hover movement for coarse pointers.
 
 ## Boundaries
@@ -98,5 +104,5 @@ Use this indicator geometry so it does not change the link's layout:
 - **Mobile**: At 390px wide, open and close the menu by pointer and keyboard. Confirm it animates without horizontal overflow, closed links cannot receive focus, `aria-expanded` stays correct, and a narrow viewport can scroll the menu.
 - **Desktop**: At 1440px wide, verify all navigation items remain visible before and after toggling the mobile state through DevTools or Alpine.
 - **Reduced motion**: Emulate `prefers-reduced-motion: reduce`; verify menu movement and press scaling are removed while opacity/color feedback lasts 160ms. Check computed style to ensure the scoped override beats the global `.01ms !important` rule without changing unrelated components.
-- **Feel check**: In DevTools, replay the active indicator at 10% speed. It should track the selected link without moving surrounding layout; the press feedback should feel immediate and subtle.
+- **Feel check**: In DevTools, replay the hover underline at 10% speed. It should draw under the hovered/focused word without moving layout; the current-page bar must remain static; press feedback should feel immediate and subtle.
 - **Done when**: Keyboard, mobile, desktop, hover, pressed, active, and reduced-motion checks all pass, with no route or account-menu regressions.

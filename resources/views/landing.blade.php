@@ -11,8 +11,118 @@
             aktif: 0,
             items: JSON.parse(document.getElementById('destinasi-data').textContent),
             gambar: JSON.parse(document.getElementById('destinasi-images').textContent),
+            imageA: 0,
+            imageB: 0,
+            copyA: 0,
+            copyB: 0,
+            activeImage: 'a',
+            activeCopy: 'a',
+            timer: null,
+            pausedExplicit: false,
+            pointerInside: false,
+            focusStopped: false,
+            documentHidden: document.visibilityState === 'hidden',
+            reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+            reduceMedia: null,
+            visibilityHandler: null,
+            motionHandler: null,
+            clearTimer() {
+                if (this.timer !== null) {
+                    window.clearTimeout(this.timer);
+                    this.timer = null;
+                }
+            },
+            canRotate() {
+                return !this.pausedExplicit && !this.pointerInside && !this.focusStopped && !this.documentHidden && !this.reducedMotion;
+            },
+            schedule() {
+                this.clearTimer();
+                if (!this.canRotate()) {
+                    return;
+                }
+                this.timer = window.setTimeout(() => this.next(), 7000);
+            },
+            isPlaybackPaused() {
+                return this.pausedExplicit || this.pointerInside || this.focusStopped || this.documentHidden || this.reducedMotion;
+            },
+            togglePlayback() {
+                if (this.reducedMotion) {
+                    return;
+                }
+                if (this.pausedExplicit || this.focusStopped) {
+                    this.pausedExplicit = false;
+                    this.focusStopped = false;
+                    this.schedule();
+                    return;
+                }
+                this.pausedExplicit = true;
+                this.clearTimer();
+            },
+            pointerEnter() {
+                this.pointerInside = true;
+                this.clearTimer();
+            },
+            pointerLeave() {
+                this.pointerInside = false;
+                this.schedule();
+            },
+            focusEnter() {
+                this.focusStopped = true;
+                this.clearTimer();
+            },
+            focusLeave(event) {
+                if (!event.currentTarget.contains(event.relatedTarget)) {
+                    this.clearTimer();
+                }
+            },
+            visibilityChange() {
+                this.documentHidden = document.visibilityState === 'hidden';
+                this.documentHidden ? this.clearTimer() : this.schedule();
+            },
+            motionChange(event) {
+                this.reducedMotion = event.matches;
+                this.reducedMotion ? this.clearTimer() : this.schedule();
+            },
+            destroy() {
+                this.clearTimer();
+                if (this.reduceMedia && this.motionHandler) {
+                    this.reduceMedia.removeEventListener('change', this.motionHandler);
+                }
+                if (this.visibilityHandler) {
+                    document.removeEventListener('visibilitychange', this.visibilityHandler);
+                }
+            },
+            init() {
+                this.reduceMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
+                this.reducedMotion = this.reduceMedia.matches;
+                this.motionHandler = (event) => this.motionChange(event);
+                this.visibilityHandler = () => this.visibilityChange();
+                this.reduceMedia.addEventListener('change', this.motionHandler);
+                document.addEventListener('visibilitychange', this.visibilityHandler);
+                this.schedule();
+            },
             pilih(i) {
-                this.aktif = i;
+                i = Number(i);
+                if (i === this.aktif) {
+                    this.schedule();
+                    return;
+                }
+                const incoming = i;
+                if (this.activeImage === 'a') {
+                    this.imageB = incoming;
+                    this.activeImage = 'b';
+                } else {
+                    this.imageA = incoming;
+                    this.activeImage = 'a';
+                }
+                if (this.activeCopy === 'a') {
+                    this.copyB = incoming;
+                    this.activeCopy = 'b';
+                } else {
+                    this.copyA = incoming;
+                    this.activeCopy = 'a';
+                }
+                this.aktif = incoming;
                 const track = this.$refs.track;
                 const el = track.children[i];
                 if (el) {
@@ -21,50 +131,72 @@
                         behavior: 'auto',
                     });
                 }
+                this.schedule();
             },
             next() { this.pilih((this.aktif + 1) % this.items.length); },
             prev() { this.pilih((this.aktif - 1 + this.items.length) % this.items.length); },
             get item() { return this.items[this.aktif]; },
             get gambarAktif() { return this.gambar[this.aktif]; }
         }"
+        @mouseenter="pointerEnter"
+        @mouseleave="pointerLeave"
+        @focusin="focusEnter"
+        @focusout="focusLeave($event)"
+        @alpine:destroyed="destroy"
     >
         <script type="application/json" id="destinasi-data">@json($destinasi)</script>
         <script type="application/json" id="destinasi-images">@json($destinasiImages)</script>
 
         <div class="park-hero__layout">
             <div class="park-hero__copy">
-                <p class="park-hero__eyebrow">Playground &amp; Mini Zoo &middot; Rumpin</p>
-                <h1 class="park-hero__title"
-                    x-text="item.nama">{{ $destinasi[0]['nama'] }}</h1>
-                <p class="park-hero__description" x-text="item.deskripsi">{{ $destinasi[0]['deskripsi'] }}</p>
-
+                <div class="park-hero__copy-content">
+                    <p class="park-hero__eyebrow">Playground &amp; Mini Zoo &middot; Rumpin</p>
+                    <div class="park-hero__copy-layer is-visible" :class="{ 'is-visible': activeCopy === 'a' }" :aria-hidden="activeCopy !== 'a'">
+                        <h1 class="park-hero__title" x-text="items[copyA].nama">{{ $destinasi[0]['nama'] }}</h1>
+                        <p class="park-hero__description" x-text="items[copyA].deskripsi">{{ $destinasi[0]['deskripsi'] }}</p>
+                    </div>
+                    <div class="park-hero__copy-layer" :class="{ 'is-visible': activeCopy === 'b' }" :aria-hidden="activeCopy !== 'b'">
+                        <h1 class="park-hero__title" x-text="items[copyB].nama">{{ $destinasi[0]['nama'] }}</h1>
+                        <p class="park-hero__description" x-text="items[copyB].deskripsi">{{ $destinasi[0]['deskripsi'] }}</p>
+                    </div>
+                </div>
                 <div class="park-hero__actions">
-                    <a href="{{ route('pesan.kategori', ['kategori' => 'umum']) }}"
-                        class="park-hero__button park-hero__button--primary">
-                        Pesan Tiket
-                    </a>
-                    <a href="{{ route('pesan.kategori', ['kategori' => 'rombongan']) }}"
-                        class="park-hero__button park-hero__button--secondary">
-                        Ajukan Paket Rombongan
-                    </a>
+                    <a href="{{ route('pesan.kategori', ['kategori' => 'umum']) }}" class="park-hero__button park-hero__button--primary">Pesan Tiket</a>
+                    <a href="{{ route('pesan.kategori', ['kategori' => 'rombongan']) }}" class="park-hero__button park-hero__button--secondary">Ajukan Paket Rombongan</a>
                 </div>
             </div>
 
             <div class="park-hero__media">
                 <figure class="park-hero__photo">
                     <img
+                        class="is-visible"
+                        :class="{ 'is-visible': activeImage === 'a' }"
                         src="{{ $destinasiImages[0] }}"
-                        :src="gambarAktif"
+                        :src="gambar[imageA]"
                         :alt="item.nama"
+                        :aria-hidden="activeImage !== 'a'"
                         width="1200"
                         height="800"
                         fetchpriority="high"
+                    >
+                    <img
+                        :class="{ 'is-visible': activeImage === 'b' }"
+                        src="{{ $destinasiImages[0] }}"
+                        :src="gambar[imageB]"
+                        :alt="item.nama"
+                        :aria-hidden="activeImage !== 'b'"
+                        width="1200"
+                        height="800"
+                        loading="lazy"
+                        fetchpriority="low"
                     >
                 </figure>
 
                 <div class="park-hero__controls">
                     <span aria-live="polite" x-text="String(aktif + 1).padStart(2, '0') + ' / ' + String(items.length).padStart(2, '0')"></span>
                     <div class="park-hero__arrows">
+                        <button type="button" @click="togglePlayback" :disabled="reducedMotion" :aria-pressed="isPlaybackPaused()" :aria-label="reducedMotion ? 'Pemutaran otomatis dinonaktifkan oleh preferensi gerak' : (isPlaybackPaused() ? 'Lanjutkan pemutaran otomatis' : 'Jeda pemutaran otomatis')"
+                            class="park-hero__pause" x-text="reducedMotion ? 'Dinonaktifkan' : (isPlaybackPaused() ? 'Lanjutkan' : 'Jeda')">Jeda</button>
                         <button type="button" @click="prev" aria-label="Destinasi sebelumnya"
                             class="park-hero__arrow">&larr;</button>
                         <button type="button" @click="next" aria-label="Destinasi berikutnya"

@@ -26,7 +26,19 @@
                     <svg x-cloak x-show="menuOpen" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-width="2" d="m6 6 12 12M18 6 6 18"/></svg>
                 </button>
 
-                <nav id="site-navigation" aria-label="Navigasi utama" class="public-nav" :class="menuOpen ? 'is-open' : ''">
+                <nav
+                    id="site-navigation"
+                    aria-label="Navigasi utama"
+                    class="public-nav"
+                    x-cloak
+                    x-show="menuOpen"
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0 translate-y-[-6px]"
+                    x-transition:enter-end="opacity-100 translate-y-0"
+                    x-transition:leave="transition ease-out duration-120"
+                    x-transition:leave-start="opacity-100 translate-y-0"
+                    x-transition:leave-end="opacity-0 translate-y-[-6px]"
+                >
                     <a href="{{ route('landing') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('landing')]) @if (request()->routeIs('landing')) aria-current="page" @endif>Beranda</a>
                     <a href="{{ route('landing') }}#katalog" class="public-nav-link">Tiket</a>
                     <a href="{{ route('landing') }}#rombongan" class="public-nav-link">Paket Rombongan</a>

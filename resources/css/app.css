@@ -13,6 +13,8 @@
     --park-copper-dark: #6e3b21;
     --park-focus-inverse: #e3cc90;
     --park-line: #d5e2dc;
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 body {
@@ -1441,6 +1443,12 @@ body {
     background: white;
     color: #173c32;
     cursor: pointer;
+    transition: color 150ms ease, background-color 150ms ease, transform 90ms var(--ease-out);
+}
+
+.public-menu-toggle:active {
+    background: var(--park-sage);
+    transform: scale(.985);
 }
 
 .public-nav {
@@ -1449,7 +1457,7 @@ body {
     top: 100%;
     right: 0;
     left: 0;
-    display: none;
+    display: flex;
     max-height: calc(100dvh - 4.5rem);
     gap: .25rem;
     overflow-y: auto;
@@ -1459,12 +1467,12 @@ body {
 }
 
 .public-nav.is-open {
-    display: flex;
     flex-direction: column;
 }
 
 .public-nav-link,
 .public-account-menu > summary {
+    position: relative;
     display: flex;
     min-height: 2.75rem;
     align-items: center;
@@ -1474,6 +1482,42 @@ body {
     color: #173c32;
     font-size: .9rem;
     text-decoration: none;
+    transition: color 150ms ease, background-color 150ms ease;
+}
+
+.public-nav-link::after {
+    position: absolute;
+    right: .7rem;
+    bottom: 4px;
+    left: .7rem;
+    height: 1px;
+    background: var(--park-copper);
+    content: "";
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 150ms var(--ease-out), opacity 150ms var(--ease-out);
+}
+
+.public-nav-link:hover::after,
+.public-nav-link:focus-visible::after {
+    opacity: 1;
+    transform: scaleX(1);
+}
+
+.public-nav-link:not(:hover):not(:focus-visible)::after {
+    transition: transform 120ms var(--ease-out), opacity 120ms var(--ease-out);
+}
+
+.public-nav-link[aria-current="page"] {
+    border-bottom: 2px solid var(--park-copper);
+}
+
+.public-nav-link:active,
+.public-account-menu > summary:active {
+    background: #c1d2c8;
+    transform: scale(.985);
+    transition: transform 90ms var(--ease-out), color 150ms ease, background-color 150ms ease;
 }
 
 .public-nav-link:hover,
@@ -1485,9 +1529,6 @@ body {
 
 .public-nav-link.is-current {
     font-weight: 700;
-    text-decoration: underline;
-    text-decoration-color: var(--park-copper);
-    text-underline-offset: .4rem;
 }
 
 .public-nav-cta {
@@ -1507,6 +1548,12 @@ body {
 .public-nav-cta:hover {
     background: var(--park-copper-dark);
     color: white;
+}
+
+.public-nav-cta:active {
+    background: #7d4828;
+    transform: scale(.985);
+    transition: transform 90ms var(--ease-out), color 150ms ease, background-color 150ms ease;
 }
 
 .public-account-menu {
@@ -1591,6 +1638,12 @@ body {
 
 .park-hero__copy {
     min-width: 0;
+    position: relative;
+}
+
+.park-hero__copy-content {
+    position: relative;
+    min-height: 11.5rem;
 }
 
 .park-hero__eyebrow {
@@ -1659,8 +1712,10 @@ body {
 }
 
 .park-hero__photo {
+    position: relative;
     overflow: hidden;
     margin: 0;
+    aspect-ratio: 3 / 2;
     border-radius: .75rem;
     background: var(--park-sage);
 }
@@ -1670,6 +1725,42 @@ body {
     width: 100%;
     aspect-ratio: 3 / 2;
     object-fit: cover;
+    transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out);
+}
+
+.park-hero__photo img,
+.park-hero__copy-layer {
+    transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out);
+}
+
+.park-hero__photo img {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateY(6px);
+}
+
+.park-hero__photo img.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.park-hero__copy {
+    position: relative;
+}
+
+.park-hero__copy-layer {
+    position: absolute;
+    top: 2.1rem;
+    right: 0;
+    left: 0;
+    opacity: 0;
+    transform: translateY(6px);
+}
+
+.park-hero__copy-layer.is-visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .park-hero__controls {
@@ -1933,7 +2024,10 @@ body {
     .public-nav,
     .public-nav.is-open {
         position: static;
-        display: flex;
+        display: flex !important;
+        opacity: 1 !important;
+        transform: none !important;
+        visibility: visible !important;
         max-height: none;
         flex-direction: row;
         align-items: center;
@@ -2649,5 +2743,184 @@ body {
     .admin-dashboard *::after {
         scroll-behavior: auto !important;
         transition-duration: .01ms !important;
+    }
+}
+
+/* Shared role interaction feedback */
+.user-nav a,
+.admin-sidebar-nav a,
+.admin-mobile-menu nav a {
+    position: relative;
+    transition: color 150ms var(--ease-out), background-color 150ms var(--ease-out), border-color 150ms var(--ease-out);
+}
+
+.user-nav a::after,
+.admin-sidebar-nav a::after,
+.admin-mobile-menu nav a::after {
+    position: absolute;
+    right: .7rem;
+    bottom: 4px;
+    left: .7rem;
+    height: 1px;
+    background: #d39a72;
+    content: "";
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 150ms var(--ease-out), opacity 150ms var(--ease-out);
+}
+
+.user-nav a:not(:hover):not(:focus-visible)::after,
+.admin-sidebar-nav a:not(:hover):not(:focus-visible)::after,
+.admin-mobile-menu nav a:not(:hover):not(:focus-visible)::after {
+    transition: transform 120ms var(--ease-out), opacity 120ms var(--ease-out);
+}
+
+.user-nav a:hover::after,
+.user-nav a:focus-visible::after,
+.admin-sidebar-nav a:hover::after,
+.admin-sidebar-nav a:focus-visible::after,
+.admin-mobile-menu nav a:hover::after,
+.admin-mobile-menu nav a:focus-visible::after {
+    opacity: 1;
+    transform: scaleX(1);
+}
+
+.user-primary-action,
+.user-secondary-action,
+.admin-heading-action,
+.admin-topbar-link,
+.admin-sidebar-nav a,
+.admin-mobile-menu nav a {
+    transition: color 150ms var(--ease-out), background-color 150ms var(--ease-out), border-color 150ms var(--ease-out), transform 90ms var(--ease-out);
+}
+
+.user-account-menu > summary svg {
+    transition: transform 180ms var(--ease-in-out);
+}
+
+.user-order-summary,
+.user-order-toggle {
+    transition: color 150ms var(--ease-out), background-color 150ms var(--ease-out), border-color 150ms var(--ease-out);
+}
+
+.admin-orders-table tbody tr {
+    transition: background-color 150ms var(--ease-out);
+}
+
+.admin-orders-table tbody tr:hover {
+    background: #eef3f0;
+}
+
+:where(.site-public, .user-portal, .admin-dashboard) :is(input:not([type="checkbox"]), select, textarea) {
+    transition: border-color 140ms var(--ease-out), box-shadow 140ms var(--ease-out);
+}
+
+.admin-quick-links a {
+    transition: border-color 180ms var(--ease-out), box-shadow 180ms var(--ease-out), transform 180ms var(--ease-out);
+}
+
+.admin-quick-links a:not(:hover) {
+    transition: border-color 120ms var(--ease-out), box-shadow 120ms var(--ease-out), transform 120ms var(--ease-out);
+}
+
+.park-hero__pause {
+    min-height: 2.75rem;
+    border: 1px solid var(--park-line);
+    border-radius: .5rem;
+    background: white;
+    padding-inline: .75rem;
+    color: #173c32;
+    font-size: .78rem;
+    cursor: pointer;
+}
+
+.user-primary-action:active,
+.user-secondary-action:active,
+.admin-heading-action:active,
+.admin-topbar-link:active,
+.admin-sidebar-nav a:active,
+.admin-mobile-menu nav a:active {
+    transform: translateY(1px) scale(.985);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .park-hero__photo img {
+        transition: opacity 180ms var(--ease-out), transform 300ms var(--ease-out);
+    }
+
+    .park-hero__photo:hover img.is-visible {
+        transform: scale(1.02);
+    }
+
+    .public-nav-link:active,
+    .public-menu-toggle:active,
+    .user-primary-action:active,
+    .user-secondary-action:active,
+    .admin-heading-action:active,
+    .admin-topbar-link:active,
+    .admin-sidebar-nav a:active,
+    .admin-mobile-menu nav a:active {
+        transform: translateY(1px) scale(.985);
+    }
+
+    .user-primary-action:hover,
+    .user-secondary-action:hover,
+    .admin-heading-action:hover,
+    .admin-topbar-link:hover {
+        transform: translateY(-1px);
+    }
+
+    .admin-quick-links a:hover {
+        border-color: #cf936b;
+        box-shadow: 0 .35rem .8rem rgb(31 61 51 / 10%);
+        transform: translateY(-2px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .park-hero .park-hero__photo img,
+    .park-hero .park-hero__copy-layer {
+        transition-duration: 160ms !important;
+        transition-timing-function: var(--ease-out);
+        transform: none;
+    }
+
+    .public-header #site-navigation,
+    .public-header .public-nav-link,
+    .public-header #site-navigation .public-nav-link::after,
+    .public-header .public-menu-toggle,
+    .user-portal .user-nav a,
+    .user-portal .user-nav a::after,
+    .user-portal .user-primary-action,
+    .user-portal .user-secondary-action,
+    .admin-dashboard .admin-sidebar-nav a,
+    .admin-dashboard .admin-sidebar-nav a::after,
+    .admin-dashboard .admin-mobile-menu nav a,
+    .admin-dashboard .admin-mobile-menu nav a::after,
+    .admin-dashboard .admin-heading-action,
+    .admin-dashboard .admin-topbar-link,
+    .admin-dashboard .admin-quick-links a {
+        transition-duration: 160ms !important;
+        transition-timing-function: var(--ease-out);
+    }
+
+    .park-hero__photo:hover img.is-visible,
+    .public-nav-link:active,
+    .public-menu-toggle:active,
+    .user-primary-action:active,
+    .user-secondary-action:active,
+    .admin-heading-action:active,
+    .admin-topbar-link:active,
+    .admin-sidebar-nav a:active,
+    .admin-mobile-menu nav a:active,
+    .user-primary-action:hover,
+    .user-secondary-action:hover,
+    .admin-heading-action:hover,
+    .admin-topbar-link:hover,
+    .admin-quick-links a:hover,
+    .public-nav,
+    .public-nav-link::after {
+        transform: none;
     }
 }

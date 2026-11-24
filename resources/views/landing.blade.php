@@ -33,7 +33,7 @@
                 }
             },
             canRotate() {
-                return !this.pausedExplicit && !this.pointerInside && !this.focusStopped && !this.documentHidden && !this.reducedMotion;
+                return !this.pausedExplicit && !this.pointerInside && !this.focusStopped && !this.documentHidden;
             },
             schedule() {
                 this.clearTimer();
@@ -43,12 +43,9 @@
                 this.timer = window.setTimeout(() => this.next(), 7000);
             },
             isPlaybackPaused() {
-                return this.pausedExplicit || this.pointerInside || this.focusStopped || this.documentHidden || this.reducedMotion;
+                return this.pausedExplicit || this.pointerInside || this.focusStopped || this.documentHidden;
             },
             togglePlayback() {
-                if (this.reducedMotion) {
-                    return;
-                }
                 if (this.pausedExplicit || this.focusStopped) {
                     this.pausedExplicit = false;
                     this.focusStopped = false;
@@ -434,6 +431,25 @@
                     <summary class="cursor-pointer font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-juniper-700">Bisakah saya mengganti nama peserta?</summary>
                     <p class="mt-3 text-sm leading-6 text-gray-600">Perubahan nama mandiri belum tersedia. Hubungi kanal resmi The Nice Park sebelum hari kunjungan.</p>
                 </details>
+            </div>
+        </div>
+    </section>
+
+    <section id="video" class="scroll-mt-20 bg-alabaster-50 py-14 text-juniper-900">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <p class="text-sm font-semibold text-toffee-700">Video</p>
+            <h2 class="mt-2 text-3xl font-bold">Lihat suasana The Nice Park</h2>
+            <p class="mt-2 max-w-2xl text-sm text-gray-600">Cuplikan kegiatan dan suasana taman dari kanal resmi kami.</p>
+            <div class="mt-8 grid gap-6 md:grid-cols-2">
+                <div class="overflow-hidden rounded-xl border border-juniper-200 bg-white">
+                    <div class="aspect-video">
+                        <iframe class="h-full w-full" src="https://www.youtube.com/embed/uwJ24IUUEjk" title="The Nice Park Rumpin" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center gap-3">
+                    <p class="text-sm text-gray-600">Temukan lebih banyak video di kanal YouTube resmi kami.</p>
+                    <a href="https://www.youtube.com/@TheNiceParkRumpin" target="_blank" rel="noopener noreferrer" class="inline-flex w-fit rounded-md bg-juniper-600 px-4 py-2 text-sm font-semibold text-white hover:bg-juniper-700">Buka kanal YouTube</a>
+                </div>
             </div>
         </div>
     </section>

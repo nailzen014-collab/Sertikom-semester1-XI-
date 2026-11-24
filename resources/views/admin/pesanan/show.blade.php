@@ -96,11 +96,11 @@
 
                     @if ($pesanan->status === \App\Models\Pesanan::STATUS_MENUNGGU_PERSETUJUAN)
                         <div class="mt-6 grid gap-6 border-t border-gray-100 pt-5 md:grid-cols-2">
-                            <form method="POST" action="{{ route('admin.pengajuan.approve', $pesanan) }}">
+                            <form method="POST" action="{{ route('admin.pengajuan.approve', $pesanan) }}" class="swal-confirm" data-confirm-message="Setujui pengajuan rombongan sekolah {{ $pesanan->pengajuanRombongan->nama_sekolah }}? Pembayaran akan terbuka bagi guru/penanggung jawab." data-confirm-btn="Ya, Setujui">
                                 @csrf
                                 <button type="submit" class="w-full rounded-md bg-juniper-600 px-4 py-2.5 font-semibold text-white hover:bg-juniper-700">Setujui pengajuan</button>
                             </form>
-                            <form method="POST" action="{{ route('admin.pengajuan.reject', $pesanan) }}" class="space-y-3">
+                            <form method="POST" action="{{ route('admin.pengajuan.reject', $pesanan) }}" class="space-y-3 swal-confirm" data-confirm-message="Tolak pengajuan rombongan sekolah ini beserta alasan yang Anda isi?" data-confirm-btn="Ya, Tolak" data-confirm-danger="true">
                                 @csrf
                                 <div>
                                     <label for="catatan_admin" class="block text-sm font-medium text-gray-700">Alasan penolakan</label>

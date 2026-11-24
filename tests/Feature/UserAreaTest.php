@@ -100,11 +100,11 @@ it('does not reveal another visitors order or ticket', function () {
 
     $this->actingAs($user)
         ->get(route('riwayat.show', $order))
-        ->assertNotFound();
+        ->assertForbidden();
 
     $this->actingAs($user)
         ->get(route('tiket.show', $ticket))
-        ->assertNotFound();
+        ->assertForbidden();
 });
 
 it('opens an owners order inside the customer dashboard', function () {
@@ -114,10 +114,6 @@ it('opens an owners order inside the customer dashboard', function () {
 
     $this->actingAs($user)
         ->get(route('riwayat.show', $order))
-        ->assertRedirect(route('user.orders', ['pesanan' => $order->id]));
-
-    $this->actingAs($user)
-        ->get(route('user.orders', ['pesanan' => $order->id]))
         ->assertOk()
         ->assertSee($order->kode_pesanan)
         ->assertSee($ticket->kode_tiket);

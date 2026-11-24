@@ -7,9 +7,11 @@ use App\Http\Requests\StorePesertaRombonganRequest;
 use App\Imports\PesertaRombonganImport;
 use App\Models\PengajuanRombongan;
 use App\Models\Pesanan;
+use App\Models\PesertaRombongan;
 use App\Models\TiketPaket;
 use App\Services\HitungHargaService;
 use App\Services\KuotaService;
+use App\Services\TiketGenerator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -71,9 +73,9 @@ class RombonganController extends Controller
             ]);
         }
 
-        if (! $kuota->cukup($paket, $data['tanggal_kunjungan'], (int) $data['jumlah_tiket'])) {
+        if (! $kuota->cukup($paket, $data['tanggal_kunjungan'], (int) $data['jumlah_tiket'], $request->user()->id)) {
             throw ValidationException::withMessages([
-                'jumlah_tiket' => 'Kuota harian tidak mencukupi. Sisa kuota: '.$kuota->sisa($paket, $data['tanggal_kunjungan']).' tiket.',
+                'jumlah_tiket' => 'Kuota harian tidak mencukupi. Sisa kuota: '.$kuota->sisa($paket, $data['tanggal_kunjungan'], $request->user()->id).' tiket.',
             ]);
         }
 
@@ -111,6 +113,7 @@ class RombonganController extends Controller
         StorePesertaRombonganRequest $request,
         HitungHargaService $harga,
         KuotaService $kuota,
+        TiketGenerator $generator,
     ): RedirectResponse {
         $draft = $request->session()->get(self::DRAFT_KEY);
 
@@ -124,7 +127,7 @@ class RombonganController extends Controller
 
         if ($peserta->count() !== $jumlah) {
             throw ValidationException::withMessages([
-                'file_peserta' => 'Jumlah biodata peserta harus sama dengan jumlah tiket yang diajukan.',
+                'file_peserta' => 'Jumlah biodata peserta ('.$peserta->count().') harus sama dengan jumlah tiket yang diajukan ('.$jumlah.').',
             ]);
         }
 
@@ -149,7 +152,7 @@ class RombonganController extends Controller
                 ]);
             }
 
-            if (! $kuota->cukup($paket, $draft['tanggal_kunjungan'], $jumlah)) {
+            if (! $kuota->cukup($paket, $draft['tanggal_kunjungan'], $jumlah, $request->user()->id)) {
                 throw ValidationException::withMessages([
                     'jumlah_tiket' => 'Kuota harian tidak lagi mencukupi. Silakan pilih tanggal lain.',
                 ]);
@@ -203,6 +206,28 @@ class RombonganController extends Controller
         ]);
     }
 
+    public function updatePeserta(Request $request, Pesanan $pesanan, PesertaRombongan $peserta): RedirectResponse
+    {
+        abort_unless($pesanan->user_id === $request->user()->id, 403);
+        abort_unless($peserta->pesanan_id === $pesanan->id, 404);
+
+        if ($pesanan->tanggal_kunjungan->isPast() && ! $pesanan->tanggal_kunjungan->isToday()) {
+            return back()->with('error', 'Nama peserta tidak dapat diubah setelah hari kunjungan lewat.');
+        }
+
+        $validated = $request->validate([
+            'nama' => ['required', 'string', 'max:150'],
+            'kelas' => ['nullable', 'string', 'max:50'],
+        ]);
+
+        $peserta->update([
+            'nama' => trim($validated['nama']),
+            'kelas' => isset($validated['kelas']) ? trim($validated['kelas']) ?: null : null,
+        ]);
+
+        return back()->with('message', 'Data peserta rombongan berhasil diperbarui.');
+    }
+
     /**
      * @return Collection<int, array{nama: string, kelas: ?string}>
      */
@@ -228,7 +253,7 @@ class RombonganController extends Controller
         }
 
         try {
-            $baris = Excel::toCollection(new PesertaRombonganImport, $file)->first() ?? collect();
+            $sheet = Excel::toCollection(new PesertaRombonganImport, $file)->first() ?? collect();
         } catch (LaravelExcelException|SpreadsheetReaderException $exception) {
             report($exception);
 
@@ -237,11 +262,29 @@ class RombonganController extends Controller
             ]);
         }
 
-        return $baris
-            ->map(fn ($row) => [
-                'nama' => trim((string) ($row['nama'] ?? '')),
-                'kelas' => trim((string) ($row['kelas'] ?? '')) ?: null,
-            ])
+        // Buang baris header jika ada (deteksi baris pertama yang berisi "nama").
+        $rows = $sheet->values();
+        if ($rows->isNotEmpty()) {
+            $first = $rows->first();
+            $firstCell = strtolower(trim((string) ($first[0] ?? $first['nama'] ?? '')));
+
+            // Anggap baris pertama sebagai header jika kolom pertama adalah label header yang umum.
+            $isHeader = in_array($firstCell, ['nama', 'name', 'nama peserta', 'nama lengkap', 'nama siswa'], true);
+
+            if ($isHeader) {
+                $rows = $rows->slice(1)->values();
+            }
+        }
+
+        return $rows
+            ->map(function ($row) {
+                $values = array_values(is_array($row) ? $row : $row->toArray());
+
+                return [
+                    'nama' => trim((string) ($values[0] ?? '')),
+                    'kelas' => isset($values[1]) ? (trim((string) $values[1]) ?: null) : null,
+                ];
+            })
             ->filter(fn (array $peserta) => $peserta['nama'] !== '' || $peserta['kelas'] !== null)
             ->values();
     }

@@ -13,7 +13,7 @@ class TiketPaketController extends Controller
     public function index(): View
     {
         return view('admin.tiket-paket.index', [
-            'tiketPaket' => TiketPaket::latest()->paginate(10),
+            'tiketPaket' => TiketPaket::latest()->paginate(5),
         ]);
     }
 

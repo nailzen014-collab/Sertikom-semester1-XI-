@@ -13,7 +13,7 @@ class DiskonController extends Controller
     public function index(): View
     {
         return view('admin.diskon.index', [
-            'diskon' => Diskon::with('admin')->latest()->paginate(10),
+            'diskon' => Diskon::with('admin')->latest()->paginate(5),
         ]);
     }
 

@@ -39,7 +39,7 @@
                                     </td>
                                     <td class="px-4 py-3 text-right whitespace-nowrap">
                                         <a href="{{ route('admin.tiket-paket.edit', $tiket) }}" class="text-juniper-700 hover:underline">Ubah</a>
-                                        <form method="POST" action="{{ route('admin.tiket-paket.destroy', $tiket) }}" class="inline" onsubmit="return confirm('Hapus tiket/paket ini?')">
+                                        <form method="POST" action="{{ route('admin.tiket-paket.destroy', $tiket) }}" class="inline swal-confirm" data-confirm-message="Hapus paket wisata {{ $tiket->nama }}? Jika sudah pernah dipesan, sistem akan menonaktifkannya." data-confirm-btn="Ya, Hapus" data-confirm-danger="true">
                                             @csrf
                                             @method('delete')
                                             <button type="submit" class="ms-3 text-red-600 hover:underline">Hapus</button>

@@ -51,7 +51,8 @@ export default {
                 },
             },
             fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                sans: ['"Plus Jakarta Sans"', ...defaultTheme.fontFamily.sans],
+                display: ['Fraunces', 'Georgia', ...defaultTheme.fontFamily.serif],
             },
         },
     },

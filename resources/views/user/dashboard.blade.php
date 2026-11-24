@@ -60,11 +60,7 @@
         </div>
 
         @forelse ($pesanan as $item)
-            <details
-                class="user-order-disclosure"
-                id="pesanan-{{ $item->id }}"
-                @if ((int) request('pesanan') === $item->id) open @endif
-            >
+            <details class="user-order-disclosure" id="pesanan-{{ $item->id }}">
                 <summary class="user-order-summary">
                     <span class="user-order-main">
                         <strong>{{ $item->tiketPaket->nama }}</strong>
@@ -75,7 +71,7 @@
                         <span class="user-state user-state-{{ str_replace('_', '-', $item->status) }}">
                             {{ \App\Models\Pesanan::STATUS[$item->status] ?? ucfirst($item->status) }}
                         </span>
-                        <span class="user-order-toggle" aria-hidden="true"></span>
+                        <a href="{{ route('riwayat.show', $item) }}" class="user-order-detail-btn">Detail</a>
                     </span>
                 </summary>
 
@@ -100,10 +96,33 @@
                             @endif
                             @if ($item->pesertaRombongan->isNotEmpty())
                                 <details class="user-participant-list">
-                                    <summary>Lihat {{ $item->pesertaRombongan->count() }} peserta</summary>
-                                    <ul>
+                                    <summary>Lihat &amp; Kelola {{ $item->pesertaRombongan->count() }} peserta</summary>
+                                    @php($bisaUbah = ! $item->tanggal_kunjungan->isPast() || $item->tanggal_kunjungan->isToday())
+                                    @if ($bisaUbah)
+                                        <p class="mt-2 text-xs text-gray-500">Anda dapat mengubah nama/kelas peserta sebelum hari kunjungan berakhir.</p>
+                                    @endif
+                                    <ul class="mt-2 divide-y divide-gray-100">
                                         @foreach ($item->pesertaRombongan as $peserta)
-                                            <li>{{ $peserta->nama }}{{ $peserta->kelas ? ' · '.$peserta->kelas : '' }}</li>
+                                            <li class="py-2 flex items-center justify-between gap-3 text-sm" x-data="{ editing: false, nama: '{{ addslashes($peserta->nama) }}', kelas: '{{ addslashes($peserta->kelas ?? '') }}' }">
+                                                <div x-show="!editing" class="flex-1">
+                                                    <strong>{{ $peserta->nama }}</strong>
+                                                    @if ($peserta->kelas)
+                                                        <span class="text-xs text-gray-500">&middot; Kelas {{ $peserta->kelas }}</span>
+                                                    @endif
+                                                </div>
+                                                @if ($bisaUbah)
+                                                    <div x-show="editing" class="flex-1">
+                                                        <form method="POST" action="{{ route('pesan.rombongan.update-peserta', [$item, $peserta]) }}" class="flex flex-wrap items-center gap-2">
+                                                            @csrf
+                                                            <input type="text" name="nama" x-model="nama" required class="text-xs rounded border-gray-300 px-2 py-1" placeholder="Nama siswa">
+                                                            <input type="text" name="kelas" x-model="kelas" class="text-xs rounded border-gray-300 px-2 py-1 w-24" placeholder="Kelas">
+                                                            <button type="submit" class="text-xs rounded bg-juniper-600 px-2.5 py-1 text-white font-medium hover:bg-juniper-700">Simpan</button>
+                                                            <button type="button" @click="editing = false" class="text-xs text-gray-500 hover:underline">Batal</button>
+                                                        </form>
+                                                    </div>
+                                                    <button type="button" x-show="!editing" @click="editing = true" class="text-xs text-juniper-700 font-medium hover:underline">Ubah nama</button>
+                                                @endif
+                                            </li>
                                         @endforeach
                                     </ul>
                                 </details>
@@ -117,7 +136,7 @@
                     </div>
 
                     @if ($item->status === \App\Models\Pesanan::STATUS_MENUNGGU_PEMBAYARAN)
-                        <form method="POST" action="{{ route('pembayaran.process', $item) }}" class="user-inline-payment">
+                        <form method="POST" action="{{ route('pembayaran.process', $item) }}" class="user-inline-payment swal-confirm" data-confirm-message="Lanjutkan pembayaran pesanan {{ $item->kode_pesanan }} sebesar Rp {{ number_format($item->total_bayar, 0, ',', '.') }} melalui Midtrans?" data-confirm-btn="Ya, Bayar">
                             @csrf
                             <p>Pembayaran aman diproses melalui Midtrans. E-tiket terbit setelah pembayaran terverifikasi.</p>
                             <button type="submit" class="user-primary-action">Bayar sekarang</button>
@@ -143,9 +162,21 @@
 
                     @if ($item->tiket->isNotEmpty())
                         <section class="user-inline-section">
-                            <h3>E-tiket</h3>
-                            <p class="user-section-help">Tunjukkan kode ini saat masuk atau unduh PDF untuk menyimpan QR.</p>
-                            <ul class="user-ticket-list">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div>
+                                    <h3>E-tiket</h3>
+                                    <p class="user-section-help">Tunjukkan kode ini saat masuk atau unduh PDF untuk menyimpan QR.</p>
+                                </div>
+                                @if ($item->kategori === \App\Models\TiketPaket::KATEGORI_ROMBONGAN)
+                                    <div>
+                                        <a href="{{ route('pesanan.pdf-rombongan', $item) }}" class="inline-flex items-center gap-1.5 rounded bg-juniper-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-juniper-800">
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                            Unduh E-Tiket Rombongan (Induk)
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
+                            <ul class="user-ticket-list mt-3">
                                 @foreach ($item->tiket as $ticket)
                                     <li>
                                         <span class="user-ticket-code">{{ $ticket->kode_tiket }}</span>

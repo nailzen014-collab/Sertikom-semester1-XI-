@@ -14,21 +14,26 @@ class KuotaService
         return TanggalTutup::whereDate('tanggal', $tanggal)->first();
     }
 
-    public function terpakai(TiketPaket $tiketPaket, CarbonInterface|string $tanggal): int
+    public function terpakai(TiketPaket $tiketPaket, CarbonInterface|string $tanggal, ?int $userId = null): int
     {
-        return (int) Pesanan::where('tiket_paket_id', $tiketPaket->id)
+        $query = Pesanan::where('tiket_paket_id', $tiketPaket->id)
             ->whereDate('tanggal_kunjungan', $tanggal)
-            ->lunas()
-            ->sum('jumlah_tiket');
+            ->lunas();
+
+        if ($userId !== null) {
+            $query->where('user_id', $userId);
+        }
+
+        return (int) $query->sum('jumlah_tiket');
     }
 
-    public function sisa(TiketPaket $tiketPaket, CarbonInterface|string $tanggal): int
+    public function sisa(TiketPaket $tiketPaket, CarbonInterface|string $tanggal, ?int $userId = null): int
     {
-        return max(0, $tiketPaket->kuota_harian - $this->terpakai($tiketPaket, $tanggal));
+        return max(0, $tiketPaket->kuota_harian - $this->terpakai($tiketPaket, $tanggal, $userId));
     }
 
-    public function cukup(TiketPaket $tiketPaket, CarbonInterface|string $tanggal, int $jumlahTiket): bool
+    public function cukup(TiketPaket $tiketPaket, CarbonInterface|string $tanggal, int $jumlahTiket, ?int $userId = null): bool
     {
-        return $this->sisa($tiketPaket, $tanggal) >= $jumlahTiket;
+        return $this->sisa($tiketPaket, $tanggal, $userId) >= $jumlahTiket;
     }
 }

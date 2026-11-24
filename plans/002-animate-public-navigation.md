@@ -1,6 +1,6 @@
 # 002 — Animate public navigation states
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 7bbcd7e
 - **Severity**: MEDIUM
 - **Category**: Purpose & frequency; easing & duration; accessibility

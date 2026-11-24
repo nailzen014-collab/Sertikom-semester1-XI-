@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pesanan;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class RiwayatController extends Controller
@@ -32,10 +32,21 @@ class RiwayatController extends Controller
         ]);
     }
 
-    public function show(Pesanan $pesanan): RedirectResponse
+    public function show(Pesanan $pesanan): View
     {
-        abort_unless($pesanan->user_id === auth()->id(), 404);
+        $this->authorize('view', $pesanan);
 
-        return to_route('user.orders', ['pesanan' => $pesanan->id]);
+        $pesanan->load([
+            'tiketPaket',
+            'pembayaran',
+            'tiket',
+            'pengajuanRombongan',
+            'pesertaRombongan',
+        ]);
+
+        return view('user.orders.show', [
+            'pesanan' => $pesanan,
+            'pageTitle' => 'Detail Pesanan - The Nice Park',
+        ]);
     }
 }

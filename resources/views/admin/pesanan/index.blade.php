@@ -37,6 +37,16 @@
                 <a href="{{ route('admin.pesanan.index') }}" class="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                     Reset
                 </a>
+                <div class="ml-auto flex items-center gap-2">
+                    <a href="{{ route('admin.laporan.excel', request()->query()) }}" class="inline-flex items-center gap-1.5 rounded-md border border-green-600 bg-green-50 px-3 py-2 text-xs font-semibold text-green-700 hover:bg-green-100">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        Ekspor Excel
+                    </a>
+                    <a href="{{ route('admin.laporan.pdf', request()->query()) }}" class="inline-flex items-center gap-1.5 rounded-md border border-rose-600 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-700 hover:bg-rose-100">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11v6m0 0l-2.5-2.5M12 17l2.5-2.5"/></svg>
+                        Ekspor PDF
+                    </a>
+                </div>
             </form>
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">

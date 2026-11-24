@@ -2,9 +2,10 @@
 
 | Number | Title | Severity | Status |
 | --- | --- | --- | --- |
-| 001 | Animate and autoplay the hero carousel | LOW | TODO |
-| 002 | Animate public navigation states | MEDIUM | TODO |
-| 003 | Add motion feedback to visitor and admin areas | MEDIUM | TODO |
+| 001 | Animate and autoplay the hero carousel | LOW | DONE |
+| 002 | Animate public navigation states | MEDIUM | DONE |
+| 003 | Add motion feedback to visitor and admin areas | MEDIUM | DONE |
+| 004 | Sertikom readiness review (MVC, middleware, auth, CRUD, payment, N+1, styling, readme) | MEDIUM | DONE |
 
 ## Recommended execution order
 

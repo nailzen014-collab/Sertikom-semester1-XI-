@@ -6,7 +6,7 @@
     @php($destinasiImages = array_map(fn ($destination) => asset($destination['gambar']), $destinasi))
 
     <section
-        class="park-hero"
+        class="park-hero park-entrance park-entrance--delay-1"
         x-data="{
             aktif: 0,
             items: JSON.parse(document.getElementById('destinasi-data').textContent),
@@ -151,13 +151,15 @@
             <div class="park-hero__copy">
                 <div class="park-hero__copy-content">
                     <p class="park-hero__eyebrow">Playground &amp; Mini Zoo &middot; Rumpin</p>
-                    <div class="park-hero__copy-layer is-visible" :class="{ 'is-visible': activeCopy === 'a' }" :aria-hidden="activeCopy !== 'a'">
-                        <h1 class="park-hero__title" x-text="items[copyA].nama">{{ $destinasi[0]['nama'] }}</h1>
-                        <p class="park-hero__description" x-text="items[copyA].deskripsi">{{ $destinasi[0]['deskripsi'] }}</p>
-                    </div>
-                    <div class="park-hero__copy-layer" :class="{ 'is-visible': activeCopy === 'b' }" :aria-hidden="activeCopy !== 'b'">
-                        <h1 class="park-hero__title" x-text="items[copyB].nama">{{ $destinasi[0]['nama'] }}</h1>
-                        <p class="park-hero__description" x-text="items[copyB].deskripsi">{{ $destinasi[0]['deskripsi'] }}</p>
+                    <div class="park-hero__copy-stack">
+                        <div class="park-hero__copy-layer is-visible" :class="{ 'is-visible': activeCopy === 'a' }" :aria-hidden="activeCopy !== 'a'">
+                            <h1 class="park-hero__title" x-text="items[copyA].nama">{{ $destinasi[0]['nama'] }}</h1>
+                            <p class="park-hero__description" x-text="items[copyA].deskripsi">{{ $destinasi[0]['deskripsi'] }}</p>
+                        </div>
+                        <div class="park-hero__copy-layer" :class="{ 'is-visible': activeCopy === 'b' }" :aria-hidden="activeCopy !== 'b'">
+                            <h1 class="park-hero__title" x-text="items[copyB].nama">{{ $destinasi[0]['nama'] }}</h1>
+                            <p class="park-hero__description" x-text="items[copyB].deskripsi">{{ $destinasi[0]['deskripsi'] }}</p>
+                        </div>
                     </div>
                 </div>
                 <div class="park-hero__actions">
@@ -219,7 +221,7 @@
         </div>
     </section>
 
-    <section id="tentang" class="scroll-mt-20 bg-alabaster-50 text-juniper-900">
+    <section id="tentang" class="scroll-mt-20 bg-alabaster-50 text-juniper-900 park-entrance park-entrance--delay-2">
         <div class="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
             <div>
                 <p class="text-sm font-semibold text-toffee-700">The Nice Park Rumpin</p>
@@ -277,7 +279,7 @@
         </div>
     </section>
 
-    <section id="katalog" class="bg-alabaster-50 py-14 scroll-mt-16 text-juniper-900">
+    <section id="katalog" class="bg-alabaster-50 py-14 scroll-mt-16 text-juniper-900 park-entrance park-entrance--delay-3">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-2xl font-bold text-juniper-900">Katalog Tiket &amp; Paket</h2>
 
@@ -312,7 +314,7 @@
 
                     <div class="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                         @forelse ($tiketPaket->get($kategoriKey, collect()) as $tiket)
-                            <div class="rounded-lg border border-juniper-200 bg-white p-6 flex flex-col">
+                            <div class="park-card-hover reveal-on-scroll rounded-xl border border-juniper-200 bg-white p-6 flex flex-col">
                                 <p class="text-xs font-semibold text-toffee-700">{{ $kategoriLabel }}</p>
                                 <h4 class="mt-1 font-semibold text-gray-900">{{ $tiket->nama }}</h4>
 
@@ -335,10 +337,10 @@
 
                                 <div class="mt-auto pt-5">
                                     <div class="flex flex-wrap gap-2">
-                                        <a href="{{ route('katalog.show', $tiket) }}" class="inline-flex rounded-md border border-juniper-600 px-4 py-2 text-sm font-semibold text-juniper-700 hover:bg-juniper-100">
+                                        <a href="{{ route('katalog.show', $tiket) }}" class="park-button-magnetic inline-flex rounded-lg border border-juniper-600 px-4 py-2 text-sm font-semibold text-juniper-700 hover:bg-juniper-50">
                                             Lihat detail
                                         </a>
-                                        <a href="{{ route('pesan.kategori', ['kategori' => $tiket->kategori]) }}" class="inline-flex rounded-md bg-juniper-600 px-4 py-2 text-sm font-semibold text-white hover:bg-juniper-700">
+                                        <a href="{{ route('pesan.kategori', ['kategori' => $tiket->kategori]) }}" class="park-button-magnetic inline-flex rounded-lg bg-juniper-600 px-4 py-2 text-sm font-semibold text-white hover:bg-juniper-700">
                                             Pilih kategori
                                         </a>
                                     </div>
@@ -358,21 +360,21 @@
             <p class="text-sm font-semibold text-toffee-700">Alur pemesanan</p>
             <h2 class="mt-2 text-3xl font-bold">Dari pilih tiket sampai masuk taman</h2>
             <div class="mt-8 grid gap-6 lg:grid-cols-2">
-                <article class="rounded-xl border border-juniper-200 bg-white p-6">
+                <article class="park-card-hover reveal-on-scroll rounded-xl border border-juniper-200 bg-white p-6">
                     <h3 class="text-xl font-semibold">Tiket umum</h3>
                     <ol class="mt-5 grid gap-3 text-sm sm:grid-cols-3">
-                        <li class="rounded-lg bg-juniper-50 p-4"><span class="font-semibold">1. Pilih</span><p class="mt-1 text-gray-600">Tiket, tanggal, dan jumlah 1–10 orang.</p></li>
-                        <li class="rounded-lg bg-juniper-50 p-4"><span class="font-semibold">2. Bayar</span><p class="mt-1 text-gray-600">Selesaikan pembayaran melalui Midtrans.</p></li>
-                        <li class="rounded-lg bg-juniper-50 p-4"><span class="font-semibold">3. Tunjukkan</span><p class="mt-1 text-gray-600">E-ticket terbit setelah pembayaran terverifikasi.</p></li>
+                        <li class="rounded-lg bg-juniper-50 p-4 transition-colors hover:bg-juniper-100"><span class="font-semibold">1. Pilih</span><p class="mt-1 text-gray-600">Tiket, tanggal, dan jumlah 1–10 orang.</p></li>
+                        <li class="rounded-lg bg-juniper-50 p-4 transition-colors hover:bg-juniper-100"><span class="font-semibold">2. Bayar</span><p class="mt-1 text-gray-600">Selesaikan pembayaran melalui Midtrans.</p></li>
+                        <li class="rounded-lg bg-juniper-50 p-4 transition-colors hover:bg-juniper-100"><span class="font-semibold">3. Tunjukkan</span><p class="mt-1 text-gray-600">E-ticket terbit setelah pembayaran terverifikasi.</p></li>
                     </ol>
                 </article>
-                <article class="rounded-xl border border-toffee-200 bg-white p-6">
+                <article class="park-card-hover reveal-on-scroll rounded-xl border border-toffee-200 bg-white p-6">
                     <h3 class="text-xl font-semibold">Paket rombongan</h3>
                     <ol class="mt-5 grid gap-3 text-sm sm:grid-cols-4">
-                        <li class="rounded-lg bg-alabaster-50 p-4"><span class="font-semibold">1. Ajukan</span><p class="mt-1 text-gray-600">Isi sekolah, tanggal, jumlah &gt;10, dan biodata.</p></li>
-                        <li class="rounded-lg bg-alabaster-50 p-4"><span class="font-semibold">2. Tinjau</span><p class="mt-1 text-gray-600">Admin menyetujui atau menolak dengan alasan.</p></li>
-                        <li class="rounded-lg bg-alabaster-50 p-4"><span class="font-semibold">3. Bayar</span><p class="mt-1 text-gray-600">Pembayaran terbuka setelah disetujui.</p></li>
-                        <li class="rounded-lg bg-alabaster-50 p-4"><span class="font-semibold">4. Tunjukkan</span><p class="mt-1 text-gray-600">E-ticket terbit setelah pembayaran terverifikasi.</p></li>
+                        <li class="rounded-lg bg-alabaster-50 p-4 transition-colors hover:bg-toffee-50"><span class="font-semibold">1. Ajukan</span><p class="mt-1 text-gray-600">Isi sekolah, tanggal, jumlah &gt;10, dan biodata.</p></li>
+                        <li class="rounded-lg bg-alabaster-50 p-4 transition-colors hover:bg-toffee-50"><span class="font-semibold">2. Tinjau</span><p class="mt-1 text-gray-600">Admin menyetujui atau menolak dengan alasan.</p></li>
+                        <li class="rounded-lg bg-alabaster-50 p-4 transition-colors hover:bg-toffee-50"><span class="font-semibold">3. Bayar</span><p class="mt-1 text-gray-600">Pembayaran terbuka setelah disetujui.</p></li>
+                        <li class="rounded-lg bg-alabaster-50 p-4 transition-colors hover:bg-toffee-50"><span class="font-semibold">4. Tunjukkan</span><p class="mt-1 text-gray-600">E-ticket terbit setelah pembayaran terverifikasi.</p></li>
                     </ol>
                 </article>
             </div>
@@ -387,16 +389,16 @@
                 <p class="mt-3 text-sm leading-6 text-alabaster-200">Kenali suasana The Nice Park Rumpin sebelum merencanakan kunjungan.</p>
             </div>
             <div class="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <figure class="overflow-hidden rounded-xl border border-juniper-700">
-                    <img src="{{ asset('images/download.jpg') }}" alt="Area taman dan playground The Nice Park" loading="lazy" class="aspect-[4/3] w-full object-cover">
+                <figure class="group overflow-hidden rounded-xl border border-juniper-700 reveal-on-scroll">
+                    <img src="{{ asset('images/download.jpg') }}" alt="Area taman dan playground The Nice Park" loading="lazy" class="aspect-[4/3] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
                     <figcaption class="bg-juniper-800 px-4 py-3 text-sm">Area taman dan playground</figcaption>
                 </figure>
-                <figure class="overflow-hidden rounded-xl border border-juniper-700">
-                    <img src="{{ asset('images/thenicepark.jpg') }}" alt="Keluarga menikmati kunjungan di The Nice Park" loading="lazy" class="aspect-[4/3] w-full object-cover">
+                <figure class="group overflow-hidden rounded-xl border border-juniper-700 reveal-on-scroll">
+                    <img src="{{ asset('images/thenicepark.jpg') }}" alt="Keluarga menikmati kunjungan di The Nice Park" loading="lazy" class="aspect-[4/3] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
                     <figcaption class="bg-juniper-800 px-4 py-3 text-sm">Waktu bersama keluarga</figcaption>
                 </figure>
-                <figure class="overflow-hidden rounded-xl border border-juniper-700">
-                    <img src="{{ asset('images/thnicepark.jpg') }}" alt="Wahana bermain di dalam taman" loading="lazy" class="aspect-[4/3] w-full object-cover">
+                <figure class="group overflow-hidden rounded-xl border border-juniper-700 reveal-on-scroll">
+                    <img src="{{ asset('images/thnicepark.jpg') }}" alt="Wahana bermain di dalam taman" loading="lazy" class="aspect-[4/3] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
                     <figcaption class="bg-juniper-800 px-4 py-3 text-sm">Wahana bermain</figcaption>
                 </figure>
             </div>

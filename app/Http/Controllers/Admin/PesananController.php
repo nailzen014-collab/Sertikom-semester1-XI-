@@ -17,7 +17,7 @@ class PesananController extends Controller
             ->when($request->filled('status'), fn ($query) => $query->where('status', $request->input('status')))
             ->when($request->filled('kategori'), fn ($query) => $query->where('kategori', $request->input('kategori')))
             ->latest()
-            ->paginate(15)
+            ->paginate(5)
             ->withQueryString();
 
         return view('admin.pesanan.index', [

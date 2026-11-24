@@ -1,6 +1,6 @@
 # 001 — Animate and autoplay the hero carousel
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 7bbcd7e
 - **Severity**: LOW
 - **Category**: Missed opportunities; accessibility; performance

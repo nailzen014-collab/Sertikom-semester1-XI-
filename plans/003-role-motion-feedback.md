@@ -1,6 +1,6 @@
 # 003 — Add motion feedback to visitor and admin areas
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 7bbcd7e
 - **Severity**: MEDIUM
 - **Category**: Purpose & frequency; easing & duration; cohesion

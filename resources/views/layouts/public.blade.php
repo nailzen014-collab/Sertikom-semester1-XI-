@@ -7,12 +7,14 @@
 
         <title>@yield('title', config('app.name', 'The Nice Park'))</title>
 
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=nunito:400,500,600,700&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Plus+Jakarta+Sans:wght@400..800&display=swap" rel="stylesheet">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="site-public font-sans antialiased bg-alabaster-50 text-gray-800 @yield('body-class')">
+        <a href="#main-content" class="park-skip-link">Lewati ke konten</a>
         <header x-data="{ menuOpen: false }" class="public-header sticky top-0 z-30">
             <div class="public-header__inner">
                 <a href="{{ route('landing') }}" class="public-brand">
@@ -48,10 +50,11 @@
                         @if (Auth::user()->isAdmin())
                             <a href="{{ route('admin.dashboard') }}" class="public-nav-link">Admin</a>
                         @else
-                            <a href="{{ route('riwayat.index') }}" class="public-nav-link">Riwayat</a>
+                            <a href="{{ route('riwayat.index') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('riwayat.*') || request()->routeIs('user.*')]) @if (request()->routeIs('riwayat.*') || request()->routeIs('user.*')) aria-current="page" @endif>Riwayat</a>
                             <details class="public-account-menu relative">
                                 <summary>
                                     {{ Auth::user()->nama }}
+                                    <span class="inline-flex items-center justify-center min-w-6 h-6 rounded-full bg-park-copper px-1.5 text-[10px] font-bold text-white leading-none shadow-sm border border-white/40">Aktif</span>
                                     <svg class="h-4 w-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m4 6 4 4 4-4"/></svg>
                                 </summary>
                                 <div class="public-account-dropdown">
@@ -64,14 +67,20 @@
                             </details>
                         @endif
                     @else
-                        <a href="{{ route('login') }}" class="public-nav-link">Masuk</a>
-                        <a href="{{ route('register') }}" class="public-nav-cta">Daftar</a>
+                        <a href="{{ route('login') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('login')]) @if (request()->routeIs('login')) aria-current="page" @endif>Masuk</a>
+                        <a href="{{ route('register') }}" @class(['public-nav-cta', 'ring-2 ring-gold-400' => request()->routeIs('register')])>Daftar</a>
                     @endauth
                 </nav>
             </div>
         </header>
 
-        <main>
+        <main id="main-content">
+            @if (session('message'))
+                <div data-flash-message="{{ session('message') }}"></div>
+            @endif
+            @if (session('error'))
+                <div data-flash-error="{{ session('error') }}"></div>
+            @endif
             @yield('content')
         </main>
 
@@ -102,5 +111,9 @@
             </div>
             <p class="border-t border-juniper-700 px-4 py-4 text-center text-xs text-alabaster-200">&copy; {{ date('Y') }} The Nice Park. Playground &amp; Mini Zoo.</p>
         </footer>
+
+        <script>
+            document.documentElement.classList.add('is-loaded');
+        </script>
     </body>
 </html>

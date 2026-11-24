@@ -4,11 +4,8 @@ namespace App\Imports;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class PesertaRombonganImport implements ToCollection, WithHeadingRow
+class PesertaRombonganImport implements ToCollection
 {
-    public function collection(Collection $rows): void
-    {
-    }
+    public function collection(Collection $rows): void {}
 }

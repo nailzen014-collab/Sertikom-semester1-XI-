@@ -81,9 +81,9 @@ class PesananController extends Controller
                 ]);
             }
 
-            if (! $kuota->cukup($paket, $data['tanggal_kunjungan'], $jumlah)) {
+            if (! $kuota->cukup($paket, $data['tanggal_kunjungan'], $jumlah, $request->user()->id)) {
                 throw ValidationException::withMessages([
-                    'jumlah_tiket' => 'Kuota harian tidak mencukupi. Sisa kuota: '.$kuota->sisa($paket, $data['tanggal_kunjungan']).' tiket.',
+                    'jumlah_tiket' => 'Kuota harian tidak mencukupi. Sisa kuota: '.$kuota->sisa($paket, $data['tanggal_kunjungan'], $request->user()->id).' tiket.',
                 ]);
             }
 

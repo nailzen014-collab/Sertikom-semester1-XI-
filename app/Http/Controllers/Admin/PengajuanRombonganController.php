@@ -23,7 +23,7 @@ class PengajuanRombonganController extends Controller
             ])
                 ->where('status', PengajuanRombongan::STATUS_DIAJUKAN)
                 ->latest()
-                ->paginate(15),
+                ->paginate(5),
         ]);
     }
 

@@ -5,11 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>@yield('title', 'Dashboard Admin - The Nice Park')</title>
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=nunito:400,500,600,700&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Plus+Jakarta+Sans:wght@400..800&display=swap" rel="stylesheet">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="admin-dashboard font-sans antialiased">
+        <a href="#main-content" class="park-skip-link">Lewati ke konten</a>
         <div class="admin-shell">
             <aside class="admin-sidebar">
                 <a href="{{ route('admin.dashboard') }}" class="admin-brand">
@@ -27,23 +29,29 @@
 
                 <nav aria-label="Navigasi admin" class="admin-sidebar-nav">
                     <a href="{{ route('admin.dashboard') }}" @class(['is-active' => request()->routeIs('admin.dashboard')])>
-                        <span aria-hidden="true">⌂</span> Ringkasan
+                        <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+                        Ringkasan
                     </a>
                     <a href="{{ route('admin.pengajuan.index') }}" @class(['is-active' => request()->routeIs('admin.pengajuan.*')])>
-                        <span aria-hidden="true">▤</span> Pengajuan
+                        <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v14H4z"/><path d="m4 13 4-4 4 4 4-4 4 4"/></svg>
+                        Pengajuan
                         @if ($pengajuanMenunggu > 0)<span class="admin-nav-count">{{ $pengajuanMenunggu }}</span>@endif
                     </a>
                     <a href="{{ route('admin.pesanan.index') }}" @class(['is-active' => request()->routeIs('admin.pesanan.*')])>
-                        <span aria-hidden="true">▣</span> Pesanan
+                        <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"/><path d="M9 8h6M9 12h6"/></svg>
+                        Pesanan
                     </a>
                     <a href="{{ route('admin.tiket-paket.index') }}" @class(['is-active' => request()->routeIs('admin.tiket-paket.*')])>
-                        <span aria-hidden="true">◇</span> Tiket &amp; paket
+                        <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M13 6v12"/></svg>
+                        Tiket &amp; paket
                     </a>
                     <a href="{{ route('admin.diskon.index') }}" @class(['is-active' => request()->routeIs('admin.diskon.*')])>
-                        <span aria-hidden="true">%</span> Diskon
+                        <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 5-14 14"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg>
+                        Diskon
                     </a>
                     <a href="{{ route('admin.tiket.validasi') }}" @class(['is-active' => request()->routeIs('admin.tiket.validasi*')])>
-                        <span aria-hidden="true">✓</span> Validasi tiket
+                        <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4-3 6.5-7 8-4-1.5-7-4-7-8V6z"/><path d="m9 12 2 2 4-4"/></svg>
+                        Validasi tiket
                     </a>
                 </nav>
 
@@ -55,12 +63,12 @@
                     <details class="admin-mobile-menu">
                         <summary aria-label="Buka navigasi admin">Menu</summary>
                         <nav aria-label="Navigasi admin seluler">
-                            <a href="{{ route('admin.dashboard') }}">Ringkasan</a>
-                            <a href="{{ route('admin.pengajuan.index') }}">Pengajuan ({{ $pengajuanMenunggu }})</a>
-                            <a href="{{ route('admin.pesanan.index') }}">Pesanan</a>
-                            <a href="{{ route('admin.tiket-paket.index') }}">Tiket &amp; paket</a>
-                            <a href="{{ route('admin.diskon.index') }}">Diskon</a>
-                            <a href="{{ route('admin.tiket.validasi') }}">Validasi tiket</a>
+                            <a href="{{ route('admin.dashboard') }}" @class(['is-active' => request()->routeIs('admin.dashboard')])>Ringkasan</a>
+                            <a href="{{ route('admin.pengajuan.index') }}" @class(['is-active' => request()->routeIs('admin.pengajuan.*')])>Pengajuan @if ($pengajuanMenunggu > 0)({{ $pengajuanMenunggu }})@endif</a>
+                            <a href="{{ route('admin.pesanan.index') }}" @class(['is-active' => request()->routeIs('admin.pesanan.*')])>Pesanan</a>
+                            <a href="{{ route('admin.tiket-paket.index') }}" @class(['is-active' => request()->routeIs('admin.tiket-paket.*')])>Tiket &amp; paket</a>
+                            <a href="{{ route('admin.diskon.index') }}" @class(['is-active' => request()->routeIs('admin.diskon.*')])>Diskon</a>
+                            <a href="{{ route('admin.tiket.validasi') }}" @class(['is-active' => request()->routeIs('admin.tiket.validasi*')])>Validasi tiket</a>
                         </nav>
                     </details>
                     <p class="admin-topbar-label">Ruang pengelola</p>
@@ -74,7 +82,13 @@
                     </div>
                 </header>
 
-                <main class="admin-content">
+                <main id="main-content" class="admin-content">
+                    @if (session('message'))
+                        <div data-flash-message="{{ session('message') }}"></div>
+                    @endif
+                    @if (session('error'))
+                        <div data-flash-error="{{ session('error') }}"></div>
+                    @endif
                     <div class="admin-page-heading">
                         <div>
                             <p class="admin-eyebrow">The Nice Park · Rumpin</p>

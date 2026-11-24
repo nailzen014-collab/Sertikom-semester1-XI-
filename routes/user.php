@@ -29,7 +29,9 @@ Route::middleware(['auth', 'pengunjung'])->group(function () {
 
     Route::get('/riwayat', [RiwayatController::class, 'index'])->name('riwayat.index');
     Route::get('/riwayat/{pesanan}', [RiwayatController::class, 'show'])->name('riwayat.show');
+    Route::post('/riwayat/{pesanan}/peserta/{peserta}', [RombonganController::class, 'updatePeserta'])->name('pesan.rombongan.update-peserta');
 
     Route::get('/tiket/{tiket}', [TiketController::class, 'show'])->name('tiket.show');
     Route::get('/tiket/{tiket}/pdf', [TiketController::class, 'pdf'])->name('tiket.pdf');
+    Route::get('/riwayat/{pesanan}/pdf-rombongan', [TiketController::class, 'pdfRombongan'])->name('pesanan.pdf-rombongan');
 });

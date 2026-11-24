@@ -65,6 +65,6 @@ class PembayaranController extends Controller
 
     private function pastikanPemilik(Pesanan $pesanan): void
     {
-        abort_unless($pesanan->user_id === auth()->id(), 404);
+        $this->authorize('view', $pesanan);
     }
 }

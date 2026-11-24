@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pesanan;
 use App\Models\Tiket;
+use App\Models\TiketPaket;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -13,6 +14,8 @@ class TiketController extends Controller
 {
     public function show(Tiket $tiket): RedirectResponse
     {
+        $tiket->load('pesanan.user');
+
         $this->pastikanPemilik($tiket);
 
         $this->pastikanSudahDibayar($tiket);
@@ -22,6 +25,8 @@ class TiketController extends Controller
 
     public function pdf(Tiket $tiket): Response
     {
+        $tiket->load('pesanan.user');
+
         $this->pastikanPemilik($tiket);
 
         $this->pastikanSudahDibayar($tiket);
@@ -41,6 +46,28 @@ class TiketController extends Controller
         return $pdf->download('tiket-'.$tiket->kode_tiket.'.pdf');
     }
 
+    public function pdfRombongan(Pesanan $pesanan): Response
+    {
+        abort_unless($pesanan->user_id === auth()->id(), 404);
+        abort_unless($pesanan->status === Pesanan::STATUS_LUNAS, 404);
+        abort_unless($pesanan->kategori === TiketPaket::KATEGORI_ROMBONGAN, 404);
+
+        $pesanan->load(['tiketPaket', 'user', 'pesertaRombongan', 'pengajuanRombongan', 'tiket']);
+
+        // Cari tiket utama jenis rombongan, atau tiket pertama
+        $tiketUtama = $pesanan->tiket->firstWhere('jenis', Tiket::JENIS_ROMBONGAN) ?? $pesanan->tiket->first();
+
+        abort_unless($tiketUtama !== null, 404);
+
+        $pdf = Pdf::loadView('tiket.pdf-rombongan', [
+            'pesanan' => $pesanan,
+            'tiket' => $tiketUtama,
+            'qr' => $this->qrDataUri($tiketUtama->kode_tiket),
+        ]);
+
+        return $pdf->download('tiket-rombongan-'.$pesanan->kode_pesanan.'.pdf');
+    }
+
     private function qrDataUri(string $kode): string
     {
         $hasil = QrCode::format('svg')
@@ -53,7 +80,7 @@ class TiketController extends Controller
 
     private function pastikanPemilik(Tiket $tiket): void
     {
-        abort_unless($tiket->pesanan->user_id === auth()->id(), 404);
+        $this->authorize('view', $tiket->pesanan);
     }
 
     private function pastikanSudahDibayar(Tiket $tiket): void

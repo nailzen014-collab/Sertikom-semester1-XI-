@@ -29,6 +29,8 @@ class PembayaranService
 
     public function redirectUrl(Pesanan $pesanan): string
     {
+        $pesanan->load(['user', 'tiketPaket']);
+
         $pembayaran = $this->pastikanPembayaran($pesanan);
         $this->konfigurasi();
 

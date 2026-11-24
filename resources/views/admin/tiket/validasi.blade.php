@@ -9,7 +9,7 @@
         <section class="mx-auto max-w-xl space-y-5 px-4 sm:px-6 lg:px-8">
             <div class="rounded-lg bg-white p-6 shadow-sm sm:p-8">
                 <p class="text-sm leading-6 text-gray-600">Pindai QR dengan perangkat pemindai atau ketik kode tiket. Sistem hanya menerima tiket lunas yang berlaku hari ini dan belum dipakai.</p>
-                <form method="POST" action="{{ route('admin.tiket.validasi.store') }}" class="mt-6 space-y-4">
+                <form method="POST" action="{{ route('admin.tiket.validasi.store') }}" class="mt-6 space-y-4 swal-confirm" data-confirm-message="Apakah Anda yakin ingin memvalidasi dan menandai tiket ini sebagai SUDAH DIPAKAI? Tiket tidak akan bisa digunakan kembali." data-confirm-btn="Ya, Validasi">
                     @csrf
                     <div>
                         <label for="kode_tiket" class="block text-sm font-medium text-gray-700">Kode tiket</label>

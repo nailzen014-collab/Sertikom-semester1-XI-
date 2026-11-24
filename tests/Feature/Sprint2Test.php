@@ -164,6 +164,7 @@ it('menolak pesanan yang melebihi kuota harian', function () {
     $tanggal = now()->addDays(2)->toDateString();
 
     Pesanan::factory()->lunas()->create([
+        'user_id' => $user->id,
         'tiket_paket_id' => $tiket->id,
         'tanggal_kunjungan' => $tanggal,
         'jumlah_tiket' => 10,
@@ -303,9 +304,9 @@ it('pengunjung tidak dapat melihat pesanan atau tiket milik orang lain', functio
     $pesanan = Pesanan::factory()->create(['user_id' => $pemilik->id]);
     $tiket = Tiket::factory()->create(['pesanan_id' => $pesanan->id]);
 
-    $this->actingAs($lain)->get(route('riwayat.show', $pesanan))->assertNotFound();
-    $this->actingAs($lain)->get(route('pembayaran.show', $pesanan))->assertNotFound();
-    $this->actingAs($lain)->get(route('tiket.show', $tiket))->assertNotFound();
+    $this->actingAs($lain)->get(route('riwayat.show', $pesanan))->assertForbidden();
+    $this->actingAs($lain)->get(route('pembayaran.show', $pesanan))->assertForbidden();
+    $this->actingAs($lain)->get(route('tiket.show', $tiket))->assertForbidden();
 });
 
 it('pengunjung tidak dapat mengakses pemantauan pesanan admin', function () {

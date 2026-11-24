@@ -2,7 +2,7 @@
 
 @section('title', 'Diskon - Admin')
 @section('page-title', 'Diskon')
-@section('page-description', 'Kelola promo berdasarkan kategori dan masa berlaku.')
+@section('page-description', 'Kelola promo per paket tiket dan masa berlaku.')
 @section('page-action')
     <a href="{{ route('admin.diskon.create') }}" class="admin-heading-action">Tambah diskon</a>
 @endsection
@@ -28,8 +28,8 @@
                     @forelse ($diskon as $item)
                         <div class="rounded-lg border p-4 {{ $item->status_aktif ? 'border-gray-200 bg-gray-50/50' : 'border-gray-100 bg-gray-50 opacity-60' }}">
                             <div class="flex items-start justify-between gap-2">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium {{ $item->kategori === 'umum' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800' }}">
-                                    {{ ucfirst($item->kategori) }}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium {{ ($item->tiketPaket->kategori ?? 'umum') === 'umum' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800' }}">
+                                    {{ $item->tiketPaket->nama ?? 'Paket dihapus' }}
                                 </span>
                                 <span class="text-xs font-semibold {{ $item->status_aktif ? 'text-emerald-600' : 'text-gray-400' }}">
                                     {{ $item->status_aktif ? 'Aktif' : 'Nonaktif' }}
@@ -68,7 +68,7 @@
                             @forelse ($diskon as $item)
                                 <tr>
                                     <td class="px-4 py-3 font-medium text-gray-900">{{ $item->nama }}</td>
-                                    <td class="px-4 py-3">{{ \App\Models\TiketPaket::KATEGORI[$item->kategori] ?? $item->kategori }}</td>
+                                    <td class="px-4 py-3">{{ $item->tiketPaket->nama ?? '-' }}</td>
                                     <td class="px-4 py-3">{{ \App\Models\Diskon::TIPE[$item->tipe] ?? $item->tipe }}</td>
                                     <td class="px-4 py-3">
                                         @if ($item->tipe === \App\Models\Diskon::TIPE_PERSEN)

@@ -210,14 +210,14 @@
         <div class="user-section-heading">
             <div>
                 <h2>Pilih tiket untuk kunjungan berikutnya</h2>
-                <p>Isi tanggal dan jumlah, lalu pesanan akan muncul di halaman ini. Maksimal {{ \App\Models\Pesanan::BATAS_PESANAN_UMUM_PER_AKUN }} pesanan umum per akun.</p>
+                <p>Isi tanggal dan jumlah, lalu pesanan akan muncul di halaman ini. Maksimal {{ \App\Models\Pesanan::BATAS_PESANAN_UMUM_PER_AKUN }} pesanan tiket umum per akun setiap bulan. Kuota dihitung dari tanggal 1 sampai akhir bulan dan reset otomatis setiap tanggal 1 (berikutnya {{ \App\Models\Pesanan::resetKuotaUmum()->translatedFormat('d F Y') }}).</p>
             </div>
         </div>
 
         @if ($pesananUmum >= \App\Models\Pesanan::BATAS_PESANAN_UMUM_PER_AKUN)
-            <p class="user-notice" role="status">Batas pesanan tiket umum di akun ini sudah tercapai. Pengajuan rombongan tetap tersedia.</p>
+            <p class="user-notice" role="status">Batas {{ \App\Models\Pesanan::BATAS_PESANAN_UMUM_PER_AKUN }} pesanan tiket umum bulan ini sudah tercapai. Kuota reset otomatis pada {{ \App\Models\Pesanan::resetKuotaUmum()->translatedFormat('d F Y') }}. Pengajuan rombongan tetap tersedia.</p>
         @else
-            <p class="user-section-count">Sisa {{ \App\Models\Pesanan::BATAS_PESANAN_UMUM_PER_AKUN - $pesananUmum }} pesanan umum</p>
+            <p class="user-section-count">Sisa {{ \App\Models\Pesanan::BATAS_PESANAN_UMUM_PER_AKUN - $pesananUmum }} pesanan umum bulan ini</p>
         @endif
 
         @if ($paketUmum->isNotEmpty())

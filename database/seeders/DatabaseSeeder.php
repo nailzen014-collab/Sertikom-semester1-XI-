@@ -70,29 +70,35 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
+        $paketPerNama = [];
         foreach ($tiketPaket as $data) {
-            TiketPaket::firstOrCreate(['nama' => $data['nama']], $data);
+            $paket = TiketPaket::firstOrCreate(['nama' => $data['nama']], $data);
+            $paketPerNama[$data['nama']] = $paket;
         }
 
         $diskon = [
             [
                 'nama' => 'Promo Pengunjung Umum',
-                'kategori' => TiketPaket::KATEGORI_UMUM,
+                'paket' => 'Tiket Masuk Reguler',
                 'tipe' => Diskon::TIPE_PERSEN,
                 'nilai' => 10,
             ],
             [
                 'nama' => 'Diskon Rombongan Sekolah',
-                'kategori' => TiketPaket::KATEGORI_ROMBONGAN,
+                'paket' => 'Paket Edukasi Sekolah',
                 'tipe' => Diskon::TIPE_NOMINAL,
                 'nilai' => 2000,
             ],
         ];
 
         foreach ($diskon as $data) {
+            $paket = $paketPerNama[$data['paket']];
+
             Diskon::firstOrCreate(['nama' => $data['nama']], [
-                ...$data,
                 'admin_id' => $admin->id,
+                'tiket_paket_id' => $paket->id,
+                'tipe' => $data['tipe'],
+                'nilai' => $data['nilai'],
                 'tanggal_mulai' => now()->subWeek()->toDateString(),
                 'tanggal_selesai' => now()->addMonth()->toDateString(),
                 'status_aktif' => true,

@@ -41,7 +41,7 @@ class DashboardController extends Controller
         return view('user.dashboard', [
             'page' => 'booking',
             'pageTitle' => 'Pilih Tiket - The Nice Park',
-            'pesananUmum' => $user->pesanan()->where('kategori', TiketPaket::KATEGORI_UMUM)->count(),
+            'pesananUmum' => $user->pesanan()->where('kategori', TiketPaket::KATEGORI_UMUM)->dibuatBulanIni()->count(),
             'paketUmum' => TiketPaket::aktif()
                 ->kategori(TiketPaket::KATEGORI_UMUM)
                 ->orderBy('nama')

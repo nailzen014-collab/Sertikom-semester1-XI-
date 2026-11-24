@@ -294,23 +294,7 @@
                         </h3>
                     </div>
 
-                    @php($diskonKategori = $diskon->get($kategoriKey, collect()))
-                    @if ($diskonKategori->isNotEmpty())
-                        <ul class="mt-3 flex flex-wrap gap-2">
-                            @foreach ($diskonKategori as $item)
-                                <li class="rounded-full bg-toffee-100 text-toffee-800 text-sm px-3 py-1">
-                                    {{ $item->nama }}:
-                                    @if ($item->tipe === \App\Models\Diskon::TIPE_PERSEN)
-                                        {{ $item->nilai }}%
-                                    @else
-                                        Rp {{ number_format($item->nilai, 0, ',', '.') }}
-                                    @endif
-                                </li>
-                            @endforeach
-                        </ul>
-                    @else
-                        <p class="mt-3 text-sm text-gray-600">Belum ada diskon aktif untuk kategori ini.</p>
-                    @endif
+                    @php($diskonPaket = fn ($tiket) => $diskon->get($tiket->id, collect()))
 
                     <div class="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                         @forelse ($tiketPaket->get($kategoriKey, collect()) as $tiket)
@@ -335,7 +319,24 @@
 
                                 <p class="mt-3 text-sm text-gray-500">Kuota harian: {{ $tiket->kuota_harian }} tiket</p>
 
+                                @php($diskonTiket = $diskonPaket($tiket))
+
                                 <div class="mt-auto pt-5">
+                                    @if ($diskonTiket->isNotEmpty())
+                                        <ul class="mb-3 flex flex-wrap gap-2">
+                                            @foreach ($diskonTiket as $item)
+                                                <li class="rounded-full bg-toffee-100 px-3 py-1 text-xs font-semibold text-toffee-800">
+                                                    {{ $item->nama }}:
+                                                    @if ($item->tipe === \App\Models\Diskon::TIPE_PERSEN)
+                                                        hemat {{ $item->nilai }}%
+                                                    @else
+                                                        hemat Rp {{ number_format($item->nilai, 0, ',', '.') }}
+                                                    @endif
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+
                                     <div class="flex flex-wrap gap-2">
                                         <a href="{{ route('katalog.show', $tiket) }}" class="park-button-magnetic inline-flex rounded-lg border border-juniper-600 px-4 py-2 text-sm font-semibold text-juniper-700 hover:bg-juniper-50">
                                             Lihat detail
@@ -385,7 +386,7 @@
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="max-w-2xl">
                 <p class="text-sm font-semibold text-toffee-200">Di dalam taman</p>
-                <h1 class="mt-2 text-3xl font-bold text-white">Ruang bermain untuk semua</h1>
+                <h1 class="mt-2 text-3xl font-bold text-alabaster-200">Ruang bermain untuk semua</h1>
                 <p class="mt-3 text-sm leading-6 text-alabaster-200">Kenali suasana The Nice Park Rumpin sebelum merencanakan kunjungan.</p>
             </div>
             <div class="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -440,7 +441,7 @@
     <section class="bg-juniper-700 text-white">
         <div id="rombongan-cta" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
             <div>
-                <h2 class="text-2xl font-bold">Rencanakan kunjungan sekolah Anda</h2>
+                <h2 class="text-2xl font-bold text-alabaster-200">Rencanakan kunjungan sekolah Anda</h2>
                 <p class="mt-2 text-alabaster-100 max-w-xl">
                     Ajukan paket rombongan lebih dari 10 peserta, isi biodata siswa, lalu bayar setelah disetujui admin.
                 </p>

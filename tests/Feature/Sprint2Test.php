@@ -94,17 +94,42 @@ it('membatasi pesanan umum maksimal lima per akun dan tidak menghitung pesanan r
 
     $this->post(route('pesan.store', $tiket), $payload)
         ->assertSessionHasErrors([
-            'jumlah_tiket' => 'Setiap akun maksimal dapat membuat 5 pesanan tiket umum.',
+            'jumlah_tiket' => 'Setiap akun maksimal dapat membuat 5 pesanan tiket umum per bulan. Kuota direset setiap tanggal 1.',
         ]);
 
     expect(Pesanan::where('user_id', $user->id)->where('kategori', TiketPaket::KATEGORI_UMUM)->count())->toBe(5);
 });
 
-it('menerapkan diskon umum secara otomatis', function () {
+it('mereset kuota pesanan umum setiap bulan sehingga pesanan bulan lalu tidak terhitung', function () {
+    $user = User::factory()->create();
+    $tiket = tiketUmum();
+
+    Pesanan::factory()->count(5)->create([
+        'user_id' => $user->id,
+        'tiket_paket_id' => $tiket->id,
+        'kategori' => TiketPaket::KATEGORI_UMUM,
+        'created_at' => now()->subMonthNoOverflow()->startOfMonth()->addDay(),
+        'updated_at' => now()->subMonthNoOverflow()->startOfMonth()->addDay(),
+    ]);
+
+    $this->actingAs($user)
+        ->post(route('pesan.store', $tiket), [
+            'tanggal_kunjungan' => now()->addDays(2)->toDateString(),
+            'jumlah_tiket' => 1,
+        ])
+        ->assertRedirect();
+
+    expect(Pesanan::where('user_id', $user->id)
+        ->where('kategori', TiketPaket::KATEGORI_UMUM)
+        ->dibuatBulanIni()
+        ->count())->toBe(1);
+});
+
+it('menerapkan diskon paket secara otomatis', function () {
     $user = User::factory()->create();
     $tiket = tiketUmum();
     $diskon = Diskon::factory()->create([
-        'kategori' => TiketPaket::KATEGORI_UMUM,
+        'tiket_paket_id' => $tiket->id,
         'tipe' => Diskon::TIPE_PERSEN,
         'nilai' => 10,
     ]);
@@ -121,11 +146,12 @@ it('menerapkan diskon umum secara otomatis', function () {
         ->and($pesanan->total_bayar)->toBe(18000);
 });
 
-it('tidak menerapkan diskon rombongan pada pesanan umum', function () {
+it('tidak menerapkan diskon paket lain pada pesanan ini', function () {
     $user = User::factory()->create();
     $tiket = tiketUmum();
+    $paketLain = tiketUmum();
     Diskon::factory()->create([
-        'kategori' => TiketPaket::KATEGORI_ROMBONGAN,
+        'tiket_paket_id' => $paketLain->id,
         'tipe' => Diskon::TIPE_PERSEN,
         'nilai' => 50,
     ]);

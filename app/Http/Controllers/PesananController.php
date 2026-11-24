@@ -61,9 +61,9 @@ class PesananController extends Controller
         $pesanan = DB::transaction(function () use ($request, $tiketPaket, $data, $jumlah, $harga, $kuota, $generator) {
             User::query()->whereKey($request->user()->id)->lockForUpdate()->firstOrFail();
 
-            if ($request->user()->pesanan()->kategori(TiketPaket::KATEGORI_UMUM)->count() >= Pesanan::BATAS_PESANAN_UMUM_PER_AKUN) {
+            if ($request->user()->pesanan()->kategori(TiketPaket::KATEGORI_UMUM)->dibuatBulanIni()->count() >= Pesanan::BATAS_PESANAN_UMUM_PER_AKUN) {
                 throw ValidationException::withMessages([
-                    'jumlah_tiket' => 'Setiap akun maksimal dapat membuat 5 pesanan tiket umum.',
+                    'jumlah_tiket' => 'Setiap akun maksimal dapat membuat '.Pesanan::BATAS_PESANAN_UMUM_PER_AKUN.' pesanan tiket umum per bulan. Kuota direset setiap tanggal 1.',
                 ]);
             }
 

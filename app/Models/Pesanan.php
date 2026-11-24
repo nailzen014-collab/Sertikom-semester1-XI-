@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 
 class Pesanan extends Model
 {
@@ -106,5 +107,26 @@ class Pesanan extends Model
     public function scopeKategori(Builder $query, string $kategori): Builder
     {
         return $query->where('kategori', $kategori);
+    }
+
+    /**
+     * Pesanan yang dibuat pada bulan berjalan (dasar kuota bulanan tiket umum).
+     */
+    public function scopeDibuatBulanIni(Builder $query): Builder
+    {
+        $now = now();
+
+        return $query->whereBetween('created_at', [
+            $now->copy()->startOfMonth(),
+            $now->copy()->endOfMonth(),
+        ]);
+    }
+
+    /**
+     * Tanggal kapan kuota tiket umum berikutnya direset (tanggal 1 bulan depan).
+     */
+    public static function resetKuotaUmum(): Carbon
+    {
+        return now()->copy()->addMonthNoOverflow()->startOfMonth();
     }
 }

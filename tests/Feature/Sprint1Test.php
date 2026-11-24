@@ -89,35 +89,58 @@ it('menolak pengunjung menambah tiket paket', function () {
     $this->assertDatabaseMissing('tiket_paket', ['nama' => 'Tiket Ilegal']);
 });
 
-it('mengizinkan admin menambah diskon per kategori', function () {
+it('mengizinkan admin menambah diskon untuk paket tertentu', function () {
     $admin = User::factory()->admin()->create();
+    $tiket = buatTiket();
 
     $this->actingAs($admin)
         ->post('/admin/diskon', [
             'nama' => 'Promo Umum Uji',
-            'kategori' => TiketPaket::KATEGORI_UMUM,
+            'tiket_paket_id' => $tiket->id,
+            'tipe' => Diskon::TIPE_PERSEN,
+            'nilai' => 10,
+            'tanggal_mulai' => now()->toDateString(),
+            'tanggal_selesai' => now()->addMonth()->toDateString(),
+            'status_aktif' => 1,
+            'ganti_diskon' => 0,
+        ])
+        ->assertRedirect(route('admin.diskon.index'));
+
+    $this->assertDatabaseHas('diskon', [
+        'nama' => 'Promo Umum Uji',
+        'tiket_paket_id' => $tiket->id,
+        'admin_id' => $admin->id,
+    ]);
+});
+
+it('mengalihkan kembali dengan error saat paket diskon tidak dipilih', function () {
+    $admin = User::factory()->admin()->create();
+
+    $this->actingAs($admin)
+        ->from(route('admin.diskon.create'))
+        ->post('/admin/diskon', [
+            'nama' => 'Tanpa Paket',
+            'tiket_paket_id' => '',
             'tipe' => Diskon::TIPE_PERSEN,
             'nilai' => 10,
             'tanggal_mulai' => now()->toDateString(),
             'tanggal_selesai' => now()->addMonth()->toDateString(),
             'status_aktif' => 1,
         ])
-        ->assertRedirect(route('admin.diskon.index'));
+        ->assertRedirect(route('admin.diskon.create'))
+        ->assertSessionHasErrors('tiket_paket_id');
 
-    $this->assertDatabaseHas('diskon', [
-        'nama' => 'Promo Umum Uji',
-        'kategori' => TiketPaket::KATEGORI_UMUM,
-        'admin_id' => $admin->id,
-    ]);
+    $this->assertDatabaseMissing('diskon', ['nama' => 'Tanpa Paket']);
 });
 
 it('menolak diskon persen lebih dari 100', function () {
     $admin = User::factory()->admin()->create();
+    $tiket = buatTiket();
 
     $this->actingAs($admin)
         ->post('/admin/diskon', [
             'nama' => 'Promo Salah',
-            'kategori' => TiketPaket::KATEGORI_UMUM,
+            'tiket_paket_id' => $tiket->id,
             'tipe' => Diskon::TIPE_PERSEN,
             'nilai' => 150,
             'tanggal_mulai' => now()->toDateString(),
@@ -127,6 +150,74 @@ it('menolak diskon persen lebih dari 100', function () {
         ->assertSessionHasErrors('nilai');
 
     $this->assertDatabaseMissing('diskon', ['nama' => 'Promo Salah']);
+});
+
+it('menonaktifkan diskon lama saat admin memilih mengganti diskon pada paket yang sama', function () {
+    $admin = User::factory()->admin()->create();
+    $tiket = buatTiket();
+    $lama = Diskon::factory()->create([
+        'nama' => 'Promo Lama',
+        'tiket_paket_id' => $tiket->id,
+        'status_aktif' => true,
+    ]);
+
+    $this->actingAs($admin)
+        ->post('/admin/diskon', [
+            'nama' => 'Promo Baru',
+            'tiket_paket_id' => $tiket->id,
+            'tipe' => Diskon::TIPE_PERSEN,
+            'nilai' => 20,
+            'tanggal_mulai' => now()->toDateString(),
+            'tanggal_selesai' => now()->addMonth()->toDateString(),
+            'status_aktif' => 1,
+            'ganti_diskon' => 1,
+        ])
+        ->assertRedirect(route('admin.diskon.index'));
+
+    $this->assertDatabaseHas('diskon', [
+        'id' => $lama->id,
+        'status_aktif' => false,
+    ]);
+
+    $this->assertDatabaseHas('diskon', [
+        'nama' => 'Promo Baru',
+        'tiket_paket_id' => $tiket->id,
+        'status_aktif' => true,
+    ]);
+});
+
+it('mempertahankan diskon lama saat admin memilih tidak mengganti', function () {
+    $admin = User::factory()->admin()->create();
+    $tiket = buatTiket();
+    $lama = Diskon::factory()->create([
+        'nama' => 'Promo Lama',
+        'tiket_paket_id' => $tiket->id,
+        'status_aktif' => true,
+    ]);
+
+    $this->actingAs($admin)
+        ->post('/admin/diskon', [
+            'nama' => 'Promo Tambahan',
+            'tiket_paket_id' => $tiket->id,
+            'tipe' => Diskon::TIPE_NOMINAL,
+            'nilai' => 5000,
+            'tanggal_mulai' => now()->toDateString(),
+            'tanggal_selesai' => now()->addMonth()->toDateString(),
+            'status_aktif' => 1,
+            'ganti_diskon' => 0,
+        ])
+        ->assertRedirect(route('admin.diskon.index'));
+
+    $this->assertDatabaseHas('diskon', [
+        'id' => $lama->id,
+        'status_aktif' => true,
+    ]);
+
+    $this->assertDatabaseHas('diskon', [
+        'nama' => 'Promo Tambahan',
+        'tiket_paket_id' => $tiket->id,
+        'status_aktif' => true,
+    ]);
 });
 
 it('menampilkan halaman kelola tiket dan diskon untuk admin', function () {

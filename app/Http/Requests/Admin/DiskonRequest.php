@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Admin;
 
 use App\Models\Diskon;
-use App\Models\TiketPaket;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -21,7 +20,7 @@ class DiskonRequest extends FormRequest
     {
         return [
             'nama' => ['required', 'string', 'max:255'],
-            'kategori' => ['required', Rule::in(array_keys(TiketPaket::KATEGORI))],
+            'tiket_paket_id' => ['required', 'integer', Rule::exists('tiket_paket', 'id')],
             'tipe' => ['required', Rule::in(array_keys(Diskon::TIPE))],
             'nilai' => [
                 'required',
@@ -32,6 +31,7 @@ class DiskonRequest extends FormRequest
             'tanggal_mulai' => ['required', 'date'],
             'tanggal_selesai' => ['required', 'date', 'after_or_equal:tanggal_mulai'],
             'status_aktif' => ['sometimes', 'boolean'],
+            'ganti_diskon' => ['sometimes', 'boolean'],
         ];
     }
 }

@@ -28,7 +28,7 @@ class HitungHargaService
     public function diskonTerbaik(TiketPaket $tiketPaket, int $jumlahTiket, CarbonInterface $tanggal): ?Diskon
     {
         return Diskon::berlakuPada($tanggal)
-            ->kategori($tiketPaket->kategori)
+            ->untukPaket($tiketPaket->id)
             ->get()
             ->sortByDesc(fn (Diskon $diskon) => $this->potongan($tiketPaket->harga, $jumlahTiket, $diskon))
             ->first();

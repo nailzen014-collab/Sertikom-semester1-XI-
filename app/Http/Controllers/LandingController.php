@@ -17,7 +17,7 @@ class LandingController extends Controller
 
         $diskon = Diskon::berlakuPada(now())
             ->get()
-            ->groupBy('kategori');
+            ->groupBy('tiket_paket_id');
 
         return view('landing', [
             'tiketPaket' => $tiketPaket,

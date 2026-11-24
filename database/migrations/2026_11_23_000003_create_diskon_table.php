@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('admin_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('nama');
-            $table->string('kategori')->index();
+            $table->foreignId('tiket_paket_id')->constrained('tiket_paket')->cascadeOnDelete();
             $table->string('tipe');
             $table->unsignedInteger('nilai');
             $table->date('tanggal_mulai');

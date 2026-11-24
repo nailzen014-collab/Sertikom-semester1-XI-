@@ -26,7 +26,7 @@ class Diskon extends Model
     protected $fillable = [
         'admin_id',
         'nama',
-        'kategori',
+        'tiket_paket_id',
         'tipe',
         'nilai',
         'tanggal_mulai',
@@ -49,6 +49,11 @@ class Diskon extends Model
         return $this->belongsTo(User::class, 'admin_id');
     }
 
+    public function tiketPaket(): BelongsTo
+    {
+        return $this->belongsTo(TiketPaket::class);
+    }
+
     public function pesanan(): HasMany
     {
         return $this->hasMany(Pesanan::class);
@@ -59,9 +64,9 @@ class Diskon extends Model
         return $query->where('status_aktif', true);
     }
 
-    public function scopeKategori(Builder $query, string $kategori): Builder
+    public function scopeUntukPaket(Builder $query, int $tiketPaketId): Builder
     {
-        return $query->where('kategori', $kategori);
+        return $query->where('tiket_paket_id', $tiketPaketId);
     }
 
     public function scopeBerlakuPada(Builder $query, $tanggal): Builder

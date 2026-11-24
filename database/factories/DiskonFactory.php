@@ -22,7 +22,7 @@ class DiskonFactory extends Factory
         return [
             'admin_id' => User::factory()->admin(),
             'nama' => 'Promo '.fake()->word(),
-            'kategori' => TiketPaket::KATEGORI_UMUM,
+            'tiket_paket_id' => TiketPaket::factory(),
             'tipe' => Diskon::TIPE_PERSEN,
             'nilai' => 10,
             'tanggal_mulai' => now()->subDay()->toDateString(),

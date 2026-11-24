@@ -385,7 +385,7 @@
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="max-w-2xl">
                 <p class="text-sm font-semibold text-toffee-200">Di dalam taman</p>
-                <h2 class="mt-2 text-3xl font-bold">Ruang bermain untuk semua</h2>
+                <h1 class="mt-2 text-3xl font-bold text-white">Ruang bermain untuk semua</h1>
                 <p class="mt-3 text-sm leading-6 text-alabaster-200">Kenali suasana The Nice Park Rumpin sebelum merencanakan kunjungan.</p>
             </div>
             <div class="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

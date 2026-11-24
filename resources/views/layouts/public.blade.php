@@ -48,7 +48,7 @@
                     <a href="{{ route('landing') }}#kontak" class="public-nav-link">Kontak</a>
                     @auth
                         @if (Auth::user()->isAdmin())
-                            <a href="{{ route('admin.dashboard') }}" class="public-nav-link">Admin</a>
+                            <a href="{{ route('admin.dashboard') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('admin.*')]) @if (request()->routeIs('admin.*')) aria-current="page" @endif>Admin</a>
                         @else
                             <a href="{{ route('riwayat.index') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('riwayat.*') || request()->routeIs('user.*')]) @if (request()->routeIs('riwayat.*') || request()->routeIs('user.*')) aria-current="page" @endif>Riwayat</a>
                             <details class="public-account-menu relative">
@@ -68,7 +68,7 @@
                         @endif
                     @else
                         <a href="{{ route('login') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('login')]) @if (request()->routeIs('login')) aria-current="page" @endif>Masuk</a>
-                        <a href="{{ route('register') }}" @class(['public-nav-cta', 'ring-2 ring-gold-400' => request()->routeIs('register')])>Daftar</a>
+                        <a href="{{ route('register') }}" @class(['public-nav-cta', 'is-current' => request()->routeIs('register'), 'ring-2 ring-gold-400' => request()->routeIs('register')]) @if (request()->routeIs('register')) aria-current="page" @endif>Daftar</a>
                     @endauth
                 </nav>
             </div>

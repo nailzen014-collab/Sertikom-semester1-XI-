@@ -338,9 +338,7 @@
                                         <a href="{{ route('katalog.show', $tiket) }}" class="park-button-magnetic inline-flex rounded-lg border border-juniper-600 px-4 py-2 text-sm font-semibold text-juniper-700 hover:bg-juniper-50">
                                             Lihat detail
                                         </a>
-                                        <a href="{{ route('pesan.kategori', ['kategori' => $tiket->kategori]) }}" class="park-button-magnetic inline-flex rounded-lg bg-juniper-600 px-4 py-2 text-sm font-semibold text-white hover:bg-juniper-700">
-                                            Pilih kategori
-                                        </a>
+                                      
                                     </div>
                                 </div>
                             </div>

@@ -7,6 +7,9 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <link rel="icon" type="image/x-icon" href="{{ asset('images/tha-nice-park.jpg') }}">
+        <link rel="apple-touch-icon" href="{{ asset('images/tha-nice-park.jpg') }}">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=nunito:400,500,600,700&display=swap" rel="stylesheet" />

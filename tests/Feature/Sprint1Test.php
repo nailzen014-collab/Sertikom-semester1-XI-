@@ -24,7 +24,7 @@ it('menampilkan landing page dengan ketentuan pemilihan tiket', function () {
 
     $this->get('/')
         ->assertOk()
-        ->assertSee('Ketentuan Pemilihan Tiket')
+        ->assertSeeText('Ketentuan Pemilihan Tiket')
         ->assertSee('maksimal 10')
         ->assertSee('lebih dari 10')
         ->assertSee('Tiket Masuk Reguler');

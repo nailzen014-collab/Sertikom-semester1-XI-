@@ -7,6 +7,9 @@
 
         <title>@yield('title', config('app.name', 'The Nice Park'))</title>
 
+        <link rel="icon" type="image/x-icon" href="{{ asset('images/tha-nice-park.jpg') }}">
+        <link rel="apple-touch-icon" href="{{ asset('images/tha-nice-park.jpg') }}">
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Plus+Jakarta+Sans:wght@400..800&display=swap" rel="stylesheet">
@@ -15,64 +18,109 @@
     </head>
     <body class="site-public font-sans antialiased bg-cream-50 text-green-900 @yield('body-class')">
         <a href="#main-content" class="park-skip-link">Lewati ke konten</a>
-        <header x-data="{ menuOpen: false }" class="public-header sticky top-0 z-30">
-            <div class="public-header__inner">
-                <a href="{{ route('landing') }}" class="public-brand">
-                    <img src="{{ asset('images/tha-nice-park.jpg') }}" alt="Logo The Nice Park" class="public-brand__logo">
-                    <span>The Nice Park</span>
-                </a>
+<header x-data="{ menuOpen: false }" class="public-header sticky top-0 z-30 shadow-sm">
+    <div class="public-header__inner">
+        <a href="{{ route('landing') }}" class="public-brand">
+            <img src="{{ asset('images/tha-nice-park.jpg') }}" alt="Logo The Nice Park" class="public-brand__logo">
+            <span>The Nice Park</span>
+        </a>
 
-                <button type="button" class="public-menu-toggle" @click="menuOpen = ! menuOpen" :aria-expanded="menuOpen" :aria-label="menuOpen ? 'Tutup navigasi' : 'Buka navigasi'" aria-controls="site-navigation">
-                    <span class="sr-only" x-text="menuOpen ? 'Tutup navigasi' : 'Buka navigasi'">Buka navigasi</span>
-                    <svg x-show="!menuOpen" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                    <svg x-cloak x-show="menuOpen" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-width="2" d="m6 6 12 12M18 6 6 18"/></svg>
-                </button>
+        <nav aria-label="Navigasi utama" class="public-nav-desktop hidden items-center gap-1 lg:flex">
+            <a href="{{ route('landing') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('landing')]) @if (request()->routeIs('landing')) aria-current="page" @endif>Beranda</a>
+            <a href="{{ route('landing') }}#katalog" class="public-nav-link">Tiket</a>
+            <a href="{{ route('landing') }}#rombongan" class="public-nav-link">Paket Rombongan</a>
+            <a href="{{ route('landing') }}#ketentuan" class="public-nav-link">Ketentuan</a>
+            <a href="{{ route('landing') }}#kontak" class="public-nav-link">Kontak</a>
 
-                <nav
-                    id="site-navigation"
-                    aria-label="Navigasi utama"
-                    class="public-nav"
-                    x-cloak
-                    x-show="menuOpen"
-                    x-transition:enter="transition ease-out duration-200"
-                    x-transition:enter-start="opacity-0 translate-y-[-6px]"
-                    x-transition:enter-end="opacity-100 translate-y-0"
-                    x-transition:leave="transition ease-out duration-120"
-                    x-transition:leave-start="opacity-100 translate-y-0"
-                    x-transition:leave-end="opacity-0 translate-y-[-6px]"
-                >
-                    <a href="{{ route('landing') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('landing')]) @if (request()->routeIs('landing')) aria-current="page" @endif>Beranda</a>
-                    <a href="{{ route('landing') }}#katalog" class="public-nav-link">Tiket</a>
-                    <a href="{{ route('landing') }}#rombongan" class="public-nav-link">Paket Rombongan</a>
-                    <a href="{{ route('landing') }}#ketentuan" class="public-nav-link">Ketentuan</a>
-                    <a href="{{ route('landing') }}#kontak" class="public-nav-link">Kontak</a>
-                    @auth
-                        @if (Auth::user()->isAdmin())
-                            <a href="{{ route('admin.dashboard') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('admin.*')]) @if (request()->routeIs('admin.*')) aria-current="page" @endif>Admin</a>
-                        @else
-                            <a href="{{ route('riwayat.index') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('riwayat.*') || request()->routeIs('user.*')]) @if (request()->routeIs('riwayat.*') || request()->routeIs('user.*')) aria-current="page" @endif>Riwayat</a>
-                            <details class="public-account-menu relative">
-                                <summary>
-                                    {{ Auth::user()->nama }}
-                                    <span class="inline-flex items-center justify-center min-w-6 h-6 rounded-full bg-bordo-600 px-1.5 text-[10px] font-bold text-white leading-none shadow-sm border border-white/40">Aktif</span>
-                                    <svg class="h-4 w-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m4 6 4 4 4-4"/></svg>
-                                </summary>
-                                <div class="public-account-dropdown">
-                                    <a href="{{ route('profile.edit') }}">Profil saya</a>
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit">Keluar</button>
-                                    </form>
-                                </div>
-                            </details>
-                        @endif
-                    @else
-                        <a href="{{ route('login') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('login')]) @if (request()->routeIs('login')) aria-current="page" @endif>Masuk</a>
-                        <a href="{{ route('register') }}" @class(['public-nav-cta', 'is-current' => request()->routeIs('register'), 'ring-2 ring-bordo-400' => request()->routeIs('register')]) @if (request()->routeIs('register')) aria-current="page" @endif>Daftar</a>
-                    @endauth
-                </nav>
-            </div>
-        </header>
+            <span class="public-nav-divider" aria-hidden="true"></span>
+
+            @auth
+                @if (Auth::user()->isAdmin())
+                    <a href="{{ route('admin.dashboard') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('admin.*')]) @if (request()->routeIs('admin.*')) aria-current="page" @endif>Admin</a>
+                @else
+                    <a href="{{ route('riwayat.index') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('riwayat.*') || request()->routeIs('user.*')]) @if (request()->routeIs('riwayat.*') || request()->routeIs('user.*')) aria-current="page" @endif>Riwayat</a>
+                    <details class="public-account-menu">
+                        <summary>
+                            {{ Auth::user()->nama }}
+                            <span class="inline-flex items-center justify-center min-w-6 h-6 rounded-full bg-bordo-600 px-1.5 text-[10px] font-bold text-white leading-none shadow-sm border border-white/40">Aktif</span>
+                            <svg class="h-4 w-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m4 6 4 4 4-4"/></svg>
+                        </summary>
+                        <div class="public-account-dropdown">
+                            <div class="public-account-summary">
+                                <p class="public-account-summary__name">{{ Auth::user()->nama }}</p>
+                                <p class="public-account-summary__role">Akun pengunjung</p>
+                            </div>
+                            <a href="{{ route('profile.edit') }}">
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="8" r="4"/></svg>
+                                Profil saya
+                            </a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit">
+                                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+                                    Keluar
+                                </button>
+                            </form>
+                        </div>
+                    </details>
+                @endif
+            @else
+                <a href="{{ route('login') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('login')]) @if (request()->routeIs('login')) aria-current="page" @endif>Masuk</a>
+                <a href="{{ route('register') }}" @class(['public-nav-cta', 'is-current' => request()->routeIs('register'), 'ring-2 ring-bordo-400' => request()->routeIs('register')]) @if (request()->routeIs('register')) aria-current="page" @endif>Daftar</a>
+            @endauth
+        </nav>
+
+        <div class="lg:hidden">
+            <button type="button" class="public-menu-toggle" @click="menuOpen = ! menuOpen" :aria-expanded="menuOpen" :aria-label="menuOpen ? 'Tutup navigasi' : 'Buka navigasi'" aria-controls="site-navigation">
+                <span class="sr-only" x-text="menuOpen ? 'Tutup navigasi' : 'Buka navigasi'">Buka navigasi</span>
+                <svg x-show="!menuOpen" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                <svg x-cloak x-show="menuOpen" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-width="2" d="m6 6 12 12M18 6 6 18"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <nav id="site-navigation" aria-label="Navigasi utama" x-cloak x-show="menuOpen" x-transition @click.away="menuOpen = false" class="public-nav lg:hidden">
+        <a href="{{ route('landing') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('landing')]) @if (request()->routeIs('landing')) aria-current="page" @endif>Beranda</a>
+        <a href="{{ route('landing') }}#katalog" class="public-nav-link">Tiket</a>
+        <a href="{{ route('landing') }}#rombongan" class="public-nav-link">Paket Rombongan</a>
+        <a href="{{ route('landing') }}#ketentuan" class="public-nav-link">Ketentuan</a>
+        <a href="{{ route('landing') }}#kontak" class="public-nav-link">Kontak</a>
+        @auth
+            @if (Auth::user()->isAdmin())
+                <a href="{{ route('admin.dashboard') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('admin.*')]) @if (request()->routeIs('admin.*')) aria-current="page" @endif>Admin</a>
+            @else
+                <a href="{{ route('riwayat.index') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('riwayat.*') || request()->routeIs('user.*')]) @if (request()->routeIs('riwayat.*') || request()->routeIs('user.*')) aria-current="page" @endif>Riwayat</a>
+                <details class="public-account-menu">
+                    <summary>
+                        {{ Auth::user()->nama }}
+                        <span class="inline-flex items-center justify-center min-w-6 h-6 rounded-full bg-bordo-600 px-1.5 text-[10px] font-bold text-white leading-none shadow-sm border border-white/40">Aktif</span>
+                        <svg class="h-4 w-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m4 6 4 4 4-4"/></svg>
+                    </summary>
+                    <div class="public-account-dropdown">
+                        <div class="public-account-summary">
+                            <p class="public-account-summary__name">{{ Auth::user()->nama }}</p>
+                            <p class="public-account-summary__role">Akun pengunjung</p>
+                        </div>
+                        <a href="{{ route('profile.edit') }}">
+                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="8" r="4"/></svg>
+                            Profil saya
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit">
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+                                Keluar
+                            </button>
+                        </form>
+                    </div>
+                </details>
+            @endif
+        @else
+            <a href="{{ route('login') }}" @class(['public-nav-link', 'is-current' => request()->routeIs('login')]) @if (request()->routeIs('login')) aria-current="page" @endif>Masuk</a>
+            <a href="{{ route('register') }}" @class(['public-nav-cta', 'is-current' => request()->routeIs('register'), 'ring-2 ring-bordo-400' => request()->routeIs('register')]) @if (request()->routeIs('register')) aria-current="page" @endif>Daftar</a>
+        @endauth
+    </nav>
+</header>
 
         <main id="main-content">
             @if (session('message'))

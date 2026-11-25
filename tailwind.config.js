@@ -12,42 +12,44 @@ export default {
     theme: {
         extend: {
             colors: {
-                juniper: {
-                    50: '#eef3f1',
-                    100: '#d5e2dc',
-                    200: '#abc6ba',
-                    300: '#7da797',
-                    400: '#4f8571',
-                    500: '#2f5d4c',
-                    600: '#1f3d33',
-                    700: '#173028',
-                    800: '#11241e',
-                    900: '#0b1814',
+                // MAIN (60%) - CREAM #F5DABF - backgrounds, cards, large surfaces
+                cream: {
+                    50: '#fef9f0',
+                    100: '#fdf0e0',
+                    200: '#fae1c1',
+                    300: '#f7d2a2',
+                    400: '#f5c383',
+                    500: '#F5DABF',  // Base CREAM
+                    600: '#e6c4a6',
+                    700: '#d4a885',
+                    800: '#b88a65',
+                    900: '#96704f',
                 },
-                toffee: {
-                    50: '#f8efe8',
-                    100: '#efdccb',
-                    200: '#e0b99b',
-                    300: '#cf936b',
-                    400: '#b9743f',
-                    500: '#a25f31',
-                    600: '#8a4b2a',
-                    700: '#6e3b21',
-                    800: '#552e1b',
-                    900: '#3d2113',
+                // SECONDARY (30%) - GREEN #0F3D3A - primary actions, navigation, headings, buttons
+                green: {
+                    50: '#e8f0ef',
+                    100: '#d1e1e0',
+                    200: '#a3c3c1',
+                    300: '#75a5a2',
+                    400: '#478783',
+                    500: '#196966',
+                    600: '#125250',
+                    700: '#0F3D3A',  // Base GREEN
+                    800: '#0c312f',
+                    900: '#092523',
                 },
-                alabaster: {
-                    50: '#fbf8f2',
-                    100: '#f5edde',
-                    200: '#ece0c9',
-                    300: '#dfcfb0',
-                },
-                gold: {
-                    300: '#e3cc90',
-                    400: '#d8bb74',
-                    500: '#c9a65a',
-                    600: '#b08d43',
-                    700: '#8f7136',
+                // ACCENT (10%) - BORDO #6C151E - CTAs, highlights, focus rings, special elements
+                bordo: {
+                    50: '#fdf0f1',
+                    100: '#fbe1e3',
+                    200: '#f5c3c7',
+                    300: '#eda5ab',
+                    400: '#e27780',
+                    500: '#d64a59',
+                    600: '#a83a47',
+                    700: '#6C151E',  // Base BORDO
+                    800: '#561118',
+                    900: '#430d13',
                 },
             },
             fontFamily: {

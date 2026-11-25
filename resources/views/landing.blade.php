@@ -147,7 +147,7 @@
         <div class="park-hero__layout">
             <div class="park-hero__copy">
                 <div class="park-hero__copy-content">
-                    <p class="park-hero__eyebrow">Playground &amp; Mini Zoo &middot; Rumpin</p>
+                    <p class="park-hero__eyebrow">Playground & Mini Zoo &middot; Rumpin</p>
                     <div class="park-hero__copy-stack">
                         <div class="park-hero__copy-layer is-visible" :class="{ 'is-visible': activeCopy === 'a' }" :aria-hidden="activeCopy !== 'a'">
                             <h1 class="park-hero__title" x-text="items[copyA].nama">{{ $destinasi[0]['nama'] }}</h1>
@@ -218,74 +218,74 @@
         </div>
     </section>
 
-    <section id="tentang" class="scroll-mt-20 bg-alabaster-50 text-juniper-900 park-entrance park-entrance--delay-2">
+    <section id="tentang" class="scroll-mt-20 bg-cream-50 text-green-900 park-entrance park-entrance--delay-2">
         <div class="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
             <div>
-                <p class="text-sm font-semibold text-toffee-700">The Nice Park Rumpin</p>
-                <h2 class="mt-2 text-3xl font-bold text-juniper-900">Satu hari untuk bermain dan belajar</h2>
-                <p class="mt-4 max-w-2xl text-sm leading-7 text-gray-600">
+                <p class="text-sm font-semibold text-bordo-700">The Nice Park Rumpin</p>
+                <h2 class="mt-2 text-3xl font-bold text-green-900">Satu hari untuk bermain dan belajar</h2>
+                <p class="mt-4 max-w-2xl text-sm leading-7 text-green-500">
                     Nikmati playground indoor dan outdoor, mini zoo edukatif, serta area kuliner. Taman keluarga di Rumpin ini cocok untuk liburan bersama maupun kegiatan sekolah.
                 </p>
-                <ul class="mt-5 flex flex-wrap gap-2 text-sm text-juniper-800">
-                    <li class="rounded-full bg-juniper-100 px-3 py-1.5">Playground</li>
-                    <li class="rounded-full bg-juniper-100 px-3 py-1.5">Mini zoo</li>
-                    <li class="rounded-full bg-juniper-100 px-3 py-1.5">Foodcourt</li>
-                    <li class="rounded-full bg-juniper-100 px-3 py-1.5">Musholla</li>
+                <ul class="mt-5 flex flex-wrap gap-2 text-sm text-green-800">
+                    <li class="rounded-full bg-green-100 px-3 py-1.5">Playground</li>
+                    <li class="rounded-full bg-green-100 px-3 py-1.5">Mini zoo</li>
+                    <li class="rounded-full bg-green-100 px-3 py-1.5">Foodcourt</li>
+                    <li class="rounded-full bg-green-100 px-3 py-1.5">Musholla</li>
                 </ul>
             </div>
-            <div class="rounded-xl border border-juniper-200 bg-white p-6">
-                <h3 class="font-semibold text-juniper-900">Rencanakan kunjungan</h3>
-                <dl class="mt-4 space-y-4 text-sm text-gray-600">
+            <div class="rounded-xl border border-green-200 bg-white p-6">
+                <h3 class="font-semibold text-green-900">Rencanakan kunjungan</h3>
+                <dl class="mt-4 space-y-4 text-sm text-green-500">
                     <div>
-                        <dt class="text-gray-500">Lokasi</dt>
-                        <dd class="mt-1 text-juniper-900">Kp Cisirung, RT.003/RW.001, Rabak, Kec. Rumpin, Kabupaten Bogor, Jawa Barat 16350</dd>
+                        <dt class="text-green-400">Lokasi</dt>
+                        <dd class="mt-1 text-green-900">Kp Cisirung, RT.003/RW.001, Rabak, Kec. Rumpin, Kabupaten Bogor, Jawa Barat 16350</dd>
                     </div>
                     <div>
-                        <dt class="text-gray-500">Jam operasional</dt>
-                        <dd class="mt-1 text-juniper-900">Jadwal dapat berubah; periksa kanal resmi sebelum berkunjung.</dd>
+                        <dt class="text-green-400">Jam operasional</dt>
+                        <dd class="mt-1 text-green-900">Jadwal dapat berubah; periksa kanal resmi sebelum berkunjung.</dd>
                     </div>
                 </dl>
-                <a href="https://www.google.com/maps/dir/?api=1&amp;destination=-6.4708883,106.6457887" target="_blank" rel="noopener noreferrer" class="mt-5 inline-flex font-semibold text-toffee-700 underline underline-offset-4 hover:text-toffee-900">Lihat petunjuk arah</a>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=-6.4708883,106.6457887" target="_blank" rel="noopener noreferrer" class="mt-5 inline-flex font-semibold text-bordo-700 underline underline-offset-4 hover:text-bordo-900">Lihat petunjuk arah</a>
             </div>
         </div>
     </section>
 
-    <section id="ketentuan" class="scroll-mt-20 bg-juniper-50 text-juniper-900">
+    <section id="ketentuan" class="scroll-mt-20 bg-green-50 text-green-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-            <h2 class="text-2xl font-bold text-juniper-900">Ketentuan Pemilihan Tiket</h2>
-            <p class="mt-2 max-w-2xl text-sm text-gray-600">Pilih kategori berdasarkan jumlah peserta. Diskon hanya berlaku sesuai kategori dan periode yang ditetapkan.</p>
+            <h2 class="text-2xl font-bold text-green-900">Ketentuan Pemilihan Tiket</h2>
+            <p class="mt-2 max-w-2xl text-sm text-green-500">Pilih kategori berdasarkan jumlah peserta. Diskon hanya berlaku sesuai kategori dan periode yang ditetapkan.</p>
 
             <div class="mt-6 grid gap-4 sm:grid-cols-2">
-                <div class="rounded-lg border border-juniper-200 bg-white p-6">
-                    <h3 class="font-semibold text-juniper-800">Tiket Umum</h3>
-                    <p class="mt-2 text-sm text-gray-600">
-                        Untuk pengunjung perorangan atau keluarga. Jumlah tiket <strong class="text-juniper-900">maksimal 10</strong> per pesanan.
+                <div class="rounded-lg border border-green-200 bg-white p-6">
+                    <h3 class="font-semibold text-green-800">Tiket Umum</h3>
+                    <p class="mt-2 text-sm text-green-500">
+                        Untuk pengunjung perorangan atau keluarga. Jumlah tiket <strong class="text-green-900">maksimal 10</strong> per pesanan.
                         Tidak memerlukan persetujuan admin. Diskon umum aktif diterapkan otomatis.
                     </p>
-                    <a href="{{ route('pesan.kategori', ['kategori' => 'umum']) }}" class="mt-5 inline-flex rounded-md bg-juniper-600 px-4 py-2 text-sm font-semibold text-white hover:bg-juniper-700">Pilih tiket umum</a>
+                    <a href="{{ route('pesan.kategori', ['kategori' => 'umum']) }}" class="mt-5 inline-flex rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">Pilih tiket umum</a>
                 </div>
-                <div id="rombongan" class="scroll-mt-24 rounded-lg border border-juniper-200 bg-white p-6">
-                    <h3 class="font-semibold text-juniper-800">Paket Rombongan</h3>
-                    <p class="mt-2 text-sm text-gray-600">
-                        Untuk kunjungan sekolah atau rombongan dengan jumlah <strong class="text-juniper-900">lebih dari 10</strong> tiket.
+                <div id="rombongan" class="scroll-mt-24 rounded-lg border border-green-200 bg-white p-6">
+                    <h3 class="font-semibold text-green-800">Paket Rombongan</h3>
+                    <p class="mt-2 text-sm text-green-500">
+                        Untuk kunjungan sekolah atau rombongan dengan jumlah <strong class="text-green-900">lebih dari 10</strong> tiket.
                         Pengajuan harus disetujui admin sebelum pembayaran. Diskon rombongan aktif terpisah dari diskon umum.
                     </p>
-                    <a href="{{ route('pesan.kategori', ['kategori' => 'rombongan']) }}" class="mt-5 inline-flex rounded-md bg-juniper-600 px-4 py-2 text-sm font-semibold text-white hover:bg-juniper-700">Ajukan paket rombongan</a>
+                    <a href="{{ route('pesan.kategori', ['kategori' => 'rombongan']) }}" class="mt-5 inline-flex rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">Ajukan paket rombongan</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="katalog" class="bg-alabaster-50 py-14 scroll-mt-16 text-juniper-900 park-entrance park-entrance--delay-3">
+    <section id="katalog" class="bg-cream-50 py-14 scroll-mt-16 text-green-900 park-entrance park-entrance--delay-3">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-2xl font-bold text-juniper-900">Katalog Tiket &amp; Paket</h2>
+            <h2 class="text-2xl font-bold text-green-900">Katalog Tiket & Paket</h2>
 
             @foreach ($kategori as $kategoriKey => $kategoriLabel)
                 <div class="mt-10">
-                    <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-juniper-200 pb-3">
-                        <h3 class="text-xl font-semibold text-juniper-800">
+                    <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-green-200 pb-3">
+                        <h3 class="text-xl font-semibold text-green-800">
                             {{ $kategoriLabel }}
-                            <span class="text-sm font-normal text-gray-600">
+                            <span class="text-sm font-normal text-green-500">
                                 ({{ $kategoriKey === \App\Models\TiketPaket::KATEGORI_UMUM ? 'maksimal 10 tiket' : 'lebih dari 10 tiket' }})
                             </span>
                         </h3>
@@ -295,26 +295,26 @@
 
                     <div class="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                         @forelse ($tiketPaket->get($kategoriKey, collect()) as $tiket)
-                            <div class="park-card-hover reveal-on-scroll rounded-xl border border-juniper-200 bg-white p-6 flex flex-col">
-                                <p class="text-xs font-semibold text-toffee-700">{{ $kategoriLabel }}</p>
-                                <h4 class="mt-1 font-semibold text-gray-900">{{ $tiket->nama }}</h4>
+                            <div class="park-card-hover reveal-on-scroll rounded-xl border border-green-200 bg-white p-6 flex flex-col">
+                                <p class="text-xs font-semibold text-bordo-700">{{ $kategoriLabel }}</p>
+                                <h4 class="mt-1 font-semibold text-green-900">{{ $tiket->nama }}</h4>
 
-                                <p class="mt-1 text-2xl font-bold text-juniper-700">
+                                <p class="mt-1 text-2xl font-bold text-green-700">
                                     Rp {{ number_format($tiket->harga, 0, ',', '.') }}
-                                    <span class="text-sm font-normal text-gray-500">/ orang</span>
+                                    <span class="text-sm font-normal text-green-400">/ orang</span>
                                 </p>
 
                                 @if ($tiket->deskripsi)
-                                    <p class="mt-3 text-sm text-gray-600">{{ $tiket->deskripsi }}</p>
+                                    <p class="mt-3 text-sm text-green-500">{{ $tiket->deskripsi }}</p>
                                 @endif
 
                                 @if ($tiket->fasilitas)
-                                    <p class="mt-3 text-sm text-gray-600">
-                                        <span class="font-medium text-gray-700">Fasilitas:</span> {{ $tiket->fasilitas }}
+                                    <p class="mt-3 text-sm text-green-500">
+                                        <span class="font-medium text-green-600">Fasilitas:</span> {{ $tiket->fasilitas }}
                                     </p>
                                 @endif
 
-                                <p class="mt-3 text-sm text-gray-500">Kuota harian: {{ $tiket->kuota_harian }} tiket</p>
+                                <p class="mt-3 text-sm text-green-400">Kuota harian: {{ $tiket->kuota_harian }} tiket</p>
 
                                 @php($diskonTiket = $diskonPaket($tiket))
 
@@ -322,7 +322,7 @@
                                     @if ($diskonTiket->isNotEmpty())
                                         <ul class="mb-3 flex flex-wrap gap-2">
                                             @foreach ($diskonTiket as $item)
-                                                <li class="rounded-full bg-toffee-100 px-3 py-1 text-xs font-semibold text-toffee-800">
+                                                <li class="rounded-full bg-bordo-100 px-3 py-1 text-xs font-semibold text-bordo-800">
                                                     {{ $item->nama }}:
                                                     @if ($item->tipe === \App\Models\Diskon::TIPE_PERSEN)
                                                         hemat {{ $item->nilai }}%
@@ -335,15 +335,15 @@
                                     @endif
 
                                     <div class="flex flex-wrap gap-2">
-                                        <a href="{{ route('katalog.show', $tiket) }}" class="park-button-magnetic inline-flex rounded-lg border border-juniper-600 px-4 py-2 text-sm font-semibold text-juniper-700 hover:bg-juniper-50">
+                                        <a href="{{ route('katalog.show', $tiket) }}" class="park-button-magnetic inline-flex rounded-lg border border-green-600 px-4 py-2 text-sm font-semibold text-green-700 hover:bg-green-50">
                                             Lihat detail
                                         </a>
-                                      
+                                       
                                     </div>
                                 </div>
                             </div>
                         @empty
-                            <p class="text-sm text-gray-600">Belum ada tiket/paket aktif untuk kategori ini.</p>
+                            <p class="text-sm text-green-500">Belum ada tiket/paket aktif untuk kategori ini.</p>
                         @endforelse
                     </div>
                 </div>
@@ -351,116 +351,116 @@
         </div>
     </section>
 
-    <section id="cara-memesan" class="scroll-mt-20 bg-alabaster-50 py-14 text-juniper-900">
+    <section id="cara-memesan" class="scroll-mt-20 bg-cream-50 py-14 text-green-900">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <p class="text-sm font-semibold text-toffee-700">Alur pemesanan</p>
+            <p class="text-sm font-semibold text-bordo-700">Alur pemesanan</p>
             <h2 class="mt-2 text-3xl font-bold">Dari pilih tiket sampai masuk taman</h2>
             <div class="mt-8 grid gap-6 lg:grid-cols-2">
-                <article class="park-card-hover reveal-on-scroll rounded-xl border border-juniper-200 bg-white p-6">
+                <article class="park-card-hover reveal-on-scroll rounded-xl border border-green-200 bg-white p-6">
                     <h3 class="text-xl font-semibold">Tiket umum</h3>
                     <ol class="mt-5 grid gap-3 text-sm sm:grid-cols-3">
-                        <li class="rounded-lg bg-juniper-50 p-4 transition-colors hover:bg-juniper-100"><span class="font-semibold">1. Pilih</span><p class="mt-1 text-gray-600">Tiket, tanggal, dan jumlah 1–10 orang.</p></li>
-                        <li class="rounded-lg bg-juniper-50 p-4 transition-colors hover:bg-juniper-100"><span class="font-semibold">2. Bayar</span><p class="mt-1 text-gray-600">Selesaikan pembayaran melalui Midtrans.</p></li>
-                        <li class="rounded-lg bg-juniper-50 p-4 transition-colors hover:bg-juniper-100"><span class="font-semibold">3. Tunjukkan</span><p class="mt-1 text-gray-600">E-ticket terbit setelah pembayaran terverifikasi.</p></li>
+                        <li class="rounded-lg bg-green-50 p-4 transition-colors hover:bg-green-100"><span class="font-semibold">1. Pilih</span><p class="mt-1 text-green-500">Tiket, tanggal, dan jumlah 1–10 orang.</p></li>
+                        <li class="rounded-lg bg-green-50 p-4 transition-colors hover:bg-green-100"><span class="font-semibold">2. Bayar</span><p class="mt-1 text-green-500">Selesaikan pembayaran melalui Midtrans.</p></li>
+                        <li class="rounded-lg bg-green-50 p-4 transition-colors hover:bg-green-100"><span class="font-semibold">3. Tunjukkan</span><p class="mt-1 text-green-500">E-ticket terbit setelah pembayaran terverifikasi.</p></li>
                     </ol>
                 </article>
-                <article class="park-card-hover reveal-on-scroll rounded-xl border border-toffee-200 bg-white p-6">
+                <article class="park-card-hover reveal-on-scroll rounded-xl border border-bordo-200 bg-white p-6">
                     <h3 class="text-xl font-semibold">Paket rombongan</h3>
                     <ol class="mt-5 grid gap-3 text-sm sm:grid-cols-4">
-                        <li class="rounded-lg bg-alabaster-50 p-4 transition-colors hover:bg-toffee-50"><span class="font-semibold">1. Ajukan</span><p class="mt-1 text-gray-600">Isi sekolah, tanggal, jumlah &gt;10, dan biodata.</p></li>
-                        <li class="rounded-lg bg-alabaster-50 p-4 transition-colors hover:bg-toffee-50"><span class="font-semibold">2. Tinjau</span><p class="mt-1 text-gray-600">Admin menyetujui atau menolak dengan alasan.</p></li>
-                        <li class="rounded-lg bg-alabaster-50 p-4 transition-colors hover:bg-toffee-50"><span class="font-semibold">3. Bayar</span><p class="mt-1 text-gray-600">Pembayaran terbuka setelah disetujui.</p></li>
-                        <li class="rounded-lg bg-alabaster-50 p-4 transition-colors hover:bg-toffee-50"><span class="font-semibold">4. Tunjukkan</span><p class="mt-1 text-gray-600">E-ticket terbit setelah pembayaran terverifikasi.</p></li>
+                        <li class="rounded-lg bg-cream-50 p-4 transition-colors hover:bg-bordo-50"><span class="font-semibold">1. Ajukan</span><p class="mt-1 text-green-500">Isi sekolah, tanggal, jumlah >10, dan biodata.</p></li>
+                        <li class="rounded-lg bg-cream-50 p-4 transition-colors hover:bg-bordo-50"><span class="font-semibold">2. Tinjau</span><p class="mt-1 text-green-500">Admin menyetujui atau menolak dengan alasan.</p></li>
+                        <li class="rounded-lg bg-cream-50 p-4 transition-colors hover:bg-bordo-50"><span class="font-semibold">3. Bayar</span><p class="mt-1 text-green-500">Pembayaran terbuka setelah disetujui.</p></li>
+                        <li class="rounded-lg bg-cream-50 p-4 transition-colors hover:bg-bordo-50"><span class="font-semibold">4. Tunjukkan</span><p class="mt-1 text-green-500">E-ticket terbit setelah pembayaran terverifikasi.</p></li>
                     </ol>
                 </article>
             </div>
         </div>
     </section>
 
-    <section id="fasilitas" class="scroll-mt-20 bg-juniper-900 py-14 text-alabaster-50">
+    <section id="fasilitas" class="scroll-mt-20 bg-green-900 py-14 text-cream-50">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="max-w-2xl">
-                <p class="text-sm font-semibold text-toffee-200">Di dalam taman</p>
-                <h1 class="mt-2 text-3xl font-bold text-alabaster-200">Ruang bermain untuk semua</h1>
-                <p class="mt-3 text-sm leading-6 text-alabaster-200">Kenali suasana The Nice Park Rumpin sebelum merencanakan kunjungan.</p>
+                <p class="text-sm font-semibold text-bordo-200">Di dalam taman</p>
+                <h1 class="mt-2 text-3xl font-bold text-cream-200">Ruang bermain untuk semua</h1>
+                <p class="mt-3 text-sm leading-6 text-cream-200">Kenali suasana The Nice Park Rumpin sebelum merencanakan kunjungan.</p>
             </div>
             <div class="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <figure class="group overflow-hidden rounded-xl border border-juniper-700 reveal-on-scroll">
+                <figure class="group overflow-hidden rounded-xl border border-green-700 reveal-on-scroll">
                     <img src="{{ asset('images/download.jpg') }}" alt="Area taman dan playground The Nice Park" loading="lazy" class="aspect-[4/3] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
-                    <figcaption class="bg-juniper-800 px-4 py-3 text-sm">Area taman dan playground</figcaption>
+                    <figcaption class="bg-green-800 px-4 py-3 text-sm">Area taman dan playground</figcaption>
                 </figure>
-                <figure class="group overflow-hidden rounded-xl border border-juniper-700 reveal-on-scroll">
+                <figure class="group overflow-hidden rounded-xl border border-green-700 reveal-on-scroll">
                     <img src="{{ asset('images/thenicepark.jpg') }}" alt="Keluarga menikmati kunjungan di The Nice Park" loading="lazy" class="aspect-[4/3] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
-                    <figcaption class="bg-juniper-800 px-4 py-3 text-sm">Waktu bersama keluarga</figcaption>
+                    <figcaption class="bg-green-800 px-4 py-3 text-sm">Waktu bersama keluarga</figcaption>
                 </figure>
-                <figure class="group overflow-hidden rounded-xl border border-juniper-700 reveal-on-scroll">
+                <figure class="group overflow-hidden rounded-xl border border-green-700 reveal-on-scroll">
                     <img src="{{ asset('images/thnicepark.jpg') }}" alt="Wahana bermain di dalam taman" loading="lazy" class="aspect-[4/3] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
-                    <figcaption class="bg-juniper-800 px-4 py-3 text-sm">Wahana bermain</figcaption>
+                    <figcaption class="bg-green-800 px-4 py-3 text-sm">Wahana bermain</figcaption>
                 </figure>
             </div>
         </div>
     </section>
 
-    <section id="ketentuan-kunjungan" class="scroll-mt-20 bg-alabaster-50 py-14 text-juniper-900">
+    <section id="ketentuan-kunjungan" class="scroll-mt-20 bg-cream-50 py-14 text-green-900">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl font-bold">Ketentuan kunjungan</h2>
             <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <article class="rounded-xl border border-juniper-200 bg-white p-5"><h3 class="font-semibold">Tanggal dan kuota</h3><p class="mt-2 text-sm leading-6 text-gray-600">Pilih tanggal yang masih tersedia. Tanggal tutup tidak dapat dipesan dan kuota dicek sebelum pesanan dibuat.</p></article>
-                <article class="rounded-xl border border-juniper-200 bg-white p-5"><h3 class="font-semibold">Pembayaran</h3><p class="mt-2 text-sm leading-6 text-gray-600">Pesanan umum dapat langsung dibayar. Rombongan harus disetujui admin lebih dahulu.</p></article>
-                <article class="rounded-xl border border-juniper-200 bg-white p-5"><h3 class="font-semibold">E-ticket</h3><p class="mt-2 text-sm leading-6 text-gray-600">Tiket terbit setelah pembayaran terverifikasi dan hanya berlaku pada tanggal kunjungan.</p></article>
-                <article class="rounded-xl border border-juniper-200 bg-white p-5"><h3 class="font-semibold">Satu kali pakai</h3><p class="mt-2 text-sm leading-6 text-gray-600">Tunjukkan QR atau kode tiket saat masuk. Tiket yang sudah digunakan tidak bisa dipakai kembali.</p></article>
+                <article class="rounded-xl border border-green-200 bg-white p-5"><h3 class="font-semibold">Tanggal dan kuota</h3><p class="mt-2 text-sm leading-6 text-green-500">Pilih tanggal yang masih tersedia. Tanggal tutup tidak dapat dipesan dan kuota dicek sebelum pesanan dibuat.</p></article>
+                <article class="rounded-xl border border-green-200 bg-white p-5"><h3 class="font-semibold">Pembayaran</h3><p class="mt-2 text-sm leading-6 text-green-500">Pesanan umum dapat langsung dibayar. Rombongan harus disetujui admin lebih dahulu.</p></article>
+                <article class="rounded-xl border border-green-200 bg-white p-5"><h3 class="font-semibold">E-ticket</h3><p class="mt-2 text-sm leading-6 text-green-500">Tiket terbit setelah pembayaran terverifikasi dan hanya berlaku pada tanggal kunjungan.</p></article>
+                <article class="rounded-xl border border-green-200 bg-white p-5"><h3 class="font-semibold">Satu kali pakai</h3><p class="mt-2 text-sm leading-6 text-green-500">Tunjukkan QR atau kode tiket saat masuk. Tiket yang sudah digunakan tidak bisa dipakai kembali.</p></article>
             </div>
         </div>
     </section>
 
-    <section id="faq" class="scroll-mt-20 bg-juniper-50 py-14 text-juniper-900">
+    <section id="faq" class="scroll-mt-20 bg-green-50 py-14 text-green-900">
         <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl font-bold">Pertanyaan yang sering diajukan</h2>
-            <div class="mt-6 divide-y divide-juniper-200 rounded-xl border border-juniper-200 bg-white">
+            <div class="mt-6 divide-y divide-green-200 rounded-xl border border-green-200 bg-white">
                 <details class="group p-5">
-                    <summary class="cursor-pointer font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-juniper-700">Kapan e-ticket terbit?</summary>
-                    <p class="mt-3 text-sm leading-6 text-gray-600">Setelah status pembayaran berhasil diverifikasi oleh sistem. Tiket dapat dilihat dari riwayat pesanan.</p>
+                    <summary class="cursor-pointer font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-green-700">Kapan e-ticket terbit?</summary>
+                    <p class="mt-3 text-sm leading-6 text-green-500">Setelah status pembayaran berhasil diverifikasi oleh sistem. Tiket dapat dilihat dari riwayat pesanan.</p>
                 </details>
                 <details class="group p-5">
-                    <summary class="cursor-pointer font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-juniper-700">Bagaimana jika pengajuan rombongan ditolak?</summary>
-                    <p class="mt-3 text-sm leading-6 text-gray-600">Alasan penolakan admin tampil di detail pesanan pada halaman riwayat. Pesanan yang ditolak tidak dapat dibayar.</p>
+                    <summary class="cursor-pointer font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-green-700">Bagaimana jika pengajuan rombongan ditolak?</summary>
+                    <p class="mt-3 text-sm leading-6 text-green-500">Alasan penolakan admin tampil di detail pesanan pada halaman riwayat. Pesanan yang ditolak tidak dapat dibayar.</p>
                 </details>
                 <details class="group p-5">
-                    <summary class="cursor-pointer font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-juniper-700">Bisakah saya mengganti nama peserta?</summary>
-                    <p class="mt-3 text-sm leading-6 text-gray-600">Perubahan nama mandiri belum tersedia. Hubungi kanal resmi The Nice Park sebelum hari kunjungan.</p>
+                    <summary class="cursor-pointer font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-green-700">Bisakah saya mengganti nama peserta?</summary>
+                    <p class="mt-3 text-sm leading-6 text-green-500">Perubahan nama mandiri belum tersedia. Hubungi kanal resmi The Nice Park sebelum hari kunjungan.</p>
                 </details>
             </div>
         </div>
     </section>
 
-    <section id="video" class="scroll-mt-20 bg-alabaster-50 py-14 text-juniper-900">
+    <section id="video" class="scroll-mt-20 bg-cream-50 py-14 text-green-900">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <p class="text-sm font-semibold text-toffee-700">Video</p>
+            <p class="text-sm font-semibold text-bordo-700">Video</p>
             <h2 class="mt-2 text-3xl font-bold">Lihat suasana The Nice Park</h2>
-            <p class="mt-2 max-w-2xl text-sm text-gray-600">Cuplikan kegiatan dan suasana taman dari kanal resmi kami.</p>
+            <p class="mt-2 max-w-2xl text-sm text-green-500">Cuplikan kegiatan dan suasana taman dari kanal resmi kami.</p>
             <div class="mt-8 grid gap-6 md:grid-cols-2">
-                <div class="overflow-hidden rounded-xl border border-juniper-200 bg-white">
+                <div class="overflow-hidden rounded-xl border border-green-200 bg-white">
                     <div class="aspect-video">
                         <iframe class="h-full w-full" src="https://www.youtube.com/embed/uwJ24IUUEjk" title="The Nice Park Rumpin" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
                     </div>
                 </div>
                 <div class="flex flex-col justify-center gap-3">
-                    <p class="text-sm text-gray-600">Temukan lebih banyak video di kanal YouTube resmi kami.</p>
-                    <a href="https://www.youtube.com/@TheNiceParkRumpin" target="_blank" rel="noopener noreferrer" class="inline-flex w-fit rounded-md bg-juniper-600 px-4 py-2 text-sm font-semibold text-white hover:bg-juniper-700">Buka kanal YouTube</a>
+                    <p class="text-sm text-green-500">Temukan lebih banyak video di kanal YouTube resmi kami.</p>
+                    <a href="https://www.youtube.com/@TheNiceParkRumpin" target="_blank" rel="noopener noreferrer" class="inline-flex w-fit rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">Buka kanal YouTube</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="bg-juniper-700 text-white">
+    <section class="bg-green-700 text-white">
         <div id="rombongan-cta" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
             <div>
-                <h2 class="text-2xl font-bold text-alabaster-200">Rencanakan kunjungan sekolah Anda</h2>
-                <p class="mt-2 text-alabaster-100 max-w-xl">
+                <h2 class="text-2xl font-bold text-cream-200">Rencanakan kunjungan sekolah Anda</h2>
+                <p class="mt-2 text-cream-100 max-w-xl">
                     Ajukan paket rombongan lebih dari 10 peserta, isi biodata siswa, lalu bayar setelah disetujui admin.
                 </p>
             </div>
-            <a href="{{ route('pesan.kategori', ['kategori' => 'rombongan']) }}" class="shrink-0 px-6 py-3 rounded-md bg-toffee-300 text-juniper-900 font-semibold hover:bg-toffee-200">
+            <a href="{{ route('pesan.kategori', ['kategori' => 'rombongan']) }}" class="shrink-0 px-6 py-3 rounded-md bg-bordo-300 text-green-900 font-semibold hover:bg-bordo-200">
                 Mulai Ajukan
             </a>
         </div>

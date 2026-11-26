@@ -2414,6 +2414,421 @@ a[role="button"]:active,
     color: var(--green-800);
 }
 
+/* ===== Admin dashboard content ===== */
+.admin-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.admin-metric,
+.admin-panel {
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    background: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.admin-metric {
+    min-width: 0;
+    padding: 1.35rem 1.4rem;
+}
+
+.admin-metric-toffee {
+    border-color: var(--cream-400);
+    background: var(--cream-100);
+}
+
+.admin-metric-icon {
+    display: grid;
+    width: 2.4rem;
+    height: 2.4rem;
+    place-items: center;
+    border-radius: var(--radius-md);
+}
+
+.admin-metric-icon svg {
+    width: 1.35rem;
+    height: 1.35rem;
+}
+
+.admin-metric-icon-green {
+    background: var(--green-100);
+    color: var(--green-700);
+}
+
+.admin-metric-icon-toffee {
+    background: var(--cream-200);
+    color: var(--cream-900);
+}
+
+.admin-metric p {
+    margin-top: 1rem;
+    color: var(--color-text-muted);
+    font-size: .82rem;
+}
+
+.admin-metric strong {
+    display: block;
+    margin-top: .3rem;
+    overflow-wrap: anywhere;
+    color: var(--green-900);
+    font-size: clamp(1.45rem, 2.4vw, 2rem);
+    line-height: 1.2;
+}
+
+.admin-metric > span {
+    display: block;
+    margin-top: .4rem;
+    color: var(--color-text-muted);
+    font-size: .75rem;
+}
+
+.admin-metric > span a {
+    color: var(--bordo-700);
+    font-weight: 600;
+}
+
+.admin-dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(18rem, .85fr);
+    gap: 1.5rem;
+    align-items: start;
+    margin-bottom: 1.5rem;
+}
+
+.admin-panel {
+    min-width: 0;
+    padding: 1.5rem;
+}
+
+.admin-panel-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.admin-panel-heading h2 {
+    color: var(--green-900);
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.admin-panel-heading p {
+    margin-top: .25rem;
+    color: var(--color-text-muted);
+    font-size: .78rem;
+}
+
+.admin-panel-heading > a {
+    color: var(--bordo-700);
+    font-size: .8rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.admin-panel-heading > a:hover {
+    text-decoration: underline;
+}
+
+.admin-table-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+}
+
+.admin-orders-table {
+    width: 100%;
+    min-width: 44rem;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: .77rem;
+}
+
+.admin-orders-table th {
+    padding: .75rem .65rem;
+    border-bottom: 1px solid var(--color-border-light);
+    color: var(--color-text-muted);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.admin-orders-table td {
+    padding: .85rem .65rem;
+    border-bottom: 1px solid var(--color-border-light);
+    color: var(--green-700);
+    white-space: nowrap;
+}
+
+.admin-orders-table tbody tr {
+    transition: background-color var(--transition-fast);
+}
+
+.admin-orders-table tbody tr:hover {
+    background: var(--green-50);
+}
+
+.admin-orders-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.admin-order-name,
+.admin-order-code {
+    display: block;
+}
+
+.admin-order-name {
+    color: var(--green-900);
+    font-weight: 600;
+}
+
+.admin-order-code {
+    margin-top: .25rem;
+    color: var(--color-text-muted);
+    font-size: .68rem;
+}
+
+.admin-empty-row {
+    padding-block: 2rem !important;
+    text-align: center;
+}
+
+.admin-chart-key {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    color: var(--color-text-muted);
+    font-size: .7rem;
+    white-space: nowrap;
+}
+
+.admin-chart-key span {
+    width: .55rem;
+    height: .55rem;
+    border-radius: var(--radius-full);
+    background: #2b4b9b;
+}
+
+.admin-chart-figure {
+    margin: 0;
+}
+
+.admin-chart {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    grid-template-rows: minmax(12rem, 1fr) auto;
+    column-gap: .35rem;
+    row-gap: .55rem;
+}
+
+.admin-chart-yaxis {
+    position: relative;
+    grid-column: 1;
+    grid-row: 1;
+    color: var(--color-text-muted);
+    font-size: .68rem;
+    line-height: 1;
+}
+
+.admin-chart-yaxis span {
+    position: absolute;
+    right: 0;
+    transform: translateY(-50%);
+    white-space: nowrap;
+}
+
+.admin-chart-area {
+    position: relative;
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.admin-chart-gridlines {
+    position: absolute;
+    inset: 0;
+}
+
+.admin-chart-gridlines span {
+    position: absolute;
+    right: 0;
+    left: 0;
+    height: 1px;
+    background: #e6e6e6;
+}
+
+.admin-chart-line {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.admin-chart-line polyline {
+    fill: none;
+    stroke: #2b4b9b;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+}
+
+.admin-chart-dot {
+    position: absolute;
+    width: .7rem;
+    height: .7rem;
+    border: 3px solid #2b4b9b;
+    border-radius: var(--radius-full);
+    background: white;
+    transform: translate(-50%, -50%);
+    transition: transform var(--transition-fast);
+}
+
+.admin-chart-dot:hover {
+    transform: translate(-50%, -50%) scale(1.25);
+}
+
+.admin-chart-xaxis {
+    position: relative;
+    grid-column: 2;
+    grid-row: 2;
+    height: 1rem;
+    color: var(--color-text-muted);
+    font-size: .7rem;
+}
+
+.admin-chart-xaxis span {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+
+.admin-chart-caption {
+    margin-top: .9rem;
+    color: var(--color-text-muted);
+    font-size: .72rem;
+    line-height: 1.5;
+}
+
+.admin-quick-links {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.admin-quick-links a {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    min-width: 0;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    background: white;
+    padding: 1rem;
+    color: var(--green-700);
+    text-decoration: none;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.admin-quick-links a:hover {
+    border-color: var(--green-300);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.admin-quick-icon {
+    display: grid;
+    width: 2.3rem;
+    height: 2.3rem;
+    flex: none;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background: var(--green-100);
+    color: var(--green-700);
+}
+
+.admin-quick-links a:nth-child(2) .admin-quick-icon {
+    background: var(--cream-200);
+    color: var(--cream-900);
+}
+
+.admin-quick-icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.admin-quick-links strong,
+.admin-quick-links small {
+    display: block;
+}
+
+.admin-quick-links strong {
+    color: var(--green-900);
+    font-size: .82rem;
+}
+
+.admin-quick-links small {
+    margin-top: .25rem;
+    color: var(--color-text-muted);
+    font-size: .7rem;
+    line-height: 1.4;
+}
+
+.admin-quick-links b {
+    margin-left: auto;
+    color: var(--green-500);
+}
+
+@media (max-width: 1100px) {
+    .admin-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-dashboard-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-metrics {
+        gap: .75rem;
+    }
+
+    .admin-metric {
+        padding: 1rem;
+    }
+
+    .admin-metric strong {
+        font-size: 1.4rem;
+    }
+
+    .admin-panel {
+        padding: 1rem;
+    }
+
+    .admin-chart {
+        grid-template-columns: 3.6rem minmax(0, 1fr);
+    }
+
+    .admin-quick-links {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .admin-quick-links a {
+        transition-duration: .01ms;
+    }
+
+    .admin-quick-links a:hover {
+        transform: none;
+    }
+}
+
 /* ===== Responsive Admin ===== */
 @media (max-width: 1024px) {
     .admin-shell {

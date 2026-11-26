@@ -96,56 +96,78 @@
             </div>
 
             @php
-                $points = [];
-                $count = count($statistikBulanan);
-                $chartWidth = 500;
-                $chartHeight = 140;
-                $paddingX = 30;
-                $paddingY = 20;
-                $usableWidth = $chartWidth - ($paddingX * 2);
-                $usableHeight = $chartHeight - ($paddingY * 2);
+                $rawMax = max(4, (int) $pendapatanMaksimum);
+                $stepCount = 4;
+                $rawStep = $rawMax / $stepCount;
+                $magnitude = 10 ** floor(log10($rawStep));
+                $normalized = $rawStep / $magnitude;
+                $niceFactor = $normalized <= 1 ? 1 : ($normalized <= 2 ? 2 : ($normalized <= 2.5 ? 2.5 : ($normalized <= 5 ? 5 : 10)));
+                $chartMax = max(4, (int) ($niceFactor * $magnitude * $stepCount));
 
+                $formatRupiah = static function (float $value): string {
+                    if ($value >= 1_000_000_000) {
+                        return 'Rp '.rtrim(rtrim(number_format($value / 1_000_000_000, 1, ',', '.'), '0'), ',').' M';
+                    }
+                    if ($value >= 1_000_000) {
+                        return 'Rp '.rtrim(rtrim(number_format($value / 1_000_000, 1, ',', '.'), '0'), ',').' jt';
+                    }
+                    if ($value >= 1_000) {
+                        return 'Rp '.rtrim(rtrim(number_format($value / 1_000, 1, ',', '.'), '0'), ',').' rb';
+                    }
+
+                    return 'Rp '.number_format($value, 0, ',', '.');
+                };
+
+                $ticks = collect(range(0, $stepCount))->map(fn (int $level): array => [
+                    'top' => 100 - ($level * (100 / $stepCount)),
+                    'value' => (int) round($chartMax * $level / $stepCount),
+                ])->all();
+
+                $count = count($statistikBulanan);
+                $points = [];
                 foreach ($statistikBulanan as $i => $item) {
-                    $x = $paddingX + ($count > 1 ? ($i / ($count - 1)) * $usableWidth : 0);
-                    $ratio = $pendapatanMaksimum > 0 ? ($item['pendapatan'] / $pendapatanMaksimum) : 0;
-                    $y = ($chartHeight - $paddingY) - ($ratio * $usableHeight);
-                    $points[] = ['x' => round($x, 1), 'y' => round($y, 1), 'item' => $item];
+                    $xPercent = $count > 1 ? ($i / ($count - 1)) * 100 : 50;
+                    $yPercent = $chartMax > 0 ? ($item['pendapatan'] / $chartMax) * 100 : 0;
+                    $points[] = [
+                        'x' => round($xPercent, 3),
+                        'y' => round(100 - $yPercent, 3),
+                        'item' => $item,
+                    ];
                 }
-                $polylinePoints = implode(' ', array_map(fn($p) => "{$p['x']},{$p['y']}", $points));
-                $areaPoints = "{$points[0]['x']},".($chartHeight - $paddingY)." {$polylinePoints} ".(end($points)['x']).",".($chartHeight - $paddingY);
+                $linePoints = implode(' ', array_map(fn (array $point): string => "{$point['x']},{$point['y']}", $points));
             @endphp
 
-            <div class="w-full mb-3 px-2">
-                <svg viewBox="0 0 {{ $chartWidth }} {{ $chartHeight }}" class="w-full h-28 overflow-visible" preserveAspectRatio="none">
-                    <defs>
-                        <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#e8a33c" stop-opacity="0.35"/>
-                            <stop offset="100%" stop-color="#e8a33c" stop-opacity="0.0"/>
-                        </linearGradient>
-                    </defs>
-                    <polygon points="{{ $areaPoints }}" fill="url(#revenueGradient)" />
-                    <polyline fill="none" stroke="#e8a33c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="{{ $polylinePoints }}" />
-                    @foreach ($points as $p)
-                        <circle cx="{{ $p['x'] }}" cy="{{ $p['y'] }}" r="4" fill="#ffffff" stroke="#1c4335" stroke-width="2" class="hover:r-6 transition-all cursor-pointer">
-                            <title>{{ $p['item']['label'] }}: Rp {{ number_format($p['item']['pendapatan'], 0, ',', '.') }}</title>
-                        </circle>
-                    @endforeach
-                </svg>
-            </div>
+            <figure class="admin-chart-figure" role="img" aria-label="Grafik tren pendapatan pembayaran berhasil selama enam bulan terakhir">
+                <div class="admin-chart">
+                    <div class="admin-chart-yaxis" aria-hidden="true">
+                        @foreach ($ticks as $tick)
+                            <span style="top: {{ $tick['top'] }}%">{{ $formatRupiah($tick['value']) }}</span>
+                        @endforeach
+                    </div>
 
-            <figure class="admin-chart" role="img" aria-label="Grafik pendapatan pembayaran berhasil selama enam bulan terakhir">
-                <div class="admin-chart-grid">
-                    @foreach ($statistikBulanan as $bulan)
-                        @php($tinggi = max(4, (int) round($bulan['pendapatan'] / $pendapatanMaksimum * 100)))
-                        <div class="admin-chart-column">
-                            <span class="admin-chart-value">Rp {{ number_format($bulan['pendapatan'], 0, ',', '.') }}</span>
-                            <div class="admin-chart-track">
-                                <span class="admin-chart-bar" style="height: {{ $tinggi }}%"></span>
-                            </div>
-                            <span class="admin-chart-month">{{ $bulan['label'] }}</span>
+                    <div class="admin-chart-area">
+                        <div class="admin-chart-gridlines" aria-hidden="true">
+                            @foreach ($ticks as $tick)
+                                <span style="top: {{ $tick['top'] }}%"></span>
+                            @endforeach
                         </div>
-                    @endforeach
+
+                        <svg class="admin-chart-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                            <polyline points="{{ $linePoints }}" />
+                        </svg>
+
+                        @foreach ($points as $point)
+                            <span class="admin-chart-dot" style="left: {{ $point['x'] }}%; top: {{ $point['y'] }}%;" title="{{ $point['item']['label'] }}: Rp {{ number_format($point['item']['pendapatan'], 0, ',', '.') }}"></span>
+                        @endforeach
+                    </div>
+
+                    <div class="admin-chart-xaxis" aria-hidden="true">
+                        @foreach ($statistikBulanan as $i => $bulan)
+                            <span style="left: {{ $points[$i]['x'] }}%">{{ $bulan['label'] }}</span>
+                        @endforeach
+                    </div>
                 </div>
+
                 <figcaption class="admin-chart-caption">Pendapatan dihitung dari transaksi yang statusnya berhasil di Midtrans.</figcaption>
             </figure>
         </section>

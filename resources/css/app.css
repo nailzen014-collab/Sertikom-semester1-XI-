@@ -648,6 +648,72 @@ input, textarea, select {
     color: var(--color-text-primary);
 }
 
+/* ===== Landing hero responsive (tablet & mobile) ===== */
+@media (max-width: 900px) {
+    .park-hero__layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: clamp(1.75rem, 4vw, 2.5rem);
+    }
+
+    .park-hero__copy {
+        order: 1;
+    }
+
+    .park-hero__media {
+        order: 2;
+    }
+
+    .park-hero__title {
+        max-width: none;
+        font-size: clamp(2.4rem, 7vw, 3.6rem);
+    }
+
+    .park-hero__description {
+        max-width: 34rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .park-hero {
+        padding-block: 1.75rem 2.25rem;
+    }
+
+    .park-hero__title {
+        font-size: clamp(2rem, 10vw, 2.65rem);
+        letter-spacing: -.03em;
+    }
+
+    .park-hero__description {
+        margin-top: .85rem;
+        font-size: .98rem;
+    }
+
+    .park-hero__actions {
+        flex-direction: column;
+        align-items: stretch;
+        margin-top: 1.25rem;
+    }
+
+    .park-hero__button {
+        width: 100%;
+    }
+
+    .park-hero__controls {
+        min-height: 3rem;
+        gap: .5rem;
+    }
+
+    .park-hero__arrow {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .park-hero__pause {
+        padding: .45rem .8rem;
+        font-size: .85rem;
+    }
+}
+
 .park-entrance {
     opacity: 0;
     transform: translateY(22px);
@@ -1854,12 +1920,30 @@ a[role="button"]:active,
     .user-nav {
         order: 3;
         width: 100%;
+        flex-wrap: wrap;
         justify-content: center;
         gap: 1.4rem;
     }
 
     .user-nav a {
         padding-block: .65rem;
+    }
+
+    .user-account-menu > summary span {
+        max-width: 9rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 640px) {
+    .user-park-link {
+        display: none;
+    }
+
+    .user-account-menu > summary span {
+        max-width: 7rem;
     }
 }
 
@@ -1894,14 +1978,21 @@ a[role="button"]:active,
         justify-content: space-between;
     }
 
+    .user-section-heading {
+        flex-wrap: wrap;
+    }
+
     .user-order-summary {
-        align-items: flex-start;
+        align-items: stretch;
+        flex-direction: column;
+        gap: .6rem;
         padding-inline: 1rem;
     }
 
     .user-order-summary .user-order-meta {
+        width: 100%;
         flex-wrap: wrap;
-        justify-content: flex-end;
+        justify-content: space-between;
     }
 
     .user-order-detail {
@@ -2859,6 +2950,17 @@ a[role="button"]:active,
 
     .admin-mobile-menu {
         display: block;
+        position: relative;
+    }
+
+    .admin-mobile-menu nav {
+        position: absolute;
+        top: calc(100% + .5rem);
+        left: 0;
+        z-index: 60;
+        width: min(16rem, 80vw);
+        margin-top: 0;
+        box-shadow: var(--shadow-lg);
     }
 
     .admin-topbar {
@@ -2867,6 +2969,43 @@ a[role="button"]:active,
 
     .admin-content {
         padding: 1rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .admin-topbar-label {
+        display: none;
+    }
+
+    .admin-topbar-actions {
+        gap: .25rem;
+    }
+
+    .admin-topbar-link {
+        padding: .5rem .6rem;
+        font-size: .8rem;
+    }
+
+    .admin-page-heading {
+        gap: .75rem;
+    }
+
+    .admin-page-heading h1 {
+        font-size: 1.45rem;
+    }
+
+    .admin-panel-heading {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-metrics {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .admin-content {
+        padding: .85rem;
     }
 }
 

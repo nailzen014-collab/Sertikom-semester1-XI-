@@ -21,7 +21,7 @@
     @endif
 
     @if ($page === 'dashboard')
-        <div class="user-welcome" id="ringkasan">
+        <div class="user-welcome reveal-on-scroll" id="ringkasan">
             <div>
                 <p class="user-eyebrow">Area pengunjung</p>
                 <h1>Halo, {{ auth()->user()->nama }}</h1>
@@ -30,7 +30,7 @@
             <a href="{{ route('user.booking') }}" class="user-primary-action">Pesan tiket</a>
         </div>
 
-        <section class="user-summary" aria-label="Ringkasan akun">
+        <section class="user-summary reveal-on-scroll delay-1" aria-label="Ringkasan akun">
             <article class="user-summary-card">
                 <span class="user-summary-label">Total pesanan</span>
                 <strong>{{ number_format($totalPesanan, 0, ',', '.') }}</strong>
@@ -50,7 +50,7 @@
     @endif
 
     @if ($page === 'orders')
-        <section class="user-orders" id="pesanan">
+        <section class="user-orders reveal-on-scroll" id="pesanan">
         <div class="user-section-heading">
             <div>
                 <h2>Pesanan saya</h2>
@@ -60,7 +60,7 @@
         </div>
 
         @forelse ($pesanan as $item)
-            <details class="user-order-disclosure" id="pesanan-{{ $item->id }}">
+            <details class="user-order-disclosure reveal-on-scroll" id="pesanan-{{ $item->id }}">
                 <summary class="user-order-summary">
                     <span class="user-order-main">
                         <strong>{{ $item->tiketPaket->nama }}</strong>
@@ -206,7 +206,7 @@
     @endif
 
     @if ($page === 'booking')
-        <section class="user-booking" id="pilih-tiket">
+        <section class="user-booking reveal-on-scroll" id="pilih-tiket">
         <div class="user-section-heading">
             <div>
                 <h2>Pilih tiket untuk kunjungan berikutnya</h2>
@@ -215,16 +215,16 @@
         </div>
 
         @if ($pesananUmum >= \App\Models\Pesanan::BATAS_PESANAN_UMUM_PER_AKUN)
-            <p class="user-notice" role="status">Batas {{ \App\Models\Pesanan::BATAS_PESANAN_UMUM_PER_AKUN }} pesanan tiket umum bulan ini sudah tercapai. Kuota reset otomatis pada {{ \App\Models\Pesanan::resetKuotaUmum()->translatedFormat('d F Y') }}. Pengajuan rombongan tetap tersedia.</p>
+            <p class="user-notice reveal-on-scroll" role="status">Batas {{ \App\Models\Pesanan::BATAS_PESANAN_UMUM_PER_AKUN }} pesanan tiket umum bulan ini sudah tercapai. Kuota reset otomatis pada {{ \App\Models\Pesanan::resetKuotaUmum()->translatedFormat('d F Y') }}. Pengajuan rombongan tetap tersedia.</p>
         @else
-            <p class="user-section-count">Sisa {{ \App\Models\Pesanan::BATAS_PESANAN_UMUM_PER_AKUN - $pesananUmum }} pesanan umum bulan ini</p>
+            <p class="user-section-count reveal-on-scroll">Sisa {{ \App\Models\Pesanan::BATAS_PESANAN_UMUM_PER_AKUN - $pesananUmum }} pesanan umum bulan ini</p>
         @endif
 
         @if ($paketUmum->isNotEmpty())
-            <h3 class="user-booking-group-title">Tiket umum · 1–10 orang</h3>
+            <h3 class="user-booking-group-title reveal-on-scroll">Tiket umum · 1–10 orang</h3>
             <div class="user-package-grid">
                 @foreach ($paketUmum as $paket)
-                    <article class="user-package-card" id="paket-{{ $paket->id }}">
+                    <article class="user-package-card reveal-on-scroll" id="paket-{{ $paket->id }}">
                         <div>
                             <h4>{{ $paket->nama }}</h4>
                             <p class="user-package-price">Rp {{ number_format($paket->harga, 0, ',', '.') }} <span>/ orang</span></p>
@@ -253,7 +253,7 @@
         @endif
 
         @if ($paketRombongan->isNotEmpty())
-            <details class="user-group-invite" id="paket-rombongan" @if ($rombonganDraft || request()->boolean('rombongan') || $errors->any()) open @endif>
+            <details class="user-group-invite reveal-on-scroll" id="paket-rombongan" @if ($rombonganDraft || request()->boolean('rombongan') || $errors->any()) open @endif>
                 <summary>
                     <div>
                         <h3>Kunjungan sekolah atau rombongan</h3>

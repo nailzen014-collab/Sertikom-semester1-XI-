@@ -86,7 +86,7 @@
                     </div>
                 </header>
 
-                <main id="main-content" class="admin-content">
+                <main id="main-content" class="admin-content page-enter delay-1">
                     @if (session('message'))
                         <div data-flash-message="{{ session('message') }}"></div>
                     @endif

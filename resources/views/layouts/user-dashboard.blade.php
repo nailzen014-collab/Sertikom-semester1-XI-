@@ -19,7 +19,7 @@
 
         <x-navbar :user="auth()->user()" />
 
-        <main id="main-content" class="user-content">
+        <main id="main-content" class="user-content page-enter delay-1">
             @if (session('message'))
                 <div data-flash-message="{{ session('message') }}"></div>
             @endif

@@ -122,7 +122,7 @@
     </nav>
 </header>
 
-        <main id="main-content">
+        <main id="main-content" class="page-enter delay-1">
             @if (session('message'))
                 <div data-flash-message="{{ session('message') }}"></div>
             @endif

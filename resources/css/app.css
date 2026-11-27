@@ -123,15 +123,68 @@
     --z-tooltip: 700;
 }
 
-/* ===== Dark mode overrides (if needed) ===== */
+/* ===== Dark mode overrides ===== */
 @media (prefers-color-scheme: dark) {
     :root {
+        /* Backgrounds */
         --color-bg-primary: var(--green-900);
         --color-bg-secondary: var(--green-800);
         --color-bg-tertiary: var(--green-700);
+        --color-bg-inverse: var(--cream-50);
+        --color-bg-accent: var(--bordo-700);
+
+        /* Text */
         --color-text-primary: var(--cream-50);
         --color-text-secondary: var(--cream-100);
         --color-text-muted: var(--cream-400);
+        --color-text-inverse: var(--green-900);
+        --color-text-accent: var(--bordo-300);
+
+        /* Borders */
+        --color-border-light: var(--green-700);
+        --color-border-medium: var(--green-600);
+        --color-border-dark: var(--green-400);
+        --color-border-focus: var(--bordo-400);
+
+        /* Buttons - Primary */
+        --color-btn-primary-bg: var(--green-600);
+        --color-btn-primary-hover: var(--green-500);
+        --color-btn-primary-text: var(--cream-50);
+
+        /* Buttons - Secondary */
+        --color-btn-secondary-bg: transparent;
+        --color-btn-secondary-border: var(--green-400);
+        --color-btn-secondary-text: var(--cream-100);
+        --color-btn-secondary-hover: var(--green-800);
+
+        /* Buttons - Accent */
+        --color-btn-accent-bg: var(--bordo-600);
+        --color-btn-accent-hover: var(--bordo-500);
+        --color-btn-accent-text: var(--cream-50);
+
+        /* Form */
+        --color-input-bg: var(--green-800);
+        --color-input-border: var(--green-600);
+        --color-input-focus-border: var(--bordo-400);
+        --color-input-focus-ring: var(--bordo-400);
+        --color-input-text: var(--cream-50);
+        --color-input-placeholder: var(--cream-400);
+
+        /* States */
+        --color-success: var(--green-400);
+        --color-success-bg: var(--green-900);
+        --color-warning: var(--bordo-400);
+        --color-warning-bg: var(--bordo-900);
+        --color-error: var(--bordo-400);
+        --color-error-bg: var(--bordo-900);
+        --color-info: var(--green-400);
+        --color-info-bg: var(--green-900);
+
+        /* Shadows */
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.3);
     }
 }
 
@@ -370,12 +423,32 @@ input, textarea, select {
     }
 }
 
+@keyframes page-enter {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .animate-fade-in {
     animation: fade-in 0.6s ease-out forwards;
 }
 
 .animate-slide-up {
     animation: slide-up 0.7s ease-out forwards;
+}
+
+.page-enter {
+    opacity: 0;
+    animation: page-enter 500ms var(--ease-out) forwards;
+}
+
+.is-loaded .page-enter {
+    animation-play-state: running;
 }
 
 .delay-1 { animation-delay: 100ms; }
@@ -484,7 +557,7 @@ input, textarea, select {
     min-height: 3rem;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--green-700);
+    border: 2px solid var(--color-btn-primary-bg);
     border-radius: var(--radius-md);
     padding: .65rem 1.15rem;
     font-size: .95rem;
@@ -495,23 +568,26 @@ input, textarea, select {
 }
 
 .park-hero__button--primary {
-    background: var(--green-700);
-    color: var(--cream-50);
+    background: var(--color-btn-primary-bg);
+    color: var(--color-btn-primary-text);
 }
 
 .park-hero__button--primary:hover {
-    background: var(--green-800);
-    border-color: var(--green-800);
-    color: var(--cream-50);
+    background: var(--color-btn-primary-hover);
+    border-color: var(--color-btn-primary-hover);
+    color: var(--color-btn-primary-text);
 }
 
 .park-hero__button--secondary {
-    background: transparent;
-    color: var(--green-700);
+    background: var(--color-btn-secondary-bg);
+    border-color: var(--color-btn-secondary-border);
+    color: var(--color-btn-secondary-text);
 }
 
 .park-hero__button--secondary:hover {
-    background: var(--green-50);
+    background: var(--color-btn-secondary-hover);
+    border-color: var(--color-btn-secondary-hover);
+    color: var(--color-btn-secondary-text);
 }
 
 .park-hero__photo {
@@ -520,7 +596,7 @@ input, textarea, select {
     margin: 0;
     aspect-ratio: 3 / 2;
     border-radius: var(--radius-lg);
-    background: var(--green-100);
+    background: var(--color-bg-secondary);
 }
 
 .park-hero__photo img {
@@ -588,8 +664,8 @@ input, textarea, select {
     place-items: center;
     border: 1px solid var(--color-border-light);
     border-radius: var(--radius-md);
-    background: white;
-    color: var(--color-text-secondary);
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
     font-size: 1.1rem;
     cursor: pointer;
     transition: all var(--transition-fast);
@@ -597,14 +673,14 @@ input, textarea, select {
 
 .park-hero__arrow:hover {
     border-color: var(--bordo-500);
-    background: var(--bordo-50);
+    background: var(--color-bg-secondary);
 }
 
 .park-hero__pause {
     border: 1px solid var(--color-border-light);
     border-radius: var(--radius-md);
-    background: white;
-    color: var(--color-text-secondary);
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
     padding: .5rem 1rem;
     font-size: .9rem;
     cursor: pointer;
@@ -613,7 +689,7 @@ input, textarea, select {
 
 .park-hero__pause:hover {
     border-color: var(--bordo-500);
-    background: var(--bordo-50);
+    background: var(--color-bg-secondary);
 }
 
 .park-destination-track {
@@ -631,7 +707,7 @@ input, textarea, select {
     border: 1px solid var(--color-border-light);
     border-radius: .6rem;
     scroll-snap-align: start;
-    background: white;
+    background: var(--color-bg-primary);
 }
 
 .park-destination-card img {

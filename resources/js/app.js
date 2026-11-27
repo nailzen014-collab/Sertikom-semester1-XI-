@@ -128,3 +128,52 @@ if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-mot
 } else {
     document.querySelectorAll('.reveal-on-scroll').forEach(el => el.classList.add('is-revealed'));
 }
+
+// Navbar scrollspy for landing page
+const landingNavLinks = document.querySelectorAll('.public-nav-desktop a[href*="#"], .public-nav a[href*="#"]');
+const landingSections = Array.from(landingNavLinks).map(link => {
+    const id = link.getAttribute('href').split('#')[1];
+    return document.getElementById(id);
+}).filter(Boolean);
+
+if (landingSections.length > 0 && 'IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const navObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.id;
+                landingNavLinks.forEach(link => {
+                    const linkHash = link.getAttribute('href').split('#')[1];
+                    const isActive = linkHash === id || (id === '' && linkHash === 'katalog');
+                    link.classList.toggle('is-current', isActive);
+                    if (isActive) {
+                        link.setAttribute('aria-current', 'location');
+                    } else {
+                        link.removeAttribute('aria-current');
+                    }
+                });
+            }
+        });
+    }, {
+        rootMargin: '-20% 0px -60% 0px',
+        threshold: 0.1
+    });
+
+    landingSections.forEach(section => navObserver.observe(section));
+
+    // Handle top of page - activate "Beranda" when near top
+    window.addEventListener('scroll', () => {
+        if (window.scrollY < 100) {
+            landingNavLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                const isHome = href === '/' || href.endsWith('/');
+                if (isHome || link.getAttribute('href').split('#')[1] === 'katalog') {
+                    link.classList.toggle('is-current', isHome);
+                    if (isHome) link.setAttribute('aria-current', 'page');
+                } else {
+                    link.classList.remove('is-current');
+                    link.removeAttribute('aria-current');
+                }
+            });
+        }
+    }, { passive: true });
+}

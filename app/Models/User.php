@@ -18,6 +18,8 @@ class User extends Authenticatable implements MustVerifyEmail
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
+    public const ROLE_SUPERADMIN = 'superadmin';
+
     public const ROLE_ADMIN = 'admin';
 
     public const ROLE_PENGUNJUNG = 'pengunjung';
@@ -42,9 +44,23 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+    public function isSuperadmin(): bool
+    {
+        return $this->role === self::ROLE_SUPERADMIN;
+    }
+
     public function isAdmin(): bool
     {
-        return $this->role === self::ROLE_ADMIN;
+        return $this->isSuperadmin() || $this->role === self::ROLE_ADMIN;
+    }
+
+    public function labelRole(): string
+    {
+        return match ($this->role) {
+            self::ROLE_SUPERADMIN => 'Superadmin',
+            self::ROLE_ADMIN => 'Administrator',
+            default => 'Pengunjung',
+        };
     }
 
     public function diskonDibuat(): HasMany

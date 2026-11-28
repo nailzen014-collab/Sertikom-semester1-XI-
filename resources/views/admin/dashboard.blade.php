@@ -173,6 +173,21 @@
         </section>
     </div>
 
+    @if ($aktivitasAdmin->isNotEmpty())
+        <section class="admin-panel reveal-on-scroll delay-3 mb-6" aria-label="Aktivitas pengelola">
+            <div class="admin-panel-heading">
+                <div>
+                    <h2>Aktivitas pengelola</h2>
+                    <p>Perubahan terakhir pada akun admin</p>
+                </div>
+                @if (auth()->user()->isSuperadmin())
+                    <a href="{{ route('admin.kelola-admin.index') }}">Kelola admin</a>
+                @endif
+            </div>
+            <x-admin-activity-list :activities="$aktivitasAdmin" />
+        </section>
+    @endif
+
     <section class="admin-quick-links reveal-on-scroll delay-3" aria-label="Aksi pengelolaan">
         <a href="{{ route('admin.tiket-paket.index') }}"><span class="admin-quick-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M13 6v12"/></svg></span><span><strong>Kelola tiket &amp; paket</strong><small>{{ $totalTiket }} produk, {{ $tiketAktif }} aktif</small></span><b aria-hidden="true">→</b></a>
         <a href="{{ route('admin.diskon.index') }}"><span class="admin-quick-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m19 5-14 14"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg></span><span><strong>Kelola diskon</strong><small>{{ $diskonAktif }} diskon aktif</small></span><b aria-hidden="true">→</b></a>

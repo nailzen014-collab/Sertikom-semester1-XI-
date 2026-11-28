@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DiskonController;
 use App\Http\Controllers\Admin\LaporanController;
@@ -28,4 +29,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::get('laporan/excel', [LaporanController::class, 'exportExcel'])->name('laporan.excel');
     Route::get('laporan/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.pdf');
+
+    Route::middleware('superadmin')->group(function () {
+        Route::resource('kelola-admin', AdminController::class)
+            ->parameters(['kelola-admin' => 'admin'])
+            ->except('show');
+    });
 });

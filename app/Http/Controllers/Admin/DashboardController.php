@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminActivity;
 use App\Models\Diskon;
 use App\Models\Pembayaran;
 use App\Models\PengajuanRombongan;
@@ -56,6 +57,7 @@ class DashboardController extends Controller
                 ->get(),
             'statistikBulanan' => $bulan,
             'pendapatanMaksimum' => max(1, (int) $bulan->max('pendapatan')),
+            'aktivitasAdmin' => AdminActivity::latest('id')->limit(5)->get(),
         ]);
     }
 }

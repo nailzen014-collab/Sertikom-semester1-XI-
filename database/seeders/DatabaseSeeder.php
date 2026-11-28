@@ -26,8 +26,8 @@ class DatabaseSeeder extends Seeder
             ],
         );
 
-        if (! $admin->isAdmin()) {
-            $admin->role = User::ROLE_ADMIN;
+        if (! $admin->isSuperadmin()) {
+            $admin->role = User::ROLE_SUPERADMIN;
             $admin->save();
         }
 

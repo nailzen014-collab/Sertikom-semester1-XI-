@@ -27,7 +27,7 @@
                     <span class="admin-avatar" aria-hidden="true">{{ mb_strtoupper(mb_substr(auth()->user()->nama, 0, 1)) }}</span>
                     <span>
                         <span class="admin-profile-name">{{ auth()->user()->nama }}</span>
-                        <span class="admin-profile-role">Administrator</span>
+                        <span class="admin-profile-role">{{ auth()->user()->labelRole() }}</span>
                     </span>
                 </div>
 
@@ -57,6 +57,12 @@
                         <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4-3 6.5-7 8-4-1.5-7-4-7-8V6z"/><path d="m9 12 2 2 4-4"/></svg>
                         Validasi tiket
                     </a>
+                    @if (auth()->user()->isSuperadmin())
+                        <a href="{{ route('admin.kelola-admin.index') }}" @class(['is-active' => request()->routeIs('admin.kelola-admin.*')])>
+                            <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+                            Kelola admin
+                        </a>
+                    @endif
                 </nav>
 
                 <a href="{{ route('landing') }}" class="admin-sidebar-home">Lihat halaman taman</a>
@@ -73,6 +79,9 @@
                             <a href="{{ route('admin.tiket-paket.index') }}" @class(['is-active' => request()->routeIs('admin.tiket-paket.*')])>Tiket &amp; paket</a>
                             <a href="{{ route('admin.diskon.index') }}" @class(['is-active' => request()->routeIs('admin.diskon.*')])>Diskon</a>
                             <a href="{{ route('admin.tiket.validasi') }}" @class(['is-active' => request()->routeIs('admin.tiket.validasi*')])>Validasi tiket</a>
+                            @if (auth()->user()->isSuperadmin())
+                                <a href="{{ route('admin.kelola-admin.index') }}" @class(['is-active' => request()->routeIs('admin.kelola-admin.*')])>Kelola admin</a>
+                            @endif
                         </nav>
                     </details>
                     <p class="admin-topbar-label">Ruang pengelola</p>

@@ -52,4 +52,14 @@ class UserFactory extends Factory
             $user->forceFill(['role' => User::ROLE_ADMIN])->save();
         });
     }
+
+    /**
+     * Indicate that the user is a super administrator.
+     */
+    public function superadmin(): static
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->forceFill(['role' => User::ROLE_SUPERADMIN])->save();
+        });
+    }
 }
